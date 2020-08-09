@@ -1,0 +1,3 @@
+(RewriteEngine On
+
+RewriteRule api/medecins?([a-zA-Z\=é]+) index.php?route=$1 [L])
