@@ -9,6 +9,14 @@
 				<b-form-input  v-model="commune" placeholder="Entrez" id="find-item-commune" type="string" />
 			</b-col>
 		</b-row>
+		<b-row class="my-1">
+			<b-col sm="3">
+				<label for="find-item-commune">Nom professionnel : </label>
+			</b-col>
+			<b-col sm="9">
+				<b-form-input  v-model="nom_professionnel" placeholder="Entrez" id="find-item-nom_professionnel" type="string" />
+			</b-col>
+		</b-row>
 		<b-form-group>
 			<b-form-radio v-model="civilite" name="some-radios" value="Homme">Homme</b-form-radio>
 			<b-form-radio v-model="civilite" name="some-radios" value="Femme">Femme</b-form-radio>
@@ -28,7 +36,6 @@
 		<b-button block variant="success" @click="sendDataResearch">
 			Rechercher
 		</b-button>
-		{{ commune }} {{ civilite }} {{ selected }}
 	</b-container>
 </template>
 
@@ -37,18 +44,17 @@ export default {
 	name: "Research",
 	props: {
 		commune: String,
-		civilite: String
+		civilite: String,
+		selected: String,
+		nom_professionnel: String
 	},
-	data() { return { selected: null,  options: [ { text: 'Anatomo-Cyto-Pathol', value: 'Anatomo-Cyto-Pathol' },{ text: 'Anesthésiste réanim', value: 'Anesthésiste réanim' },{ text: 'Cancérologue  radio', value: 'Cancérologue  radio' }] }
+	data() { return { options: [ { text: 'Anatomo-Cyto-Pathol', value: 'Anatomo-Cyto-Pathol' },{ text: 'Anesthésiste réanim', value: 'Anesthésiste réanim' },{ text: 'Cancérologue  radio', value: 'Cancérologue  radio' }, { text: 'Radiologue', value: 'Radiologue' }] }
 	},
 	methods: {
 		sendDataResearch() {
-			let mycommune = this.commune;
-			let mycivilite = this.civilite;
-			let myprofession = this.selected
-			this.$emit('data-sent', { 'commune': mycommune, 'civilite': mycivilite, 'profession': myprofession });	
+			this.$emit('data-sent', { 'newRequest': true, 'commune': this.commune, 'civilite': this.civilite, 'profession': this.selected, 'nom_professionnel': this.nom_professionnel });	
 		},
-	},
+	}
 }
 </script>
 
@@ -56,9 +62,9 @@ export default {
 h3{
 	text-align: center;
 }
-.form-group{
+/* .form-group{
 	margin-left: 45%;
-}
+} */
 #form-select{
 	display: flex;
 	flex-wrap: wrap;

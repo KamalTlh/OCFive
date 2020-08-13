@@ -35,4 +35,27 @@ abstract class Model {
         $result = $this->checkConnection()->query($sql);
         return $result;
     }
+
+    protected function dataPagination($results){
+        $totalResult = Count($results);
+        $limite = intval(20);
+        $data['success'] = true;
+        $data ['totalPages'] = ceil($totalResult/$limite);
+        $data['totalResults'] = count($results);
+        $data['PerPage'] = $limite;
+        return $data;
+    }
+
+    protected function getPagePagination(){
+        $pagination = [];
+        if ( isset($_GET['page']) AND !empty($_GET['page']) ){
+            $_GET['page'] = intval($_GET['page']);
+            $pagination['currentPage']= $_GET['page'];
+        } else {
+            $pagination['currentPage'] = 1;
+        }
+        $pagination['limite'] = intval(20);
+        $pagination['debut'] = ($pagination['currentPage']- 1) * $pagination['limite'];
+        return $pagination;
+    }
 }

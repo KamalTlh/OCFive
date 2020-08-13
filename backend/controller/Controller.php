@@ -2,10 +2,6 @@
 namespace controller;
 use model\ProSanteModel;
 use model\ProsSanteModel;
-// use model\CommentModel;
-// use model\CommentsModel;
-// use model\UserModel;
-// use model\UsersModel;
 use view\View;
 use config\Session;
 use constraint\Validation;
@@ -13,10 +9,6 @@ use constraint\Validation;
 abstract class Controller{
     protected $proSanteModel;
     protected $prosSanteModel;
-    // protected $commentModel;
-    // protected $commentsModel;
-    // protected $userModel;
-    // protected $usersModel;
     protected $view;
     protected $session;
     protected $validation;
@@ -24,10 +16,6 @@ abstract class Controller{
     public function __construct(){
         $this->proSanteModel = new proSanteModel();
         $this->prosSanteModel = new ProsSanteModel();
-        // $this->commentModel = new CommentModel();
-        // $this->commentsModel = new CommentsModel();
-        // $this->userModel = new UserModel();
-        // $this->usersModel = new UsersModel();
         $this->view = new View();
         $this->session = new Session($_SESSION);
         $this->validation = new Validation();

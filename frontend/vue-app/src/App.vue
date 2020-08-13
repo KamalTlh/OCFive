@@ -65,6 +65,7 @@ export default {
 </script>
 
 <style lang="scss">
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap');
 html {
     font-family: arial,verdana,sans-serif;
     font-size: 1em;

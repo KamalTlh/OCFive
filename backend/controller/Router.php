@@ -18,10 +18,12 @@ class Router{
         try{
             if(isset($_GET)){
                 if($_GET['route'] === 'medecins'){
-                    $this->proSanteController->workers();
+                    $this->proSanteController->workers($_GET);
                 }
-                elseif(isset($_GET['commune']) || isset($_GET['civilite']) || isset($_GET['profession'])){
-                    $this->proSanteController->workersByFilters($_GET);
+                elseif($_GET['route'] === 'filters'){
+                    if(isset($_GET['commune']) || isset($_GET['civilite']) || isset($_GET['profession'])){
+                        $this->proSanteController->workersByFilters($_GET);
+                    }
                 }
             }
             else{

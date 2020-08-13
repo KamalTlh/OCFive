@@ -3,14 +3,14 @@ namespace model;
 use PDO; 
 
 class ProSanteModel extends Model {
-    private $id;
-    private $civilite;
-    private $nom_professionnel;
-    private $adresse;
-    private $telephone;
-    private $profession;
+    private $id = 1;
+    private $civilite = '%';
+    private $nom_professionnel = '%';
+    private $adresse = '%';
+    private $telephone = '%';
+    private $profession = '%';
     private $coordonnees;
-    private $commune;
+    private $commune = '%';
     private $departement;
     private $region;
     private $contact;
@@ -24,12 +24,11 @@ class ProSanteModel extends Model {
        $this->civilite = $civilite; 
    }
     
-
-   function getNomprofessionnel() { 
+   function getNom_professionnel() { 
         return $this->nom_professionnel; 
    } 
 
-   function setNomprofessionnel($nomprofessionnel) {  
+   function setNom_professionnel($nom_professionnel) {  
        $this->nom_professionnel = $nom_professionnel; 
    } 
 
@@ -129,14 +128,6 @@ class ProSanteModel extends Model {
        $this->commune = $commune; 
    } 
 
-   function getCodepostal() { 
-        return $this->codepostal; 
-   } 
-
-   function setCodepostal($codepostal) {  
-       $this->codepostal = $codepostal; 
-   } 
-
    function getDepartement() { 
         return $this->departement; 
    } 
@@ -157,15 +148,14 @@ class ProSanteModel extends Model {
         return $this->contact; 
    } 
 
-   function setContact($contact) {  
+    function setContact($contact) {  
        $this->contact = $contact; 
    } 
 
-    public function hydrate(array $donnees){
-        foreach ($donnees as $key => $value){
+    public function hydrate(array $get){
+        foreach ($get as $key => $value){
             // On récupère le nom du setter correspondant à l'attribut.
             $method = 'set'.ucfirst($key);
-            
             // Si le setter correspondant existe.
             if (method_exists($this, $method)){
             // On appelle le setter.
@@ -173,24 +163,6 @@ class ProSanteModel extends Model {
             }
         }
         return $this;
-    }
-
-    public function setPagination(){
-        $page = (!empty($_GET['page']) ? $_GET['page'] : 1);
-        $limit = 20;
-        // Partie "Requête"
-        $start = ($page - 1) * $limite;
-        $sql = 'SELECT * FROM `my_table` LIMIT :limit OFFSET :start';
-        $result = $this->createquery($sql, [
-                    'limit'=>$limit,
-                    'start'=>$start
-        ]);
-        $healthworkers = $result->fetchAll(PDO::FETCH_ASSOC);
-        ?>
-        <a href="?page=<?php echo $page - 1; ?>">Page précédente</a>
-        —
-        <a href="?page=<?php echo $page + 1; ?>">Page suivante</a>
-        <?php
     }
 
     public function gethealthWorker($workerId){
@@ -204,40 +176,26 @@ class ProSanteModel extends Model {
         return $data;
     }
 
-    public function gethealthWorkersByFilters($get){
-        $filters = [];
-        $data = [];
-        foreach($get as $key => $value){
-            if(isset($key)){
-               $filters[$key]= $value;
-            }
-        }
-        $query = 'SELECT id FROM search_pro WHERE commune=:commune AND civilite=:civilite AND profession=:profession';
-        $result = $this->createQuery($query, [ 
-            ':commune' => $get['commune'],
-            ':civilite' => $get['civilite'],
-            ':profession' => $get['profession']
-        ]);
+    public function getCountWorkersByFilters($get){
+        $this->hydrate($get);
+        $query = ' SELECT id FROM search_pro 
+        WHERE commune LIKE \''.$this->commune.'\' AND civilite LIKE \''.$this->civilite.'\' AND profession LIKE \''.$this->profession.'\' AND  nom_professionnel LIKE \'%'.$this->nom_professionnel.'%\'';
+        $result = $this->createQuery($query);
         $results = $result->fetchAll(PDO::FETCH_ASSOC);
-        $totalResult = Count($results);
-        if ( isset($_GET['page']) AND !empty($_GET['page']) ){
-            $_GET['page'] = intval($_GET['page']);
-            $currentPage = $_GET['page'];
-        } else {
-            $currentPage = 1;
-        }
-        $limite = intval(20);
-        $data ['totalPages'] = ceil($totalResult/$limite);
-        $debut = ($currentPage - 1) * $limite;
-        $sql = ' SELECT civilite, nom_professionnel, adresse, telephone, profession, commune, region, contact FROM search_pro WHERE commune=:commune AND civilite=:civilite AND profession=:profession LIMIT '.$limite.' OFFSET '.$debut; 
-        $result = $this->createQuery($sql, [ 
-            ':commune' => $get['commune'],
-            ':civilite' => $get['civilite'],
-            ':profession' => $get['profession']
-        ]);
+        $data = $this->dataPagination($results);
+        return $data;
+    }
+
+    public function gethealthWorkersByFilters($get){
+        $this->hydrate($get);
+        $pagination = $this->getPagePagination();
+        $sql = ' SELECT civilite, nom_professionnel, adresse, telephone, profession, commune, region, contact FROM search_pro 
+        WHERE commune LIKE \''.$this->commune.'\' AND civilite LIKE \''.$this->civilite.'\' AND profession LIKE \''.$this->profession.'\' AND  nom_professionnel LIKE \'%'.$this->nom_professionnel.'%\' 
+        LIMIT '.$pagination['limite'].' OFFSET '.$pagination['debut']; 
+        $result = $this->createQuery($sql);
         $healthworker = $result->fetchAll(PDO::FETCH_ASSOC);
-        $data['success'] = true;
-        $data['number'] = count($healthworker);
+        $data['currentPage'] = $pagination['currentPage'];
+        $data['numberOfResultOnPage'] = count($healthworker);
         $data['healthworkers'] = $healthworker;
         return $data;
     }
