@@ -178,9 +178,14 @@ class ProSanteModel extends Model {
 
     public function getCountWorkersByFilters($get){
         $this->hydrate($get);
-        $query = ' SELECT id FROM search_pro 
-        WHERE commune LIKE \''.$this->commune.'\' AND civilite LIKE \''.$this->civilite.'\' AND profession LIKE \''.$this->profession.'\' AND  nom_professionnel LIKE \'%'.$this->nom_professionnel.'%\'';
-        $result = $this->createQuery($query);
+        $query = ' SELECT id FROM search_pro WHERE commune LIKE :commune AND civilite LIKE :civilite AND profession LIKE :profession AND nom_professionnel LIKE :nom_professionnel ';
+        $result = $this->createQuery($query, [
+            ':commune'=>$this->commune,
+            ':civilite'=>$this->civilite,
+            ':profession'=>$this->profession,
+            ':nom_professionnel'=>'%'.$this->nom_professionnel.'%'
+
+        ]);
         $results = $result->fetchAll(PDO::FETCH_ASSOC);
         $data = $this->dataPagination($results);
         return $data;
@@ -189,10 +194,33 @@ class ProSanteModel extends Model {
     public function gethealthWorkersByFilters($get){
         $this->hydrate($get);
         $pagination = $this->getPagePagination();
-        $sql = ' SELECT civilite, nom_professionnel, adresse, telephone, profession, commune, region, contact FROM search_pro 
-        WHERE commune LIKE \''.$this->commune.'\' AND civilite LIKE \''.$this->civilite.'\' AND profession LIKE \''.$this->profession.'\' AND  nom_professionnel LIKE \'%'.$this->nom_professionnel.'%\' 
-        LIMIT '.$pagination['limite'].' OFFSET '.$pagination['debut']; 
-        $result = $this->createQuery($sql);
+        $sql = ' SELECT id, civilite, nom_professionnel, adresse, telephone, profession, commune, region, contact FROM search_pro 
+        WHERE commune LIKE :commune AND civilite LIKE :civilite AND profession LIKE :profession AND nom_professionnel LIKE :nom_professionnel';
+        // if (isset($get['commune'])){
+        //     $sql.= ' commune LIKE :commune ';
+        //     $params[':commune'] = $this->commune;
+        // }
+        // if (isset($get['civilite'])){
+        //     $sql.= ' AND civilite LIKE :civilite';
+        //     $params[':civilite'] = $this->civilite;
+        // }
+        // if (isset($get['profession'])){
+        //     $sql.= ' profession LIKE :profession';
+        //     $params[':profession'] = $this->profession;
+        // }
+        // if (isset($get['nom_professionnel'])){
+        //     $sql.= ' nom_professionnel LIKE :nom_professionnel ';
+        //     $params[':nom_professionnel'] = $this->nom_professionnel;
+        // }
+        $sql.= ' LIMIT '.$pagination['limite'].' OFFSET '.$pagination['debut']; 
+        $result = $this->createQuery($sql, [
+            ':commune'=>$this->commune,
+            ':civilite'=>$this->civilite,
+            ':profession'=>$this->profession,
+            ':nom_professionnel'=>'%'.$this->nom_professionnel.'%'
+
+        ]);
+
         $healthworker = $result->fetchAll(PDO::FETCH_ASSOC);
         $data['currentPage'] = $pagination['currentPage'];
         $data['numberOfResultOnPage'] = count($healthworker);

@@ -32,7 +32,7 @@
       </mdb-row>
     </mdb-card-body>
     <mdb-card-footer class="white d-flex justify-content-end">
-      <mdb-btn gradient="amy-crisp" class="black-text" icon="paper-plane" @click="sendDataResearch" rounded>Rechercher</mdb-btn>
+      <mdb-btn gradient="amy-crisp" class="black-text" icon="search" @click="sendDataResearch" rounded>Rechercher</mdb-btn>
     </mdb-card-footer>
   </mdb-card>
   
@@ -67,9 +67,9 @@
 
     data() {
       return {
-        commune: '', 
-        civilite: '', 
-        nom_professionnel: '',
+        commune: null, 
+        civilite: null, 
+        nom_professionnel: null,
         selected_profession: null,
         options_professions: [
           { value: null, text: 'Profession' },
@@ -88,7 +88,6 @@
     },
     methods: {
       sendDataResearch() {
-        console.log('on entre');
         this.$emit('data-sent', { 'newRequest': true, 'commune': this.commune, 'civilite': this.selected_civilite, 'profession': this.selected_profession, 'nom_professionnel': this.nom_professionnel });}, }
   }
 </script>

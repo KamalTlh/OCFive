@@ -3,11 +3,7 @@ namespace constraint;
 
 class Validation{
     public function validate($data, $name){
-        if($name === 'Article'){
-            $articleValidation = new ArticleValidation();
-            $errors = $articleValidation->check($data);
-        }
-        elseif($name === 'Comment'){
+        if($name === 'Comment'){
             $commentValidation = new CommentValidation();
             $errors = $commentValidation->check($data);
         }

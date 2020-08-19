@@ -3,27 +3,32 @@ namespace controller;
 
 class Router{
     private $proSanteController;
-    // private $commentController;
+    private $commentController;
     private $errorController;
-    // private $userController;
+    private $userController;
+    private $jsonReceiveData;
+    private $json_output;
+    private $task;
+    private $uniquekey;
     
     public function __construct(){
         $this->proSanteController = new ProSanteController();
-        // $this->commentController = new CommentController();
+        $this->commentController = new CommentController();
         $this->errorController = new ErrorController();
-        // $this->userController = new UserController();
+        $this->userController = new UserController();
     }
 
     public function run(){
         try{
-            if(isset($_GET)){
-                if($_GET['route'] === 'medecins'){
-                    $this->proSanteController->workers($_GET);
+            if(isset($_POST)){
+                $data = json_decode(file_get_contents("php://input"), true);
+                if( $data['route'] === 'login'){
+                    $this->userController->login($data['pseudo'], $data['password']);
                 }
-                elseif($_GET['route'] === 'filters'){
-                    if(isset($_GET['commune']) || isset($_GET['civilite']) || isset($_GET['profession'])){
-                        $this->proSanteController->workersByFilters($_GET);
-                    }
+            }
+            elseif(isset($_GET)){
+                if($_GET['route'] === 'filters'){
+                    $this->proSanteController->workersByFilters($_GET);
                 }
             }
             else{

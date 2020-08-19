@@ -13,27 +13,32 @@
           <!-- Liste des régions -->
         <div class="map__list col-lg-3 d-flex flex-column justify-content-center p-5">
           <ul class="list-group">
-            <li id="li-GES" class="list-group-item"><a href="/region/index/Grand-Est" id="list-GES">Grand-Est</a></li>
-            <li id="li-NAQ" class="list-group-item"><a href="/region/index/Nouvelle-Aquitaine"
-                id="list-NAQ">Nouvelle-Aquitaine</a></li>
-            <li id="li-ARA" class="list-group-item"><a href="/region/index/Auvergne-Rhone-Alpes"
-                id="list-ARA">Auvergne-Rhône-Alpes</a></li>
-            <li id="li-BFC" class="list-group-item"><a href="/region/index/Bourgogne-Franche-Comte"
-                id="list-BFC">Bourgogne-Franche-Comté</a></li>
-            <li id="li-BRE" class="list-group-item"><a href="/region/index/Bretagne" id="list-BRE">Bretagne</a></li>
-            <li id="li-CVL" class="list-group-item"><a href="/region/index/Centre-Val-de-Loire"
-                id="list-CVL">Centre-Val-de-Loire</a></li>
-            <li id="li-COR" class="list-group-item"><a href="/region/index/Corse" id="list-COR">Corse</a></li>
-            <li id="li-IDF" class="list-group-item"><a href="/region/index/Ile-de-France"
-                id="list-IDF">Île-de-France</a></li>
-            <li id="li-OCC" class="list-group-item"><a href="/region/index/Occitanie" id="list-OCC">Occitanie</a></li>
-            <li id="li-HDF" class="list-group-item"><a href="/region/index/Hauts-de-France"
-                id="list-HDF">Hauts-de-France</a></li>
-            <li id="li-NOR" class="list-group-item"><a href="/region/index/Normandie" id="list-NOR">Normandie</a></li>
-            <li id="li-PDL" class="list-group-item"><a href="/region/index/Pays-de-la-Loire"
-                id="list-PDL">Pays-de-la-Loire</a></li>
-            <li id="li-PAC" class="list-group-item"><a href="/region/index/Provence-Alpes-Cote-d'Azur"
-                id="list-PAC">Provence-Alpes-Côte-d'Azur</a></li>
+            <li id="li-GES" class="list-group-item"><router-link to="/professionnelsante" 
+                id="list-GES">Grand-Est</router-link></li>
+            <li id="li-NAQ" class="list-group-item"><router-link to="/professionnelsante"
+                id="list-NAQ">Nouvelle-Aquitaine</router-link></li>
+            <li id="li-ARA" class="list-group-item"><router-link to="/professionnelsante"
+                id="list-ARA">Auvergne-Rhône-Alpes</router-link></li>
+            <li id="li-BFC" class="list-group-item"><router-link to="/professionnelsante"
+                id="list-BFC">Bourgogne-Franche-Comté</router-link></li>
+            <li id="li-BRE" class="list-group-item"><router-link to="/professionnelsante"
+                id="list-BRE">Bretagne</router-link></li>
+            <li id="li-CVL" class="list-group-item"><router-link to="/professionnelsante"
+                id="list-CVL">Centre-Val-de-Loire</router-link></li>
+            <li id="li-COR" class="list-group-item"><router-link to="/professionnelsante" 
+                id="list-COR">Corse</router-link></li>
+            <li id="li-IDF" class="list-group-item"><router-link to="/professionnelsante"
+                id="list-IDF">Île-de-France</router-link></li>
+            <li id="li-OCC" class="list-group-item"><router-link to="/professionnelsante"
+                id="list-OCC">Occitanie</router-link></li>
+            <li id="li-HDF" class="list-group-item"><router-link to="/professionnelsante"
+                id="list-HDF">Hauts-de-France</router-link></li>
+            <li id="li-NOR" class="list-group-item"><router-link to="/professionnelsante" 
+                id="list-NOR">Normandie</router-link></li>
+            <li id="li-PDL" class="list-group-item"><router-link to="/professionnelsante"
+                id="list-PDL">Pays-de-la-Loire</router-link></li>
+            <li id="li-PAC" class="list-group-item"><router-link to="/professionnelsante"
+                id="list-PAC">Provence-Alpes-Côte-d'Azur</router-link></li>
           </ul>
       </div>
       </article>
