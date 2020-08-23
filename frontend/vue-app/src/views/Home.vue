@@ -5,6 +5,8 @@
     </section>
     <section>
       <hr>
+      {{ this.$session.get('signIn') }}
+      <hr>
       <!-- Carte de France interactive -->
       <article class="container mt-5 map" id="map">
         <div class="map__image col-lg-6 p-5">

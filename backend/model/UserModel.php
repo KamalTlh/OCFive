@@ -81,10 +81,31 @@ class UserModel extends Model{
         return $this->hydrate($user);
     }
     
-    public function createUser($post){
+    public function login($pseudo, $password){
+        $checkingSql = ' SELECT password FROM user WHERE pseudo = ?';
+        $data = $this->createQuery($checkingSql, [ $pseudo ]);
+        $result = $data->fetch(PDO::FETCH_ASSOC);
+        $isPasswordValid = password_verify($password, $result['password']);
+        if ( $isPasswordValid ) {
+            $sql = 'SELECT id, pseudo, email, date_creation, role_id FROM user WHERE pseudo = ?';
+            $data = $this->createQuery($sql, [ $pseudo ]);
+            $result = $data->fetch(PDO::FETCH_ASSOC);
+            return [
+                'user'=> $result,
+                'isPasswordValid'=> $isPasswordValid
+            ];
+        }
+        return [
+            'isPasswordValid'=> $isPasswordValid
+        ];
+    }
+
+    public function signIn($pseudo, $email, $password){
         $sql = 'INSERT INTO user (pseudo, email, password, date_creation, role_id) VALUES (?, ?, ?, NOW(), 2)';
-        $this->createQuery($sql, [$post['pseudo'], $post['email'], password_hash($post['password'],PASSWORD_BCRYPT)]);
- 
+        $this->createQuery($sql, [$pseudo, $email, password_hash($password,PASSWORD_BCRYPT)]);
+        return [
+            'registration'=> true
+        ];
     }
 
     public function updateUser($user, $userId){
@@ -96,24 +117,14 @@ class UserModel extends Model{
     public function deleteUser($userId){
         $sql = 'DELETE FROM user WHERE id = ?';
         $this->createQuery($sql, [$userId]);
+        $data['isDelete'] = true;
+        return $data;
     }
 
     public function updatePassword($user, $userId){
         extract($user);
         $sql =' UPDATE user SET password = ? WHERE id = ?';
         $this->createQuery($sql, [password_hash($password, PASSWORD_BCRYPT), $userId]);
-    }
-
-    public function login($pseudo, $password){
-        $sql = 'SELECT id, pseudo, password FROM user WHERE pseudo = ?';
-        $data = $this->createQuery($sql, [ $pseudo ]);
-        $result = $data->fetch(PDO::FETCH_ASSOC);
-        $isPasswordValid = $password == $result['password'] ? true : false;
-        // $isPasswordValid = password_verify($password, $result['password']);
-        return [
-            'result'=> $result,
-            'isPasswordValid'=> $isPasswordValid
-        ];
     }
 
     public function checkUserRole($userlog){

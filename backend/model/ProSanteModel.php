@@ -165,14 +165,31 @@ class ProSanteModel extends Model {
         return $this;
     }
 
-    public function gethealthWorker($workerId){
+    public function gethealthWorkerById($get){
         $sql = ' SELECT * FROM search_pro WHERE id = ? ';
-        $result = $this->createQuery($sql, [$workerId]);
-        $healthworker = $result->fetchAll(PDO::FETCH_ASSOC);
-        $data = array();
+        $result = $this->createQuery($sql, [$get['id']]);
+        $healthworker = $result->fetch(PDO::FETCH_ASSOC);
         $data['success'] = true;
         $data['number'] = count($healthworker);
-        $data['healthworkers'] = $healthworker;
+        $data['healthworker'] = $healthworker;
+        return $data;
+    }
+
+    public function getCountListWorkers(){
+        $query = 'SELECT id FROM search_pro';
+        $result = $this->createQuery($query);
+        $results = $result->fetchAll(PDO::FETCH_ASSOC);
+        $data = $this->dataPagination($results);
+        return $data;
+    }
+
+    public function getListHealthWorkers(){
+        $pagination = $this->getPagePagination();
+        $sql = 'SELECT id, civilite, nom_professionnel, adresse, telephone, profession, commune, region FROM search_pro ORDER BY id ASC LIMIT '.$pagination['limite'].' OFFSET '.$pagination['debut'];
+        $result = $this->createQuery($sql);
+        $healthworkers = $result->fetchAll(PDO::FETCH_ASSOC);
+        $data['currentPage'] = $pagination['currentPage'];
+        $data['healthworkers'] = $healthworkers;
         return $data;
     }
 
@@ -196,22 +213,6 @@ class ProSanteModel extends Model {
         $pagination = $this->getPagePagination();
         $sql = ' SELECT id, civilite, nom_professionnel, adresse, telephone, profession, commune, region, contact FROM search_pro 
         WHERE commune LIKE :commune AND civilite LIKE :civilite AND profession LIKE :profession AND nom_professionnel LIKE :nom_professionnel';
-        // if (isset($get['commune'])){
-        //     $sql.= ' commune LIKE :commune ';
-        //     $params[':commune'] = $this->commune;
-        // }
-        // if (isset($get['civilite'])){
-        //     $sql.= ' AND civilite LIKE :civilite';
-        //     $params[':civilite'] = $this->civilite;
-        // }
-        // if (isset($get['profession'])){
-        //     $sql.= ' profession LIKE :profession';
-        //     $params[':profession'] = $this->profession;
-        // }
-        // if (isset($get['nom_professionnel'])){
-        //     $sql.= ' nom_professionnel LIKE :nom_professionnel ';
-        //     $params[':nom_professionnel'] = $this->nom_professionnel;
-        // }
         $sql.= ' LIMIT '.$pagination['limite'].' OFFSET '.$pagination['debut']; 
         $result = $this->createQuery($sql, [
             ':commune'=>$this->commune,

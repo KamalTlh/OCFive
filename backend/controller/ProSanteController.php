@@ -3,19 +3,26 @@ namespace controller;
 
 class ProSanteController extends Controller{
 
-    public function workers($get){
+    public function getHealthWorkers($get){
         if($_GET['totalPages'] == 0){
-            $data['page'] = $this->prosSanteModel->getCountListWorkers();
+            $data['page'] = $this->proSanteModel->getCountListWorkers();
         }
-        $data['datas'] = $this->prosSanteModel->getListHealthWorkers();
-        return $this->view->render('Healthworkers',[
+        $data['datas'] = $this->proSanteModel->getListHealthWorkers();
+        return $this->view->render('JsonResponse',[
+            'data'=> $data
+        ]);
+    }
+
+    public function getHealthWorkerById($get){
+        $data = $this->proSanteModel->getHealthWorkerById($get);
+        return $this->view->render('JsonResponse',[
             'data'=> $data
         ]);
     }
 
     public function getListProfessions(){
         $data = $this->proSanteModel->getListProfessions();
-        return $this->view->render('Healthworkers',[
+        return $this->view->render('JsonResponse',[
             'data'=> $data
         ]);
     }
@@ -25,7 +32,7 @@ class ProSanteController extends Controller{
             $data['page'] = $this->proSanteModel->getCountWorkersByFilters($get);
         }
         $data['datas'] = $this->proSanteModel->gethealthWorkersByFilters($get);
-        return $this->view->render('Healthworkers',[
+        return $this->view->render('JsonResponse',[
             'data'=> $data
         ]);
     }

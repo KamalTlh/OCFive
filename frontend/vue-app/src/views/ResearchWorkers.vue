@@ -56,7 +56,7 @@ import {
         mdbIcon
     } from "mdbvue";
 export default {
-    name: "ListeMedecins",
+    name: "ResearchWorkers",
     components: {
         ResearchDesigned,
         mdbBtn,

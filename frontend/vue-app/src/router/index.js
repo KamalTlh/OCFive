@@ -1,8 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from '../store'
 import Home from '../views/Home.vue'
-import Contact from '../views/Contact.vue'
-import ProfessionnelSante from '../views/ProfessionnelSante.vue'
+import AdminView from '../views/AdminView.vue'
+import UserProfile from '../views/UserProfile.vue'
+import ResearchWorkers from '../views/ResearchWorkers.vue'
+import WorkerDetailView from '../views/WorkerDetailView.vue'
+import Register from '../views/Register.vue'
 
 
 Vue.use(VueRouter)
@@ -14,14 +18,33 @@ Vue.use(VueRouter)
     component: Home
   },
   {
-    path: '/contact',
-    name: 'contact',
-    component: Contact
+    path: '/adminview',
+    name: 'AdminView',
+    component: AdminView,
+    // a meta field
+    meta: { requiresAuth: true }
   },
   {
-    path: '/professionnelsante',
-    name: 'professionnelsante',
-    component: ProfessionnelSante
+  path: '/userprofile',
+  name: 'UserProfile',
+  component: UserProfile,
+  // a meta field
+  meta: { requiresAuth: true }
+  },
+  {
+    path: '/researchworkers',
+    name: 'ResearchWorkers',
+    component: ResearchWorkers
+  },
+  {
+    path: '/workerdetailview',
+    name: 'WorkerDetailView',
+    component: WorkerDetailView
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: Register
   },
   {
     path: '/about',
@@ -38,4 +61,20 @@ const router = new VueRouter({
   routes
 })
 
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    // this route requires auth, check if logged in
+    // if not, redirect to login page.
+    if (!store.state.sessionConnected) {
+      next({
+        path: '/',
+        query: { redirect: to.fullPath }
+      })
+    } else {
+      next()
+    }
+  } else {
+    next() // make sure to always call next()!
+  }
+})
 export default router

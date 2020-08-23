@@ -1,36 +1,38 @@
 <template>
     <div>
-        <!-- Side Modal Top Right -->
-        <mdb-modal side position="top-right" direction="right" :show="modal" @close="modal = false">
-            <mdb-modal-header>
-                <mdb-modal-title>Bienvue</mdb-modal-title>
-            </mdb-modal-header>
-            <mdb-modal-body>
-                <h3>Bonjour! Bonne navigation!</h3>
-            </mdb-modal-body>
-            <mdb-modal-footer>
-                <mdb-btn color="secondary" @click.native="modal = false">Close</mdb-btn>
-            </mdb-modal-footer>
-        </mdb-modal>
+      <b-button type="button" v-b-modal.modal-2 class="btn-connexion" @click="deconnection" navLink> Déconnection <mdb-icon icon="sign-out-alt" /></b-button>
     </div>
 </template>
 
 <script>
-  import { mdbModal, mdbModalHeader, mdbModalTitle, mdbModalBody, mdbModalFooter, mdbBtn } from 'mdbvue';
+  import { mdbIcon } from 'mdbvue';
+import Axios from 'axios';
   export default {
     name: 'Logout',
     components: {
-      mdbModal,
-      mdbModalHeader,
-      mdbModalTitle,
-      mdbModalBody,
-      mdbModalFooter,
-      mdbBtn
+      mdbIcon
     },
     data() {
       return {
-        modal: false
+        error: false
       };
+    },
+    methods: {
+      deconnection(){
+        Axios
+          .post("http://localhost/annuairesante/backend/index.php", {
+            route: 'logout'
+          })
+          .then( response => {
+            this.$store.commit("changeSessionState", response.data.sessionConnected );
+            this.$store.commit("setUserLogged", null );
+            this.$store.commit("changeUser", null );
+          })
+          .catch(error => {
+              console.log(error)
+              this.errored = true
+          })
+      }	
     }
   };
 </script>

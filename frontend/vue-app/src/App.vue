@@ -1,7 +1,7 @@
 <template>
 	<div id="app" class="app">
+    <strong> {{ random }} </strong>
     <NavBar></NavBar>
-
 	</div>
 </template>
 

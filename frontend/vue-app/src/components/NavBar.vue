@@ -1,9 +1,8 @@
 <template>
 	<div id="app" class="app">
-           <mdb-navbar expand="large" dark>
+      <mdb-navbar expand="large" dark>
       <mdb-navbar-brand href="#" center>
         Annuaire Santé
-        <strong> {{ random }} </strong>
       </mdb-navbar-brand>
       <mdb-navbar-toggler>
         <mdb-navbar-nav center>
@@ -11,23 +10,19 @@
               <router-link to="/" class="nav-link">Accueil</router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/professionnelsante" class="nav-link">Trouver un professionnel de Sante</router-link>
+              <router-link to="/researchworkers" class="nav-link">Trouver un professionnel de Sante</router-link>
             </li>
             <li class="nav-item">
               <router-link to="/about" class="nav-link">About</router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/contact" v-if="autorization === true" class="nav-link">Espace membre</router-link>
+              <router-link to="/userprofile" v-if="checkSession === true" class="nav-link" ><a @click="display">Profil Utilisateur</a></router-link>
             </li>
-            <b-button type="button" v-b-modal.modal-1 class="btn-connexion" v-show="autorization === false" navLink> Connexion <mdb-icon icon="sign-in-alt" /></b-button>
-            <b-button type="button" v-b-modal.modal-1 class="btn-connexion" v-show="autorization === true" navLink> Déconnexion <mdb-icon icon="sign-out-alt" /></b-button>
-            <b-modal id="modal-1" title="Connexion" v-if="autorization === false">
-              <Login @data-sent="connection"></Login>
-              <div class="return-error divider" v-show="autorization === false"><hr>Pseudo ou mot de passe incorrect</div>
-            </b-modal>
-            <!-- <b-modal id="modal-1" title="Bienvenue" v-if="autorization === true"> -->
-              <Logout v-if="autorization === true"></Logout>
-            <!-- </b-modal> -->
+            <li class="nav-item">
+              <router-link to="/adminview" v-if="checkSession === true" class="nav-link">Espace membre</router-link>
+            </li>
+            <Login v-if="checkSession === false" ></Login>
+            <Logout v-if="checkSession === true" ></Logout>
         </mdb-navbar-nav>
       </mdb-navbar-toggler>
     </mdb-navbar>
@@ -36,49 +31,31 @@
 </template>
 
 <script>
-import { mdbNavbar, mdbNavbarBrand, mdbNavbarToggler, mdbNavbarNav, mdbIcon } from 'mdbvue';
+import { mdbNavbar, mdbNavbarBrand, mdbNavbarToggler, mdbNavbarNav} from 'mdbvue';
 import Login from '@/components/Login';
 import Logout from '@/components/Logout';
-import Axios from 'axios';
   export default {
     name: 'NavBar',
     components: {
-      mdbNavbar,
-      mdbNavbarBrand,
-      mdbNavbarToggler,
+      mdbNavbar, 
+      mdbNavbarBrand, 
+      mdbNavbarToggler, 
       mdbNavbarNav,
-      mdbIcon,
       Login,
       Logout
     },
     data(){
       return {
-        random : Math.random(),
-        pseudo: null,
-        password: null,
-        autorization: false
+      };
+    },
+    computed:{
+      checkSession(){
+        return this.$store.state.sessionConnected;
       }
     },
     methods: {
-      connection(payload){
-        console.log('Connexion en cours...');
-        Axios
-          .post("http://localhost/annuairesante/backend/index.php?route=login", {
-            route: 'login',
-            pseudo: payload.pseudo,
-            password: payload.password
-          })
-          .then( response => {
-              this.autorization = response.data.isPasswordValid;
-              console.log('autorization: '+this.autorization);
-          })
-          .catch(error => {
-              console.log(error)
-              this.errored = true
-          })
-      },
-      deconnection(){
-        
+      display(){
+        this.$store.commit("changeUser", this.$store.state.userLogged);
       }
     }
   }
