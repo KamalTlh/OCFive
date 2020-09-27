@@ -7,6 +7,8 @@ export default new Vuex.Store({
   state: {
     user: {},
     userLogged: {},
+    markers: {},
+    workers: {},
     healthworkerId: null,
     sessionConnected: false
   },
@@ -22,10 +24,27 @@ export default new Vuex.Store({
     },
     changeSessionState (state, sessionstate ){
       state.sessionConnected = sessionstate
+    },
+    setWorkers(state, payload){
+      state.workers = payload
+    },
+    setMarkers(state, payload){
+      state.markers = payload
     }
   },
   actions: {
   },
   modules: {
+  },
+  getters: {
+    getCurrentUser(state){
+      return state.userLogged
+    },
+    getUserToUpdate(state){
+      return state.user
+    },
+    getMarkers(state){
+      return state.markers
+    }
   }
 })

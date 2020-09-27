@@ -12,15 +12,21 @@
                                 <form v-on:submit.prevent="signIn" action='/' class="text-center" style="color: #757575;">
                                     <!-- First name -->
                                     <div class="md-form">
+                                        <label for="materialRegisterFormFirstName" class="active">Pseudo</label>
                                         <input type="text" v-model="pseudo" id="materialRegisterFormFirstName"
                                             class="form-control">
-                                        <label for="materialRegisterFormFirstName">Pseudo</label>
+                                        <small id="materialRegisterFormPasswordHelpBlock"
+                                            class="form-text text-muted mb-4" v-if="errorsForm.pseudo"> {{ errorsForm.pseudo }} 
+                                        </small>
                                     </div>
 
                                     <!-- E-mail -->
                                     <div class="md-form">
-                                        <input type="email" v-model="email" id="materialRegisterFormEmail" class="form-control">
                                         <label for="materialRegisterFormEmail" class="active">E-mail</label>
+                                        <input type="email" v-model="email" id="materialRegisterFormEmail" class="form-control">
+                                        <small id="materialRegisterFormPasswordHelpBlock"
+                                            class="form-text text-muted mb-4" v-if="errorsForm.email"> {{ errorsForm.email }} 
+                                        </small>                                    
                                     </div>
 
                                     <!-- Password -->
@@ -29,8 +35,8 @@
                                             aria-describedby="materialRegisterFormPasswordHelpBlock">
                                         <label for="materialRegisterFormPassword" class="active">Password</label>
                                         <small id="materialRegisterFormPasswordHelpBlock"
-                                            class="form-text text-muted mb-4">
-                                            At least 8 characters and 1 digit
+                                            class="form-text text-muted mb-4" v-if="errorsForm.password">
+                                            {{ errorsForm.password }}
                                         </small>
                                     </div>
 
@@ -64,7 +70,12 @@ export default {
             pseudo: null,
             email: null,
             password: null,
-            registration: false
+            registration: false,
+            errorsForm: {
+                pseudo: null,
+                email: null,
+                password: null
+            }
         }
     },
     methods: {
@@ -77,11 +88,13 @@ export default {
             password: this.password
           })
           .then( response => {
+            if (response.data.errors){
+                this.errorsForm = response.data.errors;
+            }
             this.registration = response.data.registration;
             if ( this.registration === true ) {
                 this.$session.set('signIn', 'Vous pouvez à présent vous connecter.');
                 this.$router.push({ path: '/' });
-                console.log(this.$session.get('signIn'));
             }
           })
           .catch(error => {

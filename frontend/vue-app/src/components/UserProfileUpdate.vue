@@ -20,16 +20,9 @@
                                         <!-- END profile-header-img -->
                                         <!-- BEGIN profile-header-info -->
                                         <div class="profile-header-info">
-                                            <h4 class="m-t-10 m-b-5">{{ userProfile.pseudo }}</h4>
-                                            <div v-if="userProfile.role_id == 2">
-                                                <p class="m-b-10" > Membre </p>
-                                                <router-link to="/userupdate" class="btn btn-xs btn-success">Editer Profile</router-link>
-                                                <router-link v-if="this.$store.state.userLogged.role_id == 2" to="/passwordupdate" class="btn btn-xs btn-success">Modifier mot de passe</router-link>
-                                            </div>
-                                            <div v-else>
-                                                <p >Administrateur </p>
-                                                <router-link to="/passwordupdate" class="btn btn-xs btn-success">Modifier mot de passe</router-link>
-                                            </div>
+                                            <h4 class="m-t-10 m-b-5">{{ myUserLogged.pseudo }}</h4>
+                                            <p class="m-b-10" v-if="myUserLogged.role_id == 2"> Membre </p>
+                                            <p v-else > Administrateur </p>
                                         </div>
                                         <!-- END profile-header-info -->
                                     </div>
@@ -52,42 +45,58 @@
                                     <!-- begin #profile-about tab -->
                                     <div class="tab-pane fade in active show" id="profile-about">
                                         <!-- begin table -->
-                                        <div class="table-responsive">
-                                            <table class="table table-profile">
-                                                <thead>
-                                                    <tr>
-                                                        <th></th>
-                                                        <th>
-                                                            <h4> {{ userProfile.pseudo }} <small> Membre </small></h4>
-                                                        </th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr class="highlight">
-                                                        <td class="field">Email</td>
-                                                        <td><a href="javascript:;"> {{ userProfile.email }}</a></td>
-                                                    </tr>
-                                                    <tr class="divider">
-                                                        <td colspan="2"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="field">Mobile</td>
-                                                        <td><i class="fa fa-mobile fa-lg m-r-5"></i> +1-(847)- 367-8924
-                                                            <a href="javascript:;" class="m-l-5">Edit</a></td>
-                                                    </tr>
-                                                    <tr class="divider">
-                                                        <td colspan="2"></td>
-                                                    </tr>
-                                                    <tr class="highlight">
-                                                        <td class="field">Date de création</td>
-                                                        <td><a href="javascript:;"> {{ userProfile.date_creation }}</a></td>
-                                                    </tr>
-                                                    <tr class="divider">
-                                                        <td colspan="2"></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                        <section id="register-form">
+                                            <div class="row">
+                                                <div class="col-md-6 mb-4">
+                                                    <div class="pr-1">
+                                                        <div class="card">
+                                                            <h5 class="card-header info-color white-text text-center py-4">
+                                                                <strong>Modifier Utilisateur</strong>
+                                                            </h5>
+                                                            <div class="card-body px-lg-5 pt-0">
+                                                                <form v-on:submit.prevent="updateUser" action='/' class="text-center" style="color: #757575;">
+                                                                    <!-- First name -->
+                                                                    <div class="md-form">
+                                                                        <label for="materialRegisterFormFirstName" class="active">Pseudo</label>
+                                                                        <input type="text" v-model="myUserToUpdate.pseudo" id="materialRegisterFormFirstName"
+                                                                            class="form-control">
+                                                                        <small id="materialRegisterFormPasswordHelpBlock"
+                                                                            class="form-text text-muted mb-4" v-if="this.errorPseudo"> {{ errorPseudo }}
+                                                                        </small>
+                                                                         <small id="materialRegisterFormPasswordHelpBlock"
+                                                                            class="form-text text-muted mb-4" v-if="this.pseudoNotAvailable"> {{ pseudoNotAvailable }}
+                                                                        </small>
+                                                                    </div>
+
+                                                                    <!-- E-mail -->
+                                                                    <div class="md-form">
+                                                                        <label for="materialRegisterFormEmail" class="active">E-mail</label>
+                                                                        <input type="email" v-model="myUserToUpdate.email" id="materialRegisterFormEmail" class="form-control">
+                                                                        <small id="materialRegisterFormPasswordHelpBlock"
+                                                                            class="form-text text-muted mb-4" v-if="this.errorEmail"> {{ errorEmail }} 
+                                                                        </small>                                    
+                                                                    </div>
+
+                                                                    <!-- <div class="md-form" v-if="myUserLogged.role_id == 1"> 
+                                                                        <input type="password" v-model="password" id="materialRegisterFormPassword" class="form-control"
+                                                                            aria-describedby="materialRegisterFormPasswordHelpBlock">
+                                                                        <label for="materialRegisterFormPassword" class="active">Password</label>
+                                                                        <small id="materialRegisterFormPasswordHelpBlock"
+                                                                            class="form-text text-muted mb-4" v-if="this.errorPassword"> {{ errorPassword }}
+                                                                        </small>
+                                                                    </div> -->
+                                                                    <button class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0"
+                                                                        type="submit" >Modifier</button>
+                                                                    <button class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0"
+                                                                        type="cancel" @click="cancelUpdate" >Annuler</button>
+                                                                    <hr>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
                                         <!-- end table -->
                                     </div>
                                     <!-- end #profile-about tab -->
@@ -104,18 +113,76 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex';
+import Axios from 'axios';
 export default {
-    name: 'UserProfileDetail',
+    name: 'UserProfileUpdate',
     data(){
         return {
+            // pseudo: this.myUserToUpdate.pseudo,
+            // email: this.myUserToUpdate.email,
+            errorPseudo: null,
+            errorEmail: null,
+            pseudoNotAvailable: null,
+            emailNotAvailable: null
         }
     },
     computed: {
-        userProfile(){
-            return this.$store.state.user;
+        ...mapGetters({myUserLogged: "getCurrentUser"}),
+        ...mapGetters({myUserToUpdate: "getUserToUpdate"}),
+        name(){
+            return this.myUserLogged.pseudo;
         },
+
+        mail(){
+            return this.myUserLogged.email;
+        }
     },
     methods:{
+        updateUser(){
+            if(this.myUserLogged.role_id == 1){
+                this.password = this.myUserLogged.password
+            }
+            if (!this.myUserToUpdate.pseudo){
+                alert('Renseignez les champs');
+            }
+            else {
+                Axios
+                .post("http://localhost/annuairesante/backend/index.php", {
+                    route: 'updateUser',
+                    userLoggedPseudo: this.myUserLogged.pseudo,
+                    id: this.myUserToUpdate.id,
+                    pseudo: this.myUserToUpdate.pseudo,
+                    email: this.myUserToUpdate.email
+                })
+                .then( response => {
+                    if (response.data.errors){
+                        // this.pseudoNotAvailable = response.data.errors.pseudoNotAvailable;
+                        // this.emailNotAvailable = response.data.errors.emailNotAvailable;
+                        this.errorPseudo = response.data.errors.pseudo;
+                        this.errorEmail = response.data.errors.email;
+                    }
+                    else {
+                        if(this.myUserLogged.role_id == 1){
+                            this.$session.set('userUpdatedByAdmin', 'L\'utilisateur a été mis à jour');
+                            this.$router.push({ path: '/AdminView' });
+                        }
+                        else {
+                            this.$session.set('userUpdate', 'Vos informations ont été mises à jour.');
+                            this.$router.push({ path: '/userprofile' });
+                        }
+                    }
+                })  
+                .catch(error => {
+                    console.log(error)
+                    this.errored = true
+                })
+            }
+        },
+        
+        cancelUpdate(){
+            this.$router.push({ path: '/adminview' });
+        }
     }
 };
 </script>

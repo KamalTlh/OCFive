@@ -3,23 +3,58 @@ namespace controller;
 
 class UserController extends Controller{
 
-    public function login($pseudo, $password){
-        if(isset($pseudo) && isset($password)){
-            // $errors = $this->validation->validate($post, 'User');
-            $data = $this->userModel->login($pseudo, $password);
-            // $role = $this->userModel->checkUserRole($post['userlog']);
+    public function login($post){
+        if(isset($post['pseudo']) && isset($post['password'])){
+            $data = $this->userModel->login($post['pseudo'], $post['password']);
             if($data && $data['isPasswordValid']){
+                $data['role'] = $this->userModel->checkUserRole($post['pseudo']);
                 $this->session->set('login', true);
                 $this->session->set('user_id', $data['user']['id'] );
-                $this->session->set('pseudo', $pseudo);
+                $this->session->set('pseudo', $post['pseudo']);
+                $this->session->set('role', $data['role']);
                 $data['sessionConnected'] = $this->session->get('login');
                 $data['sessionUserId'] = $this->session->get('user_id');
                 $data['sessionPseudo'] =$this->session->get('pseudo');
-                // $this->session->set('role', $role['result']);
+                $data['role'] =$this->session->get('role');
             }
             else {
                 $this->session->set('login', false);
                 $data['sessionConnected'] = $this->session->get('login');
+            }
+            return $this->view->render('JsonResponse',[
+                'data'=> $data,
+            ]);
+        }
+        $data['data'] = 'Erreur lors du traitement des données. Veuillez réessayer plus tard.';
+        $data['errorData'] = true;
+        return $this->view->render('JsonResponse',[
+            'data'=> $data
+        ]);
+    }
+
+    public function SignIn($post){
+        if(isset($post['pseudo']) && isset($post['email']) && isset($post['password'])){
+            $data['errors'] = $this->validation->validate($post, 'User');
+            if($this->userModel->isPseudoUnique($post, '')){
+                $data['errors']['pseudo'] = $this->userModel->isPseudoUnique($post, '');
+            }
+            if($this->userModel->isEmailUnique($post, '')){
+                $data['errors']['email'] = $this->userModel->isEmailUnique($post, '');
+            }
+            if(!($data['errors'])){
+                $data = $this->userModel->signIn($post['pseudo'], $post['email'], $post['password']);
+                $this->session->set('account_created', 'Le compte a été crée.');
+                $data['sessionAccountCreated'] =$this->session->get('account_created');
+                return $this->view->render('JsonResponse',[
+                    'data'=> $data
+                ]);
+                // if($this->session->get('role') === 'admin'){
+                //     $this->session->set('account_created', 'Le compte a été crée.');
+                // }
+                // else{
+                // $this->session->set('first_login', 'Vous pouvez vous connectez');
+                // header('Location: index.php?route=login');
+                // }
             }
             return $this->view->render('JsonResponse',[
                 'data'=> $data
@@ -30,45 +65,18 @@ class UserController extends Controller{
         ]);
     }
 
-    public function SignIn($pseudo, $email, $password){
-        if(isset($pseudo) && isset($email) && isset($password)){
-            $errors = null;
-            // $errors = $this->validation->validate($post, 'User');
-            // if($this->userModel->isPseudoUnique($post, '')){
-            //     $errors['pseudo'] = $this->userModel->isPseudoUnique($post, '');
-            // }
-            // if($this->userModel->isEmailUnique($post, '')){
-            //     $errors['email'] = $this->userModel->isEmailUnique($post, '');
-            // }
-            if(!($errors)){
-                $data = $this->userModel->signIn($pseudo, $email, $password);
-                return $this->view->render('JsonResponse',[
-                    'data'=> $data
-                ]);
-                // if($this->session->get('role') === 'admin'){
-                //     $this->session->set('account_created', 'Le compte a été crée.');
-                //     header('Location: index.php?route=administration');
-                // }
-                // else{
-                // $this->session->set('first_login', 'Vous pouvez vous connectez');
-                // header('Location: index.php?route=login');
-                // }
-            }
-            // return $this->view->render('createuser',[
-            //     'post'=> $post,
-            //     'errors'=> $errors
-            // ]);
-        }
-        // return $this->view->render('createuser');
-    }
-
     public function getUsers($get){
-        if($_GET['totalPages'] == 0){
-            $data['page'] = $this->usersModel->getCountListUsers();;
+        if($get['userLoggedRole'] == 1 ) {
+            if($get['totalPages'] == 0){
+                $data['page'] = $this->usersModel->getCountListUsers();;
+            }
+            $data['datas'] = $this->usersModel->getListUsers();;
+            return $this->view->render('JsonResponse',[
+                'data'=> $data
+            ]);
         }
-        $data['datas'] = $this->usersModel->getListUsers();;
         return $this->view->render('JsonResponse',[
-            'data'=> $data
+            'data'=> 'Vous n\'avez pas les droits d\'accès.'
         ]);
     }
     
@@ -81,67 +89,105 @@ class UserController extends Controller{
         }
     }
 
-    public function updateUser($post, $userId){
-        if($this->checkLoggedIn()){
-            if(isset($post['submit'])){
-                $errors = $this->validation->validate($post, 'User');
-                $user = $this->userModel->getUser($userId);
-                if($this->userModel->isPseudoUnique($post, $userId)){
-                    $errors['pseudo'] = $this->userModel->isPseudoUnique($post, $userId);
+    public function updateUser($post){
+        if(isset($post['userLoggedPseudo'])) {
+            if(isset($post['pseudo']) && isset($post['email']) && isset($post['id'])){
+                $data['errors'] = $this->validation->validate($post, 'User');
+                $data['role_id'] = $this->userModel->checkUserRole($post['userLoggedPseudo']);
+                if($this->userModel->isPseudoUnique($post, $post['id'])){
+                    $data['errors']['pseudo'] = $this->userModel->isPseudoUnique($post, $post['id']);
                 }
-                if($this->userModel->isEmailUnique($post, $userId)){
-                    $errors['email'] = $this->userModel->isEmailUnique($post, $userId);
+                if($this->userModel->isEmailUnique($post, $post['id'])){
+                    $data['errors']['email'] = $this->userModel->isEmailUnique($post, $post['id']);
                 }
-                if(!($errors)){
-                    $this->userModel->updateUser($post, $userId);
-                    if ($this->session->get('role') === 'admin'){
-                        $this->session->set('user_updatedByAdmin', 'Les informations de l\'utilisateur ont été mis à jour.');
-                        header('Location: index.php?route=administration');
-                    }
-                    else{
-                        $this->session->set('user_updated', 'Vos informations ont été mises à jour.');
-                        header('Location: index.php');
-                    }
+                if( !empty($data['errors'])){
+                    return $this->view->render('JsonResponse',[
+                        'data'=> $data
+                    ]);
                 }
-                return $this->view->render('profile',[
-                    'post'=> $post,
-                    'userId' => $userId,
-                    'user' => $user,
-                    'errors'=> $errors
-                ]);
+                elseif($data['role_id']['role_id'] = 1){
+                    $data = $this->userModel->updateUserByAdmin($post);
+                    $this->session->set('user_updatedByAdmin', 'Les informations de l\'utilisateur ont été mis à jour.');
+                    $data['sessionUpdatedByAdmin'] = $this->session->get('user_updatedByAdmin');
+                    return $this->view->render('JsonResponse',[
+                        'data'=> $data
+                    ]);
+                }
+                else{
+                    $data = $this->userModel->updateUser($post);
+                    $this->session->set('user_updatedByUser', 'Vos informations ont été mises à jour.');
+                    $data['sessionUpdatedByUser'] = $this->session->get('user_updatedByUser');
+                    return $this->view->render('JsonResponse',[
+                        'data'=> $data
+                    ]);
+                }
             }
+            return $this->view->render('JsonResponse',[
+                'data'=> 'Erreur lors du traitement des données. Veuillez réessayer plus tard.'
+            ]);
         }
+        return $this->view->render('JsonResponse',[
+            'data'=> 'Vous n\'avez pas les droits d\'accès.'
+        ]);
     }
 
-    public function deleteUser($userId){
-        // if($this->checkLoggedIn()){
-            $data = $this->userModel->deleteUser($userId);
+
+    public function deleteUser($post){
+        $data = $this->userModel->checkUserRole($post['userLoggedPseudo']);
+        if($data['role_id'] == 1 ){
+            $data = $this->userModel->deleteUser($post['id']);
             return $this->view->render('JsonResponse',[
                 'data'=> $data
             ]); 
             $this->logoutOrDelete('delete');
-        // }
+        }
+        return $this->view->render('JsonResponse',[
+            'data'=> 'Vous n\'avez pas les droits d\'accès.'
+        ]);
     }
 
-    public function updatePassword($post, $userId){
-        if($this->checkLoggedIn()){
-            if(isset($post['submit'])){
-                $errors = $this->validation->validate($post, 'User');
-                if( $post['password'] && $post['password'] === $post['verified_password']){
-                    $this->userModel->updatePassword($post, $userId);
-                    $this->session->set('password_updated', 'Le mot de passe a été mis à jour.');
-                    header('Location: index.php?route=profile&userId='.$userId);
-                }
-                $this->session->set('error_password', 'Les mots de passe ne correspondent pas.');
-                return $this->view->render('updatepassword', [
-                    'userId' => $userId,
-                    'errors' => $errors
-                ]);
+    public function checkPassword($password, $userId){
+        if(isset($password) && isset($userId)){
+            $data['passwordCorrect'] = $this->userModel->checkPassword($password, $userId);
+            if($data['passwordCorrect']){
+                $this->session->set('password_correct', 'Le mot de passe est correct.');
+                $data['sessionPassword_correct'] = $this->session->get('password_correct');
+                return $this->view->render('JsonResponse',[
+                    'data'=> $data
+                ]); 
             }
+            $data['errorCurrentPassword'] = 'Le mot de passe est incorrect.';
             return $this->view->render('updatepassword', [
-                'userId' => $userId
+                'data' => $data
             ]);
         }
+        return $this->view->render('JsonResponse',[
+            'data'=> 'Erreur lors du traitement des données. Veuillez réessayer plus tard.'
+        ]);
+    }
+
+    public function updatePassword($post){
+        if($this->checkLoggedIn()){
+            if(isset($post)){
+                $data = $this->checkPassword($post['currentPassword'], $post['userId']);
+                $data['errors'] = $this->validation->validate($post, 'User');
+                if( $data['passwordCorrect'] && !$data['errors']){
+                    $data = $this->userModel->updatePassword($post['newPassWordOne'], $post['userId']);
+                    return $this->view->render('JsonResponse', [
+                        'data' => $data
+                    ]);
+                }
+                return $this->view->render('JsonResponse', [
+                    'data' => $data
+                ]);
+            }
+            return $this->view->render('JsonResponse',[
+                'data'=> 'Erreur lors du traitement des données. Veuillez réessayer plus tard.'
+            ]);
+        }
+        return $this->view->render('JsonResponse',[
+            'data'=> 'Veuillez vous connectez.'
+        ]);
     }
 
     public function logout(){
@@ -175,15 +221,6 @@ class UserController extends Controller{
                     'data' => $data
                 ]);
             }
-        }
-    }
-
-    public function profile($userId){
-        if($this->checkLoggedIn()){
-            $user = $this->userModel->getUser($userId);
-            return $this->view->render('profile', [
-                'user' => $user
-            ]);
         }
     }
 

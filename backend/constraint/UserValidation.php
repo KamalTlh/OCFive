@@ -48,11 +48,11 @@ class UserValidation extends Validation{
         if($this->constraint->notEmpty($name, $value)){
             return $this->constraint->notEmpty('pseudo', $value);
         }
-        if($this->constraint->minLength($name, $value, 2)){
-            return $this->constraint->minLength('pseudo', $value, 2);
+        if($this->constraint->minLength($name, $value, 5)){
+            return $this->constraint->minLength('pseudo', $value, 5);
         }
-        if($this->constraint->maxLength($name, $value, 255)){
-            return $this->constraint->maxLength('pseudo', $value, 255);
+        if($this->constraint->maxLength($name, $value, 30)){
+            return $this->constraint->maxLength('pseudo', $value, 30);
         }
     }
 
@@ -63,8 +63,8 @@ class UserValidation extends Validation{
         if($this->constraint->minLength($name, $value, 2)){
             return $this->constraint->minLength('email', $value, 2);
         }
-        if($this->constraint->maxLength($name, $value, 255)){
-            return $this->constraint->maxLength('email', $value, 255);
+        if($this->constraint->maxLength($name, $value, 100)){
+            return $this->constraint->maxLength('email', $value, 100);
         }
         if($this->constraint->isEmail($name, $value)){
             return $this->constraint->isEmail('email', $value);

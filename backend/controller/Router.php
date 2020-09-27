@@ -19,16 +19,22 @@ class Router{
             $data = json_decode(file_get_contents("php://input"), true);
             if(isset($data) && !empty($data)){
                 if( $data['route'] === 'login' ){
-                    $this->userController->login($data['pseudo'], $data['password']);
+                    $this->userController->login($data);
                 }
                 elseif( $data['route'] === 'logout' ){
                     $this->userController->logout();
                 }
                 elseif( $data['route'] === 'signIn' ){
-                    $this->userController->signIn($data['pseudo'], $data['email'], $data['password']);
+                    $this->userController->signIn($data);
+                }
+                elseif( $data['route'] === 'updateUser' ){
+                    $this->userController->updateUser($data);
                 }
                 elseif( $data['route'] === 'deleteUser' ){
-                    $this->userController->deleteUser($data['id']);
+                    $this->userController->deleteUser($data);
+                }
+                elseif( $data['route'] === 'updatePassword' ){
+                    $this->userController->updatePassword($data);
                 }
             }
             elseif(isset($_GET) && !empty($_GET)){
@@ -44,9 +50,18 @@ class Router{
                 elseif($_GET['route'] === 'healthworkerById'){
                     $this->proSanteController->getHealthWorkerById($_GET);
                 }
+                elseif($_GET['route'] === 'listProfessions'){
+                    $this->proSanteController->getListProfessions();
+                }
+                elseif($_GET['route'] === 'groupementsActs'){
+                    $this->proSanteController->getGroupementsActs();
+                }
+                elseif($_GET['route'] === 'regions'){
+                    $this->proSanteController->getRegions();
+                }
             }
             else{
-                $this->errorController->errorPage();
+                $this->errorController->errorPage();      
             }
         }
         catch (Exception $e){

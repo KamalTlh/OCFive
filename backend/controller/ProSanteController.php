@@ -27,6 +27,20 @@ class ProSanteController extends Controller{
         ]);
     }
 
+    public function getGroupementsActs(){
+        $data = $this->proSanteModel->getGroupementsActs();
+        return $this->view->render('JsonResponse',[
+            'data'=> $data
+        ]);
+    }
+
+    public function getRegions(){
+        $data = $this->proSanteModel->getRegions();
+        return $this->view->render('JsonResponse',[
+            'data'=> $data
+        ]);
+    }
+
     public function workersByFilters($get){
         if($_GET['totalPages'] == 0){
             $data['page'] = $this->proSanteModel->getCountWorkersByFilters($get);

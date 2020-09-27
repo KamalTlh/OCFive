@@ -85,7 +85,7 @@ class UserModel extends Model{
         $checkingSql = ' SELECT password FROM user WHERE pseudo = ?';
         $data = $this->createQuery($checkingSql, [ $pseudo ]);
         $result = $data->fetch(PDO::FETCH_ASSOC);
-        $isPasswordValid = password_verify($password, $result['password']);
+        $isPasswordValid = isset($result) ? password_verify($password, $result['password']) : false;
         if ( $isPasswordValid ) {
             $sql = 'SELECT id, pseudo, email, date_creation, role_id FROM user WHERE pseudo = ?';
             $data = $this->createQuery($sql, [ $pseudo ]);
@@ -108,11 +108,22 @@ class UserModel extends Model{
         ];
     }
 
-    public function updateUser($user, $userId){
-        extract($user);
+    public function updateUser($post){
         $sql =' UPDATE user SET pseudo = ?, email = ? WHERE id = ?';
-        $this->createQuery($sql, [$pseudo, $email, $userId]);
+        $this->createQuery($sql, [$post['pseudo'], $post['email'], $post['id']]);
+        return [
+            'userUpdated'=> true
+        ];
     }
+
+    public function updateUserByAdmin($post){
+        $sql =' UPDATE user SET pseudo = ?, email = ? WHERE id = ?';
+        $this->createQuery($sql, [$post['pseudo'], $post['email'], $post['id']]);
+        return [
+            'userUpdatedByAdmin'=> true
+        ];
+    }
+
 
     public function deleteUser($userId){
         $sql = 'DELETE FROM user WHERE id = ?';
@@ -121,43 +132,50 @@ class UserModel extends Model{
         return $data;
     }
 
-    public function updatePassword($user, $userId){
+    public function checkPassword($currentPassword, $userId){
+        $checkingSql = ' SELECT password FROM user WHERE id = ?';
+        $data = $this->createQuery($checkingSql, [ $userId ]);
+        $result = $data->fetch(PDO::FETCH_ASSOC);
+        $isPasswordValid = password_verify($currentPassword, $result['password']);
+        return $isPasswordValid;
+    }
+
+    public function updatePassword($password, $userId){
         extract($user);
         $sql =' UPDATE user SET password = ? WHERE id = ?';
         $this->createQuery($sql, [password_hash($password, PASSWORD_BCRYPT), $userId]);
+        return $data['passwordUpdated'] = true;
     }
 
     public function checkUserRole($userlog){
-        $sql = 'SELECT role.name FROM user INNER JOIN role ON role.id = user.role_id WHERE pseudo = ? OR email = ?';
+        $sql = 'SELECT role_id FROM user WHERE pseudo = ? OR email = ?';
         $data = $this->createQuery($sql, [$userlog, $userlog]);
-        $result = $data->fetch();
-        return [
-            'result'=> $result['name']
-        ];
+        $result = $data->fetch(PDO::FETCH_ASSOC);
+        return $result;
     }
 
     public function isPseudoUnique($post, $userId){
         $sql = 'SELECT COUNT(pseudo) FROM user WHERE pseudo = ? AND id != ?';
         $result = $this->createQuery($sql, [$post['pseudo'], $userId]);
-        $isPseudoUnique = $result->fetchColumn();
-        if($isPseudoUnique) {
-            return '<p><b>Le pseudo existe déjà</b></p>';
+        $isPseudoUnique = $result->fetch(PDO::FETCH_ASSOC);
+        if($isPseudoUnique['COUNT(pseudo)'] > 0) {
+            return 'Le pseudo existe déjà';
         }
     }
 
     public function isEmailUnique($post, $userId){
         $sql = 'SELECT COUNT(email) FROM user WHERE email = ? AND id != ?';
         $result = $this->createQuery($sql, [$post['email'], $userId]);
-        $isEmailUnique = $result->fetchColumn();
-        if($isEmailUnique) {
-            return '<p><b>L\'email existe déjà</b></p>';
+        $isEmailUnique = $result->fetch(PDO::FETCH_ASSOC);
+        if($isEmailUnique['COUNT(email)'] > 0) {
+            return 'L\'email existe déjà';
         }
     }
 
     public function getRoleName($role_id){
         $sql = 'SELECT name FROM role WHERE id = ?';
         $data = $this->createQuery($sql, [$role_id]);
-        $result = $data -> fetch();
+        $result = $data -> fetch(PDO::FETCH_ASSOC);
         return $result['name'];
     }
 }

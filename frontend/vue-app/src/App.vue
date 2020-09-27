@@ -1,26 +1,47 @@
 <template>
-	<div id="app" class="app">
+	<div id="app">
     <strong> {{ random }} </strong>
+    <div id="anchor"></div>
+        <div v-if="showToolbar" class="invisible-toolbar">
+            <a href="#anchor"><div id="scroll-top"  class="action-link"><i class="fas fa-chevron-up"></i></div></a>
+    </div>
     <NavBar></NavBar>
+    <Footer></Footer>
 	</div>
 </template>
 
 <script>
   import NavBar from '@/components/NavBar';
+  import Footer from '@/components/Footer';
   export default {
     name: 'HelloWorld',
     components: {
-      NavBar
+      NavBar,
+      Footer
     },
     data(){
       return {
         random : Math.random(),
+        showToolbar: false
       }
     },
+    methods: {
+      handleScroll() {
+            if( window.scrollY > 500){
+                this.showToolbar = true;
+            }
+            else {
+                this.showToolbar = false;
+            }
+      }
+    },
+    mounted() {
+        window.addEventListener('scroll', this.handleScroll);
+    }
   }
 </script>
 
-<style lang="scss">
+<style>
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap');
 html {
     font-family: arial,verdana,sans-serif;
@@ -29,41 +50,11 @@ html {
 }
 #app{
   background-color: rgb(245,255,250);
-}
-.navbar {
-  background-color: #B0E0E6 !important;
-  border-bottom: 0.3rem solid #BC8F8F;
-}
-.nav-link:hover{
-  color: rgba(104, 112, 143, 0.94);
-}
-.btn-secondary.dropdown-toggle:hover{
-  background-color: #7f15b3 !important;
-}
-.btn-secondary.dropdown-toggle{
-  background-color: #B0E0E6 !important;
+  padding-top: 3%;
 }
 
-.btn.btn-outline-warning {
-  color: #A0522D !important; 
-}
-.show > .btn-outline-warning.dropdown-toggle {
-  background-color: #ff8c00 !important;
-  color: rgba(0, 0, 0, 0.7) !important; 
-}
-.btn-connexion:hover{
-  background-color: #7f15b3 !important;
-  color: #fb3 !important;
-}
-.btn-connexion{
-  background-color: #B0E0E6 !important;
-  border: 3px solid #fb3 !important;
+#app #content .pageAdmin, #app #content .password-update {
+  padding-top: 7%;
 }
 
-.ml-auto{
-  margin-left: 35% !important;
-}
-.navbar-nav{
-  padding-left: 10% !important;
-}
 </style>

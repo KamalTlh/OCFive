@@ -1,129 +1,152 @@
 <template>
-	<div class="overflow-auto">
+	<section class="page">
         <ResearchDesigned @data-sent="fetchData"></ResearchDesigned>
-        <mdb-card-footer class="white d-flex justify-content-end">
-        </mdb-card-footer> 
-        <section  v-if="errored">
-            <p>Nous sommes désolés, nous ne sommes pas en mesure de récupérer ces informations pour le moment. Veuillez réessayer ultérieurement.</p>
-        </section>
-        <section  v-else class="site-inner">
-            <div v-if="loading">    
-                <mdb-btn color="primary" disabled>
-                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                    Chargement...
-                </mdb-btn>
+        <LeafleatMap ref="map"></LeafleatMap>
+        <div v-if="showContent">
+            <div class="loading" v-if="loading">
+                    <mdb-btn color="primary" disabled>
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        Chargement...
+                    </mdb-btn>
             </div>
-            <b-row id="nb_results" class="z-depth-1">
-                <b-col cols="8" class="detail-result">
-                    <span>{{ totalResults }} résultats correspondent à votre recherche </span>
-                    <li v-for="(value, name) in payload" :key="value">
-                        {{ name }}: {{ value }}
-                    </li>
-                </b-col>
-                <b-col cols="4">
-                    <mdb-btn gradient="amy-crisp" class="black-text" icon="search" @click="resetResearch" rounded>Nouvelle recherche</mdb-btn>
-                </b-col>
-            </b-row>
-            <div class="block-results"> 
-                <div fluid class="side-bar">
-                    Professionnels: {{ totalResults }}
-                </div>
-                <div fluid class="results">
-                    <b-pagination
-                    v-model="currentPage"
-                    :total-rows="totalResults"
-                    :per-page="perPage"
-                    ></b-pagination>
-                    <div v-for="healthWorker in healthWorkers" :key="healthWorker.id">
-                        <div fluid class="displayResults z-depth-1">
-                            <h2> <mdb-icon icon="user-md" size="lg" /> {{ healthWorker.nom_professionnel }}</h2>
-                            <p class="ignore-css"> <mdb-icon icon="phone-alt" size="lg" /> {{ healthWorker.telephone }}</p>
-                            <p class="ignore-css"> <mdb-icon icon="map-marker-alt" size="lg" /> {{ healthWorker.adresse }}</p>
+            <div >
+                <section  v-if="errored">
+                    <p>Nous sommes désolés, nous ne sommes pas en mesure de récupérer ces informations pour le moment. Veuillez réessayer ultérieurement.</p>
+                </section>
+                <section  v-else class="container-lg">
+                    <div id="nb_results" class="row">
+                        <b-col cols="8" class="detail-result">
+                            <span>{{ totalResults }} résultats correspondent à votre recherche </span>
+                        </b-col>
+                        <b-col cols="4">
+                            <input class="btn btn-primary form-submit" type="submit" id="submit_adv_search" name="op"
+                                value="Nouvelle recherche" icon="search" @click="resetResearch"/>
+                        </b-col>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <b-pagination
+                            v-model="currentPage"
+                            :total-rows="totalResults"
+                            :per-page="perPage"
+                            ></b-pagination>
+                            <div v-for="healthWorker in healthWorkers" :key="healthWorker.id">
+                                <div class="displayResults z-depth-1">
+                                    <div class="sm-item-header"> 
+                                        <h4> <mdb-icon icon="user-md" size="lg"/> {{ healthWorker.nom_professionnel }}</h4>
+                                    </div>
+                                    <div class="sm-item-body">
+                                        <div class="row">
+                                            <div class="col-12 col-lg-6">
+                                                <div>
+                                                    <label>Tél: </label> <span> {{ healthWorker.telephone }}</span>
+                                                </div>
+                                                <div>
+                                                    <label>Adresse: </label> <span> {{ healthWorker.adresse }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-6">
+                                                <div>
+                                                    <label>Profession: </label> <span> {{ healthWorker.profession }}</span>
+                                                </div>
+                                                <div>
+                                                    <label>Regroupement: </label> <span> {{ healthWorker.regroupement }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </section>
             </div>
-        </section>
-	</div>
+        </div>
+	</section>
 </template>
 
 <script>
 import axios from 'axios';
 import ResearchDesigned from '../components/ResearchDesigned';
+import LeafleatMap from '../components/LeafleatMap';
+
 import {
         mdbBtn,
-        mdbCardFooter,
         mdbIcon
     } from "mdbvue";
 export default {
     name: "ResearchWorkers",
     components: {
         ResearchDesigned,
+        LeafleatMap,
         mdbBtn,
-        mdbCardFooter,
         mdbIcon
-    },
-	props: {
-        msg: String
     },
 	data() {
 		return {
-            info: null,
-            loading: false,
+            loading: null,
             errored: false,
             healthWorkers: [],
+            markers: [],
             totalPages: 0,
             totalResults: 0,
             currentPage: 1,
             perPage: 20,
-            commune: '',
-            civilite: '',
-            profession: '',
             page: 1,
-            payload: null
+            payload: null,
+            showContent: false
 		}
     },
     computed: {
+
     },
     methods : {
         resetResearch(){
             this.healthWorkers = [];
             this.totalPages = 0;
             this.totalResults = 0;
+            this.$refs.map.clearLayersOfResearch();
+            this.showContent = false;
         },
         fetchData(payload){
-            console.log('payloads: '+payload.commune+' '+payload.civilite+' '+payload.profession+' '+payload.nom_professionnel+' '+this.currentPage);
-            this.loading = true;
+            this.showContent = true;
             this.errored = false;
-            this.payload = payload;
-            console.log('page '+this.page);
-            if (this.payload.newRequest === true){
-                console.log('Nouvelle requete - '+this.payload.newRequest);
+            this.dataResearch = payload;
+            if (this.dataResearch.newRequest === true){
+                this.$refs.map.clearLayersOfResearch();
+                this.loading = true;
+                console.log('new request' +this.loading);
                 this.totalPages = 0;
                 this.page = 1;
                 this.getHealthWorkersByFilters();
                 this.currentPage = 1;
-                this.payload.newRequest = false;
             } 
             else {
                 this.getHealthWorkersByFilters();
             }
         },
         getHealthWorkersByFilters(){
-            console.log('page ici'+this.page);
             axios
             .get("http://localhost/annuairesante/backend/index.php", { params: {
                 route: 'filters',
-                commune: this.payload.commune,
-                civilite: this.payload.civilite,
-                profession: this.payload.profession,
-                nom_professionnel: this.payload.nom_professionnel,
+                commune: this.dataResearch.dataResearch.commune,
+                civilite: this.dataResearch.dataResearch.selected_civilite,
+                profession: this.dataResearch.dataResearch.selected_profession,
+                nom_professionnel: this.dataResearch.dataResearch.nom_professionnel,
+                regroupement: this.dataResearch.dataResearch.selected_groupement,
+                nature_exercice: this.dataResearch.dataResearch.selected_status,
+                region: this.dataResearch.dataResearch.selected_region,
                 page: this.page,
                 totalPages: this.totalPages
                 }}
             )
             .then( response => {
                 this.healthWorkers = response.data.datas.healthworkers;
+                this.markers = response.data.datas.coordinates;
+                if (this.dataResearch.newRequest === true){
+                    this.dataResearch.newRequest = false;
+                    this.$store.commit("setMarkers", this.markers);
+                }
                 if(this.totalPages == 0){
                     this.totalResults = response.data.page.totalResults;
                     this.totalPages = response.data.page.totalPages;
@@ -134,20 +157,18 @@ export default {
                 this.errored = true
             })
             .finally(() => this.loading = false );
-        }
-    },
-    created: function(){
+        },
+        beforeEnter(el) {
+            this.elHeight = el.scrollHeight;
+        },
     },
     watch: {
         currentPage: function(){
-            console.log('New Request on current: '+this.payload.newRequest);
             this.page = this.currentPage;
-            if( !(this.payload.newRequest)){
-                this.fetchData(this.payload);
+            if( !(this.dataResearch.newRequest)){
+                this.fetchData(this.dataResearch);
             }
         }
-    },
-    mounted() {
     }
 }
 </script>
@@ -161,7 +182,6 @@ export default {
     margin: 0 auto;
 }
 #nb_results{
-    width: 100%;
     color: #000;
     background-color: #e8eaf6;
     text-align: center;
@@ -183,21 +203,10 @@ export default {
     display: flex;
     justify-content: space-between;
 }
-.side-bar{
-    width: 25%;
-    background-color: #e8eaf6;
-    border: 3px solid aliceblue;
-}
-.results{
-    width: 70%;
-}
+/*-- Design Results --*/
 .displayResults{
     margin: 3% 0 3% 0;
-    padding: 3%;
-    background-color: #e8eaf6;
-    border-radius: 7px;
-    height: 175px;
-    border: 3px solid aliceblue;
+    color: inherit;
 }
 .displayResults .fas{
     padding-right: 1%;
@@ -210,7 +219,92 @@ export default {
 .ignore-css{
     font-size: 0.9em;
 }
-.pagination{
-    padding-left: 35% !important;
+.sm-item-header {
+    background-color: #2962FF;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    color: #fff;
+    padding: 0.5rem 1rem 2.5rem;
 }
+.sm-item-body {
+    border: 1px solid rgba(41,98,255,0.1);
+    background-color: #fff;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    padding: 1.5rem;
+}
+label {
+    display: inline-block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+.sm-item-body label + span {
+    margin-left: 0.4rem;
+}
+/*---*/
+
+.pagination{
+    justify-content: center;
+}
+
+.loading {
+    position: absolute;
+    left: 45%;
+    bottom: 0;
+    z-index: 100 !important;
+}
+
+/*--Anchor scroll--*/
+#anchor {
+    position: absolute;
+    top: 0;
+}
+.invisible-toolbar {
+    display: flex;
+    bottom: 20px;
+    flex-direction: column-reverse;
+    padding: 0;
+    position: fixed;
+    right: 50px;
+    text-align: center;
+    width: 40px;
+    z-index: 10;
+}
+#scroll-top {
+    background-color: #1000C1;
+    display: block;
+    text-align: center;
+}
+.action-link {
+    height: 80px;
+    width: 80px;
+    background-color: #2962FF;
+    border-radius: 50%;
+    cursor: pointer;
+    margin-top: 5px;
+    transition: box-shadow 0.5s ease-out;
+    -webkit-box-shadow: 0 4px 5px 0 rgba(0,0,0,0.14),0 1px 10px 0 rgba(0,0,0,0.12),0 2px 4px -1px rgba(0,0,0,0.3);
+    box-shadow: 0 4px 5px 0 rgba(0,0,0,0.14),0 1px 10px 0 rgba(0,0,0,0.12),0 2px 4px -1px rgba(0,0,0,0.3);
+}
+.action-link:hover {
+    -webkit-box-shadow: 0 24px 38px 3px rgba(0,0,0,0.14),0 9px 46px 8px rgba(0,0,0,0.12),0 11px 15px -7px rgba(0,0,0,0.2);
+    box-shadow: 0 24px 38px 3px rgba(0,0,0,0.14),0 9px 46px 8px rgba(0,0,0,0.12),0 11px 15px -7px rgba(0,0,0,0.2);
+}
+.action-link#scroll-top i {
+    font-size: 2.5rem;
+    margin: 1.25rem;
+}
+#scroll-top i {
+    color: #536DFE;
+    font-size: 20px;
+    line-height: 1;
+    margin: 10px;
+}
+.action-link i {
+    color: #fff;
+    line-height: 40px;
+    font-size: 1.25rem;
+    text-align: center;
+}
+/*--*/
 </style>

@@ -1,11 +1,9 @@
 <template>
-	<div id="app" class="app">
+	<section class="page">
     <section>
       <Slider></Slider>
     </section>
     <section>
-      <hr>
-      {{ this.$session.get('signIn') }}
       <hr>
       <!-- Carte de France interactive -->
       <article class="container mt-5 map" id="map">
@@ -50,7 +48,7 @@
     </footer>
     <!--/.footer-->
     <p class="text-center"><small>&copy; 2018 - Tout droits réservés / SIte réalisé par Kamal Tallih.</small></p>
-	</div>
+	</section>
 </template>
 
 <script>
