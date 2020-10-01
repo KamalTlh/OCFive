@@ -19,7 +19,7 @@ export default new Vuex.Store({
     setUserLogged(state, payload){
       state.userLogged = payload
     },
-    changeWorker (state, workerId ){
+    changeWorker(state, workerId ){
       state.healthworkerId = workerId
     },
     changeSessionState (state, sessionstate ){

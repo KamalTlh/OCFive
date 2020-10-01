@@ -14,14 +14,14 @@ class ProSanteController extends Controller{
     }
 
     public function getHealthWorkerById($get){
-        $data = $this->proSanteModel->getHealthWorkerById($get);
+        $data = $this->proSanteModel->getHealthWorkerById($get['id']);
         return $this->view->render('JsonResponse',[
             'data'=> $data
         ]);
     }
 
-    public function getListProfessions(){
-        $data = $this->proSanteModel->getListProfessions();
+    public function getProfessions(){
+        $data = $this->proSanteModel->getProfessions();
         return $this->view->render('JsonResponse',[
             'data'=> $data
         ]);
@@ -33,9 +33,23 @@ class ProSanteController extends Controller{
             'data'=> $data
         ]);
     }
+    
+    public function getModeExercices(){
+        $data = $this->proSanteModel->getModeExercices();
+        return $this->view->render('JsonResponse',[
+            'data'=> $data
+        ]);
+    }
 
     public function getRegions(){
         $data = $this->proSanteModel->getRegions();
+        return $this->view->render('JsonResponse',[
+            'data'=> $data
+        ]);
+    }
+
+    public function getCities(){
+        $data = $this->proSanteModel->getCities();
         return $this->view->render('JsonResponse',[
             'data'=> $data
         ]);

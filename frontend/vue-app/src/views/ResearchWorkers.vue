@@ -44,6 +44,18 @@
                                                 <div>
                                                     <label>Adresse: </label> <span> {{ healthWorker.adresse }}</span>
                                                 </div>
+                                                <div>
+                                                    <label>Commune: </label> <span> {{ healthWorker.commune }}</span>
+                                                </div>
+                                                <div>
+                                                    <label>Région: </label> <span> {{ healthWorker.region }}</span>
+                                                </div>
+                                                <div>
+                                                    <label>Statut: </label> <span> {{ healthWorker.nature_exercice }}</span>
+                                                </div>
+                                                <div>
+                                                    <label>Mode d'exerice particulier: </label> <span> {{ healthWorker.mode_exercice }}</span>
+                                                </div>
                                             </div>
                                             <div class="col-12 col-lg-6">
                                                 <div>
@@ -52,8 +64,21 @@
                                                 <div>
                                                     <label>Regroupement: </label> <span> {{ healthWorker.regroupement }}</span>
                                                 </div>
+                                                <div>
+                                                    <label>Type Acte: </label> <span> {{ healthWorker.type_acte_realise }}</span>
+                                                </div>
+                                                <div>
+                                                    <label>Carte vitale: </label> <span> {{ healthWorker.sesam_vital }}</span>
+                                                </div>
+                                                <div>
+                                                    <label>Convention: </label> <span> {{ healthWorker.convention_cacs }}</span>
+                                                </div>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="sm-item-footer"> 
+                                        <button type="button" class="btn btn-warning" @click="addFavorites(healthWorker.id)"><i class="fas fa-star"></i></button>
+                                        <button type="button" class="btn btn-dark"><i class="fas fa-comments"></i></button>
                                     </div>
                                 </div>
                             </div>
@@ -66,7 +91,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import Axios from 'axios';
 import ResearchDesigned from '../components/ResearchDesigned';
 import LeafleatMap from '../components/LeafleatMap';
 
@@ -94,6 +119,8 @@ export default {
             perPage: 20,
             page: 1,
             payload: null,
+            dataResearch: null,
+            favoriteAdded: null,
             showContent: false
 		}
     },
@@ -106,7 +133,7 @@ export default {
             this.totalPages = 0;
             this.totalResults = 0;
             this.$refs.map.clearLayersOfResearch();
-            this.showContent = false;
+            this.showContent = false;            
         },
         fetchData(payload){
             this.showContent = true;
@@ -126,30 +153,38 @@ export default {
             }
         },
         getHealthWorkersByFilters(){
-            axios
+            Axios
             .get("http://localhost/annuairesante/backend/index.php", { params: {
                 route: 'filters',
                 commune: this.dataResearch.dataResearch.commune,
                 civilite: this.dataResearch.dataResearch.selected_civilite,
                 profession: this.dataResearch.dataResearch.selected_profession,
                 nom_professionnel: this.dataResearch.dataResearch.nom_professionnel,
+                prenom_professionnel: this.dataResearch.dataResearch.prenom_professionnel,
                 regroupement: this.dataResearch.dataResearch.selected_groupement,
                 nature_exercice: this.dataResearch.dataResearch.selected_status,
+                mode_exercice: this.dataResearch.dataResearch.selected_mode_exercice,
                 region: this.dataResearch.dataResearch.selected_region,
+                departement: this.dataResearch.dataResearch.selected_departement,
                 page: this.page,
                 totalPages: this.totalPages
                 }}
             )
             .then( response => {
-                this.healthWorkers = response.data.datas.healthworkers;
-                this.markers = response.data.datas.coordinates;
-                if (this.dataResearch.newRequest === true){
-                    this.dataResearch.newRequest = false;
-                    this.$store.commit("setMarkers", this.markers);
+                if (response.data.errorData){
+                    console.log('Veuillez renseigner des données avant de lancer la recherche.');
                 }
-                if(this.totalPages == 0){
-                    this.totalResults = response.data.page.totalResults;
-                    this.totalPages = response.data.page.totalPages;
+                else {
+                    this.healthWorkers = response.data.datas.healthworkers;
+                    this.markers = response.data.datas.coordinates;
+                    if (this.dataResearch.newRequest === true){
+                        this.dataResearch.newRequest = false;
+                        this.$store.commit("setMarkers", this.markers);
+                    }
+                    if(this.totalPages == 0){
+                        this.totalResults = response.data.page.totalResults;
+                        this.totalPages = response.data.page.totalPages;
+                    }
                 }
             })
             .catch(error => {
@@ -161,6 +196,24 @@ export default {
         beforeEnter(el) {
             this.elHeight = el.scrollHeight;
         },
+        addFavorites(healthWorker_Id){
+            Axios
+            .post("http://localhost/annuairesante/backend/index.php", {
+                route: "addFavorites",
+                userId: this.$store.state.userLogged.id,
+                workerId: healthWorker_Id
+            })
+            .then( response => {
+                this.favoriteAdded = response.data.FavoriteAddeed;
+                //    if (this.passwordCorrect){
+                //        this.$router.push({ path: '/userprofile' });
+                //    }
+            })  
+            .catch(error => {
+                console.log(error)
+                this.errored = true
+            })
+        }
     },
     watch: {
         currentPage: function(){
@@ -219,8 +272,9 @@ export default {
 .ignore-css{
     font-size: 0.9em;
 }
-.sm-item-header {
-    background-color: #2962FF;
+.sm-item-header{
+    /* background-color: #2962FF; */
+    background-color: #0c2050;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
     color: #fff;
@@ -233,6 +287,13 @@ export default {
     border-bottom-right-radius: 8px;
     padding: 1.5rem;
 }
+.sm-item-footer {
+    background-color: #0c2050;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    color: #fff;
+    padding-top: 0.5rem;
+}
 label {
     display: inline-block;
     margin-bottom: 0.5rem;
@@ -240,6 +301,11 @@ label {
 }
 .sm-item-body label + span {
     margin-left: 0.4rem;
+}
+.sm-item-footer .btn{
+    position: relative;
+    left: 90%;
+    width: auto;
 }
 /*---*/
 

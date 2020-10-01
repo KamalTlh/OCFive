@@ -78,9 +78,8 @@ import Logout from '@/components/Logout';
 }
 .cursive{
 	display: block;
-	font-size: 1.5em;
+	font-size: 2.5em;
 	color: #fff;
-  box-shadow: 0 20px 50px rgb(23, 32, 90);
 	font-family: "Brush Script MT", cursive;
 }
 

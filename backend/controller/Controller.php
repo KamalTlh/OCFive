@@ -6,6 +6,7 @@ use model\CommentModel;
 use model\CommentsModel;
 use model\UserModel;
 use model\UsersModel;
+use model\FavoritesModel;
 use view\View;
 use config\Session;
 use constraint\Validation;
@@ -17,6 +18,7 @@ abstract class Controller{
     protected $commentsModel;
     protected $userModel;
     protected $usersModel;
+    protected $favoritesModel;
     protected $view;
     protected $session;
     protected $validation;
@@ -28,6 +30,7 @@ abstract class Controller{
         $this->commentsModel = new CommentsModel();
         $this->userModel = new UserModel();
         $this->usersModel = new UsersModel();
+        $this->favoritesModel = new FavoritesModel();
         $this->view = new View();
         $this->session = new Session($_SESSION);
         $this->validation = new Validation();

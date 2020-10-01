@@ -1,0 +1,58 @@
+<template>
+    <!-- begin #profile-activity tab -->
+    <div class="tab-pane" id="profile-activity">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <h5>Listes de médecins favoris</h5>
+                    <div v-for="favorite in favorites" :key="favorite.id">
+                        <a href="#" @click="viewWorkerDetail(favorite.id)"> {{ favorite.nom_professionnel }}</a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <h5>Commentaires postés</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end #profile-activity tab -->
+</template>
+
+<script>
+import Axios from 'axios';
+export default {
+    name: 'UserActivity',
+    data(){
+        return {
+            favorites: [],
+        }
+    },
+    methods:{
+        getFavoritesOfUser(){
+            Axios
+            .get("http://localhost/annuairesante/backend/index.php", { params: {
+                route: 'userFavorites',        
+                userId: this.$store.state.userLogged.id
+                }}
+            )
+            .then( response => {
+                this.favorites = response.data.favoritesOfUser;
+            })  
+            .catch(error => {
+                console.log(error)
+                this.errored = true
+            })
+        },
+        viewWorkerDetail(workerId){
+           this.$store.commit("changeWorker", workerId);
+           this.$router.push({ path: '/workerdetailview' });
+        }
+    },
+    mounted(){
+        if (this.$store.state.sessionConnected){
+            console.log('Connecté, récupération des favoris');
+            this.getFavoritesOfUser();
+        }
+    }
+}
+</script>

@@ -76,19 +76,14 @@
                                                                             class="form-text text-muted mb-4" v-if="this.errorEmail"> {{ errorEmail }} 
                                                                         </small>                                    
                                                                     </div>
-
-                                                                    <!-- <div class="md-form" v-if="myUserLogged.role_id == 1"> 
-                                                                        <input type="password" v-model="password" id="materialRegisterFormPassword" class="form-control"
-                                                                            aria-describedby="materialRegisterFormPasswordHelpBlock">
-                                                                        <label for="materialRegisterFormPassword" class="active">Password</label>
-                                                                        <small id="materialRegisterFormPasswordHelpBlock"
-                                                                            class="form-text text-muted mb-4" v-if="this.errorPassword"> {{ errorPassword }}
-                                                                        </small>
-                                                                    </div> -->
-                                                                    <button class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0"
-                                                                        type="submit" >Modifier</button>
-                                                                    <button class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0"
-                                                                        type="cancel" @click="cancelUpdate" >Annuler</button>
+                                                                    <div class="submitUpdate">
+                                                                        <button class="btn btn-primary" type="submit" >
+                                                                            Modifier
+                                                                        </button>
+                                                                        <button class="btn btn-primary" type="cancel" @click="cancelUpdate" >
+                                                                            Annuler
+                                                                        </button>
+                                                                    </div>
                                                                     <hr>
                                                                 </form>
                                                             </div>
@@ -181,7 +176,7 @@ export default {
         },
         
         cancelUpdate(){
-            this.$router.push({ path: '/adminview' });
+            this.$router.push({ path: '/userprofile' });
         }
     }
 };
@@ -191,6 +186,10 @@ export default {
 body{
     margin-top:20px;
     background:#eee;
+}
+
+.submitUpdate{
+    margin: 5%;
 }
 
 .profile-header {
@@ -256,87 +255,7 @@ body{
     position: relative
 }
 
-.b-minus-1,
-.b-minus-10,
-.b-minus-2,
-.b-minus-3,
-.b-minus-4,
-.b-minus-5,
-.b-minus-6,
-.b-minus-7,
-.b-minus-8,
-.b-minus-9,
-.b-plus-1,
-.b-plus-10,
-.b-plus-2,
-.b-plus-3,
-.b-plus-4,
-.b-plus-5,
-.b-plus-6,
-.b-plus-7,
-.b-plus-8,
-.b-plus-9,
-.l-minus-1,
-.l-minus-2,
-.l-minus-3,
-.l-minus-4,
-.l-minus-5,
-.l-minus-6,
-.l-minus-7,
-.l-minus-8,
-.l-minus-9,
-.l-plus-1,
-.l-plus-10,
-.l-plus-2,
-.l-plus-3,
-.l-plus-4,
-.l-plus-5,
-.l-plus-6,
-.l-plus-7,
-.l-plus-8,
-.l-plus-9,
-.r-minus-1,
-.r-minus-10,
-.r-minus-2,
-.r-minus-3,
-.r-minus-4,
-.r-minus-5,
-.r-minus-6,
-.r-minus-7,
-.r-minus-8,
-.r-minus-9,
-.r-plus-1,
-.r-plus-10,
-.r-plus-2,
-.r-plus-3,
-.r-plus-4,
-.r-plus-5,
-.r-plus-6,
-.r-plus-7,
-.r-plus-8,
-.r-plus-9,
-.t-minus-1,
-.t-minus-10,
-.t-minus-2,
-.t-minus-3,
-.t-minus-4,
-.t-minus-5,
-.t-minus-6,
-.t-minus-7,
-.t-minus-8,
-.t-minus-9,
-.t-plus-1,
-.t-plus-10,
-.t-plus-2,
-.t-plus-3,
-.t-plus-4,
-.t-plus-5,
-.t-plus-6,
-.t-plus-7,
-.t-plus-8,
-.t-plus-9 {
-    position: relative!important
-}
+
 
 .profile-header .profile-header-tab {
     background: #fff;

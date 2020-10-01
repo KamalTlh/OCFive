@@ -41,9 +41,9 @@
                                         v-if="errornewPasswordTwo"> {{ errornewPasswordTwo }}
                                     </small>
                                 </div>
-                                <button class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0"
+                                <button class="btn btn-primary"
                                     type="submit">Modifier</button>
-                                <button class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0"
+                                <button class="btn btn-primary"
                                     type="cancel" @click="cancelUpdate">Annuler</button>
                                 <hr>
                             </form>

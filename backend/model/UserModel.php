@@ -178,4 +178,5 @@ class UserModel extends Model{
         $result = $data -> fetch(PDO::FETCH_ASSOC);
         return $result['name'];
     }
+
 }

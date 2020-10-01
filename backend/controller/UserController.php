@@ -223,19 +223,4 @@ class UserController extends Controller{
             }
         }
     }
-
-    // public function administration(){
-    //     if($this->checkLoggedIn() && $this->checkAdmin()){
-    //         $articles = $this->articlesModel->getListArticles();
-    //         $comments = $this->commentsModel->getListComments();
-    //         $flagComments = $this->commentsModel->getFlagComments();
-    //         $users = $this->usersModel->getListUsers();
-    //         return $this->view->render('admin/administration', [
-    //             'articles'=> $articles,
-    //             'comments' => $comments,
-    //             'flagComments'=> $flagComments,
-    //             'users'=> $users
-    //         ]);
-    //     }
-    // }
 }

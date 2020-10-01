@@ -1,3 +1,9 @@
+<label class="element-invisible" for="edit-orientation">Regroupement</label>
+<option v-for="profession in options_professions" v-bind:key="profession.text" v-bind:value="profession.value">
+                      {{ profession.text }}
+                    </option>
+
+
 options_professions: [
             { value: null, text: 'Profession' },
             { text: "Anatomo-Cyto-Pathologiste", value: "Anatomo-Cyto-Pathol" },

@@ -23,9 +23,11 @@
             <div class="row">
               <div class="col-lg-4">
                 <div class="form-item form-type-select form-item-discipline">
-                  <select  icon="user-md" id="edit-discipline" label="Choisir une profession" name="discipline" class="form-select form-control"  v-model="dataResearch.selected_profession">
-                    <option v-for="profession in options_professions" v-bind:key="profession.text" v-bind:value="profession.value">
-                      {{ profession.text }}
+                  <label for="edit-profession">Profession</label>
+                  <select  icon="user-md" name="profession" id="edit-profession" label="Choisir une profession" class="form-select form-control"  v-model="dataResearch.selected_profession">
+                    <option value="" selected="selected"></option>
+                    <option v-for="profession in options_professions" :key="profession" >
+                      {{ profession }}
                     </option>
                   </select><i class="select-icon fas fa-chevron-down"></i>
                 </div>
@@ -33,20 +35,23 @@
               <div class="col-lg-4">
 
                 <div class="form-item form-type-select form-item-orientation">
-                  <label class="element-invisible" for="edit-orientation">Regroupement</label>
-                  <select id="edit-orientation" name="orientation" class="form-select form-control" v-model="dataResearch.selected_groupement">
-                    <option v-for="groupement in options_groupementActs"  :key="groupement" v-bind:value="groupement">
-                      {{groupement}}
+                  <label for="edit-regroupement">Regroupement</label>
+                  <select id="edit-regroupement" name="regroupement" class="form-select form-control" v-model="dataResearch.selected_groupement">
+                    <option value="" selected="selected"></option>
+                    <option v-for="groupement in options_groupementActs"  :key="groupement" >
+                      {{ groupement }}
                     </option>
                   </select><i class="select-icon fas fa-chevron-down"></i>
                 </div>
               </div>
               <div class="col-lg-4">
                 <div class="form-item form-type-select form-item-titres">
-                  <label class="element-invisible" for="edit-titres">Acte technique realise </label>
-                  <select id="edit-titres" name="titres" class="form-select form-control">
-                    <option value="" selected="selected">Acte technique realise</option>
-                    <option value="AC">Acupuncture</option>
+                  <label for="edit-mode_exercice">Mode d'exercice particulier </label>
+                  <select id="edit-mode_exercice" name="mode_exercice" class="form-select form-control" v-model="dataResearch.selected_mode_exercice">
+                    <option value="" selected="selected"></option>
+                    <option v-for="mode in options_mode_exercice"  :key="mode" >
+                      {{ mode }}
+                    </option>
                   </select><i class="select-icon fas fa-chevron-down"></i>
                 </div>
               </div>
@@ -57,16 +62,16 @@
             <div class="row">
               <div class="col-lg-6">
                 <div class="form-item form-type-textfield form-item-nom-exercice">
-                  <label class="element-invisible" for="edit-nom-exercice">Nom exercice </label>
+                  <label for="edit-nom-exercice">Nom exercice </label>
                   <input placeholder="Nom exercice" class="form-control form-text" type="text" id="edit-nom-exercice"
                     name="nom_professionnel" v-model="dataResearch.nom_professionnel" size="60" maxlength="255" />
                 </div>
               </div>
               <div class="col-lg-6">
                 <div class="form-item form-type-textfield form-item-prenom">
-                  <label class="element-invisible" for="edit-prenom">Prénom </label>
+                  <label for="edit-prenom">Prénom </label>
                   <input placeholder="Prénom" class="form-control form-text" type="text" id="edit-prenom" name="prenom"
-                    value="" size="60" maxlength="255" />
+                    v-model="dataResearch.prenom_professionnel" size="60" maxlength="255" />
                 </div>
               </div>
             </div>
@@ -91,24 +96,24 @@
                             for="edit-statut-2"><span>Libéral activité salariée </span></label>
                         </div>
                         <div class="form-item form-type-radio form-item-statut custom-control custom-radio"><input
-                            type="radio" id="edit-statut-3" name="statut" v-model="dataResearch.selected_status" value="Libéral temps partiel hospi"
+                            type="radio" id="edit-statut-3" name="statut" v-model="dataResearch.selected_status" value="Libéral temps partiel hospitalier"
                             class="form-radio custom-control-input" /> <label class="option custom-control-label"
                             for="edit-statut-3"><span>Libéral temps partiel hospitalier </span></label>
                         </div>
                         <div class="form-item form-type-radio form-item-statut custom-control custom-radio"><input
-                            type="radio" id="edit-statut-4" name="statut" v-model="dataResearch.selected_status" value="Libéral temps plein hospita"
+                            type="radio" id="edit-statut-4" name="statut" v-model="dataResearch.selected_status" value="Libéral temps plein hospitalier"
                             class="form-radio custom-control-input" /> <label class="option custom-control-label"
                             for="edit-statut-4"><span>Libéral temps plein hospitalier </span></label>
                         </div>
                       </div>
                       <div class="col-lg-6">
                         <div class="form-item form-type-radio form-item-statut custom-control custom-radio"><input
-                            type="radio" id="edit-statut-5" name="statut" v-model="dataResearch.selected_status" value="T. plein hosp. contrat mixt"
+                            type="radio" id="edit-statut-5" name="statut" v-model="dataResearch.selected_status" value="T. plein hosp. contrat mixte"
                             class="form-radio custom-control-input" /> <label class="option custom-control-label"
                             for="edit-statut-5"><span>T. plein hosp. contrat mixte </span></label>
                         </div>
                         <div class="form-item form-type-radio form-item-statut custom-control custom-radio"><input
-                            type="radio" id="edit-statut-6" name="statut" v-model="dataResearch.selected_status" value="T. plein hosp./mal. aut. me"
+                            type="radio" id="edit-statut-6" name="statut" v-model="dataResearch.selected_status" value="T. plein hosp./mal. aut. med"
                             class="form-radio custom-control-input" /> <label class="option custom-control-label"
                             for="edit-statut-6"><span>T. plein hosp./mal. aut. med </span></label>
                         </div>
@@ -118,7 +123,7 @@
                             for="edit-statut-7"><span>N’exerce pas actuellement </span></label>
                         </div>
                         <div class="form-item form-type-radio form-item-statut custom-control custom-radio"><input
-                            type="radio" id="edit-statut-8" name="statut" v-model="dataResearch.selected_status" value="" checked="checked"
+                            type="radio" id="edit-statut-8" name="statut" v-model="dataResearch.selected_status" checked="checked"
                             class="form-radio custom-control-input" /> <label class="option custom-control-label"
                             for="edit-statut-8"><span>Indifférent </span></label>
                         </div>
@@ -143,7 +148,7 @@
                       <label class="option custom-control-label" for="edit-sexe-2"><span>Feminin </span></label>
                     </div>
                     <div class="form-item form-type-radio form-item-sexe custom-control custom-radio"><input
-                        type="radio" id="edit-sexe-3" name="sexe" v-model="dataResearch.selected_civilite" value="" checked="checked"
+                        type="radio" id="edit-sexe-3" name="sexe" v-model="dataResearch.selected_civilite"  checked="checked"
                         class="form-radio custom-control-input" /> <label class="option custom-control-label"
                         for="edit-sexe-3"><span>Indifférent </span></label>
                     </div>
@@ -160,34 +165,36 @@
                 <div class="row">
                   <div class="col-lg-6">
                     <div class="form-item form-type-select form-item-region">
-                      <label class="element-invisible" for="region">Région </label>
+                      <label for="region">Région </label>
                       <select id="region" name="region" class="form-select form-control" v-model="dataResearch.selected_region">
+                        <option value="" selected="selected"></option>
                         <option v-for="region in options_regions"  :key="region">
-                          {{region}}
+                          {{ region }}
                         </option>
                       </select><i class="select-icon fas fa-chevron-down"></i>
                     </div>
                   </div>
                   <div class="col-lg-6">
                     <div class="form-item form-type-select form-item-departement">
-                      <label class="element-invisible" for="departement">Département </label>
-                      <select id="departement" name="departement" class="form-select form-control">
-                        <option data-region="" value="" selected="selected">Choisir un département</option>
-                        <option data-region="AUVGRHNA" value="01">Ain</option>
-                        <option data-region="HTSDEFRA" value="02">Aisne</option>
+                      <label class="" for="departement">Département </label>
+                      <select id="departement" name="departement" class="form-select form-control" v-model="dataResearch.selected_departement">
+                        <option value="" selected="selected"></option>
+                        <option v-for="departement in options_departements"  :key="departement">
+                          {{ departement }}
+                        </option>
                       </select><i class="select-icon fas fa-chevron-down"></i>
                     </div>
                   </div>
                   <div class="col-lg-6">
                     <div class="form-item form-type-textfield form-item-localite">
-                      <label class="element-invisible" for="edit-localite">Commune </label>
+                      <label for="edit-localite">Commune </label>
                       <input placeholder="Commune" class="form-control form-text" type="text" id="edit-localite"
                         name="commune" size="60" maxlength="30" v-model="dataResearch.commune"/>
                     </div>
                   </div>
                   <div class="col-lg-6">
                     <div class="form-item form-type-textfield form-item-rue">
-                      <label class="element-invisible" for="edit-rue">Adresse </label>
+                      <label for="edit-rue">Adresse </label>
                       <input placeholder="Adresse" class="form-control form-text" type="text" id="edit-rue" name="adresse"
                         size="60" maxlength="255" />
                     </div>
@@ -202,6 +209,11 @@
                 value="Rechercher" @click="sendDataResearch"/> </div>
           </div>
         </div>
+        <b-modal id="modalErrorData" ref="errorData"  hide-footer title="Erreur Recherche" center>
+            <div>
+              Veuillez renseignez au moins un élément de recherche.
+            </div>
+        </b-modal>
     </div>
   </section>
 </template>
@@ -212,34 +224,47 @@ import Axios from 'axios';
     name: "ResearchDesigned",
     data() {
       return {
-        dataResearch: {
-            commune: null, 
+        dataResearch: { 
             nom_professionnel: null,
+            prenom_professionnel: null,
             selected_profession: null,
             selected_civilite: null,
             selected_groupement: null,
+            selected_mode_exercice: null,
             selected_status: null,
-            selected_region: null
+            selected_region: null,
+            selected_departement: null,
+            commune: null
         },
+        options_professions: [],
         options_groupementActs: [],
+        options_mode_exercice: [],
         options_regions: [],
-        options_professions: [
-            { value: null, text: 'Profession' },
-            { text: "Anatomo-Cyto-Pathologiste", value: "Anatomo-Cyto-Pathol" },
-            { text: 'Anesthésiste réanimateur', value: 'Anesthésiste réanim' },
-            { text: 'Cancérologue radiothérapeute', value: 'Cancérologue radio' },
-            { text: "Cancérologue médical", value: "Cancérologue médica" },
-            { text: "Cardiologue", value: "Cardiologue" }
-        ],
-        options_civilite: [
-              { text: "Homme", value: "Homme" },
-              { text: "Femme", value: "Femme" },
-              { text: "Indifférent", value: "null" }
-        ]
+        options_departements: [],
+        field_data: 0,
+        emptyDataResearch: false
       };
     },
     methods: {
       /*-- Récupération données de l'API pour afficher des éléments de recherche --*/
+      getProfessions(){
+          Axios
+          .get("http://localhost/annuairesante/backend/index.php", { params: {
+              route: 'professions',
+              }}
+          )
+          .then( response => {
+              response.data.professions.forEach(element => {
+                if(element.profession){
+                  this.options_professions.push(element.profession);
+                }
+              });
+          })
+          .catch(error => {
+              console.log(error)
+              this.errored = true
+          })
+      },
       getGroupementsActs(){
           Axios
           .get("http://localhost/annuairesante/backend/index.php", { params: {
@@ -250,6 +275,24 @@ import Axios from 'axios';
               response.data.groupementsActs.forEach(element => {
                 if(element.regroupement && element.regroupement != 'None'){
                   this.options_groupementActs.push(element.regroupement);
+                }
+              });
+          })
+          .catch(error => {
+              console.log(error)
+              this.errored = true
+          })
+      },
+      getModeExercices(){
+          Axios
+          .get("http://localhost/annuairesante/backend/index.php", { params: {
+              route: 'modes_exercice',
+              }}
+          )
+          .then( response => {
+              response.data.modes_exercice.forEach(element => {
+                if(element.mode_exercice){
+                  this.options_mode_exercice.push(element.mode_exercice);
                 }
               });
           })
@@ -276,12 +319,38 @@ import Axios from 'axios';
               this.errored = true
           })
       },
+      getCities(){
+          Axios
+          .get("http://localhost/annuairesante/backend/index.php", { params: {
+              route: 'cities',
+              }}
+          )
+          .then( response => {
+              response.data.departements.forEach(element => {
+                if(element.departement){
+                  this.options_departements.push(element.departement);
+                }
+              });
+          })
+          .catch(error => {
+              console.log(error)
+              this.errored = true
+          })
+      },
       /*---*/
-
+      checkFieldsData(){
+        for (const property in this.dataResearch) {
+          if (this.dataResearch[property]  != null){
+            this.field_data+=1;
+          }
+        }
+      },
       sendDataResearch() {
         console.log(this.dataResearch);
-        if(this.dataResearch == null){
-          console.log('Veuillez renseigner au moins un élément de recherche.');
+        this.checkFieldsData();
+        if(this.field_data == 0){
+          this.emptyDataResearch = true;
+          this.$refs['errorData'].show();
         }
         else{
           this.$emit('data-sent', { 'newRequest': true, 'dataResearch': this.dataResearch });
@@ -289,13 +358,17 @@ import Axios from 'axios';
       }, 
     },
     beforeMount(){
+      this.getProfessions();
+      this.getModeExercices();
       this.getGroupementsActs();
       this.getRegions();
+      this.getCities();
     }
   }
 </script>
 
 <style>
+
 .page{
   flex: 1 0 auto;
 }
@@ -482,6 +555,11 @@ input {
 }
 .custom-control-label::before, .custom-control-label::after {
     top: 0 !important;
+}
+
+#modalErrorData .modal-content{
+    align-items: center;
+    color: red;
 }
 
 @media (min-width: 374px) and (max-width: 1024px) {

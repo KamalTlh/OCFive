@@ -23,7 +23,7 @@
                                             <h4 class="m-t-10 m-b-5">{{ userProfile.pseudo }}</h4>
                                             <div v-if="userProfile.role_id == 2">
                                                 <p class="m-b-10" > Membre </p>
-                                                <router-link to="/userupdate" class="btn btn-xs btn-success">Editer Profile</router-link>
+                                                <router-link to="/userupdate" class="btn btn-xs btn-success">Editer Profil</router-link>
                                                 <router-link v-if="this.$store.state.userLogged.role_id == 2" to="/passwordupdate" class="btn btn-xs btn-success">Modifier mot de passe</router-link>
                                             </div>
                                             <div v-else>
@@ -38,8 +38,8 @@
                                     <ul class="profile-header-tab nav nav-tabs">
                                         <li class="nav-item"><a href="#profile-about" class="nav-link active show"
                                                 data-toggle="tab">PROFIL</a></li>
-                                        <li class="nav-item"><a href="#profile-post" class="nav-link"
-                                                data-toggle="tab">POSTS</a></li>
+                                        <li class="nav-item"><a href="#profile-activity" class="nav-link"
+                                                data-toggle="tab">ACTIVITE</a></li>
                                     </ul>
                                     <!-- END profile-header-tab -->
                                 </div>
@@ -91,6 +91,9 @@
                                         <!-- end table -->
                                     </div>
                                     <!-- end #profile-about tab -->
+                                    <!-- begin #profile-activity tab -->
+                                    <UserActivity/>
+                                    <!-- end #profile-activity tab -->
                                 </div>
                                 <!-- end tab-content -->
                             </div>
@@ -104,8 +107,13 @@
 </template>
 
 <script>
+import UserActivity from '../components/UserActivity';
+
 export default {
     name: 'UserProfileDetail',
+    components: {
+        UserActivity
+    }, 
     data(){
         return {
         }
@@ -114,8 +122,6 @@ export default {
         userProfile(){
             return this.$store.state.user;
         },
-    },
-    methods:{
     }
 };
 </script>

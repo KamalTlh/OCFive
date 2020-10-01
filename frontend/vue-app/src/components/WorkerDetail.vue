@@ -22,7 +22,6 @@
                                         <div class="profile-header-info">
                                             <h4 class="m-t-10 m-b-5">{{ healthworker.nom_professionnel }}</h4>
                                             <p class="m-b-10" > {{ healthworker.profession }} </p>
-                                            <a href="#" class="btn btn-xs btn-success">Edit Profile</a>
                                         </div>
                                         <!-- END profile-header-info -->
                                     </div>
@@ -58,7 +57,7 @@
                                                 <tbody>
                                                     <tr class="highlight">
                                                         <td class="field">Adresse</td>
-                                                        <td><a href="javascript:;"> {{ healthworker.adresse }}</a></td>
+                                                        <td>{{ healthworker.adresse }}</td>
                                                     </tr>
                                                     <tr class="divider">
                                                         <td colspan="2"></td>
@@ -72,40 +71,44 @@
                                                     </tr>
                                                     <tr class="highlight">
                                                         <td class="field">Profession</td>
-                                                        <td><a href="javascript:;"> {{ healthworker.profession }}</a></td>
+                                                        <td>{{ healthworker.profession }}</td>
                                                     </tr>
                                                     <tr class="highlight">
                                                         <td class="field">Commune</td>
-                                                        <td><a href="javascript:;"> {{ healthworker.commune }}</a></td>
+                                                        <td>{{ healthworker.commune }}</td>
                                                     </tr>
                                                     <tr class="highlight">
                                                         <td class="field">Departement</td>
-                                                        <td><a href="javascript:;"> {{ healthworker.departement }}</a></td>
+                                                        <td>{{ healthworker.departement }}</td>
                                                     </tr>
                                                     <tr class="highlight">
                                                         <td class="field">Region</td>
-                                                        <td><a href="javascript:;"> {{ healthworker.region }}</a></td>
+                                                        <td>{{ healthworker.region }}</td>
                                                     </tr>
                                                     <tr class="highlight">
                                                         <td class="field">Carte Vitale</td>
-                                                        <td><a href="javascript:;"> {{ healthworker.sesam_vital }}</a></td>
+                                                        <td>{{ healthworker.sesam_vital }}</td>
                                                     </tr>
                                                     <tr class="highlight">
                                                         <td class="field">Regroupement</td>
-                                                        <td><a href="javascript:;"> {{ healthworker.regroupement }}</a></td>
+                                                        <td>{{ healthworker.regroupement }}</td>
                                                     </tr>
                                                     <tr class="highlight">
                                                         <td class="field">Type Acte Realise</td>
-                                                        <td><a href="javascript:;"> {{ healthworker.type_acte_realise }}</a></td>
+                                                        <td>{{ healthworker.type_acte_realise }}</td>
                                                     </tr>
                                                     <tr class="highlight">
                                                         <td class="field">Acte Technique Realise</td>
-                                                        <td><a href="javascript:;"> {{ healthworker.acte_technique_realise }}</a></td>
+                                                        <td>{{ healthworker.acte_technique_realise }}</td>
                                                     </tr>
                                                     <tr class="highlight">
                                                         <td class="field">Famille Acte Technique Realise</td>
-                                                        <td><a href="javascript:;"> {{ healthworker.famille_acte_technique_realise }}</a></td>
-                                                    </tr>     
+                                                        <td>{{ healthworker.famille_acte_technique_realise }}</td>
+                                                    </tr>
+                                                    <tr class="highlight">
+                                                        <td class="field">Contact</td>
+                                                        <td>{{ healthworker.contact }}</td>
+                                                    </tr> 
                                                     <tr class="divider">
                                                         <td colspan="2"></td>
                                                     </tr>
@@ -142,7 +145,7 @@ export default {
           Axios
           .get("http://localhost/annuairesante/backend/index.php", { params: {
               route: 'healthworkerById',
-              id: this.id
+              id: this.$store.state.healthworkerId
               }}
           )
           .then( response => {
