@@ -158,7 +158,6 @@ export default {
             if (this.dataResearch.newRequest === true){
                 this.$refs.map.clearLayersOfResearch();
                 this.loading = true;
-                console.log('new request' +this.loading);
                 this.totalPages = 0;
                 this.page = 1;
                 this.getHealthWorkersByFilters();

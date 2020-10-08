@@ -346,7 +346,6 @@ import Axios from 'axios';
         }
       },
       sendDataResearch() {
-        console.log(this.dataResearch);
         this.checkFieldsData();
         if(this.field_data == 0){
           this.emptyDataResearch = true;

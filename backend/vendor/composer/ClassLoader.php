@@ -56,7 +56,7 @@ class ClassLoader
     private $classMapAuthoritative = false;
     private $missingClasses = array();
     private $apcuPrefix;
-    
+
     public function getPrefixes()
     {
         if (!empty($this->prefixesPsr0)) {
@@ -299,7 +299,6 @@ class ClassLoader
      */
     public function register($prepend = false)
     {
-        var_dump($this);
         spl_autoload_register(array($this, 'loadClass'), true, $prepend);
     }
 
@@ -350,6 +349,7 @@ class ClassLoader
         }
 
         $file = $this->findFileWithExtension($class, '.php');
+
         // Search for Hack files if we are running on HHVM
         if (false === $file && defined('HHVM_VERSION')) {
             $file = $this->findFileWithExtension($class, '.hh');
@@ -370,8 +370,8 @@ class ClassLoader
     private function findFileWithExtension($class, $ext)
     {
         // PSR-4 lookup
-
         $logicalPathPsr4 = strtr($class, '\\', DIRECTORY_SEPARATOR) . $ext;
+
         $first = $class[0];
         if (isset($this->prefixLengthsPsr4[$first])) {
             $subPath = $class;
