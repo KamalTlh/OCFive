@@ -16,6 +16,7 @@ class Autoloader{
     */
     public static function autoload($class){
         $class = str_replace('\\', '/', $class);
+        // echo 'class: '.$class.'<br>';
         require $class.'.php';
     }
 }

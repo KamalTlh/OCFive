@@ -1,14 +1,15 @@
 <?php
 namespace model;
+use PDO;
 
 class CommentModel extends Model{
  
     private $id;
-    private $pseudo;
     private $content;
     private $date_creation;
     private $flag;
-    private $article_id;
+    private $userId;
+    private $workerId;
 
     public function getId(){
         return $this->id;
@@ -16,14 +17,6 @@ class CommentModel extends Model{
 
     public function setId($id){
         $this->id = $id;
-    }
-
-    public function getPseudo(){
-        return $this->pseudo;
-    }
-
-    public function setPseudo($pseudo){
-        $this->pseudo = $pseudo;
     }
     
     public function getContent(){
@@ -50,12 +43,20 @@ class CommentModel extends Model{
         $this->flag = $flag;
     }
 
-    public function getArticle_Id(){
-        return $this->article_id;
+    public function getUserId(){
+        return $this->userId;
     }
 
-    public function setArticle_Id($article_id){
-        $this->article_id = $article_id;
+    public function setUserId($userId){
+        $this->userId = $userId;
+    }
+
+    public function getWorkerId(){
+        return $this->workerId;
+    }
+
+    public function setWorkerId($workerId){
+        $this->workerId = $workerId;
     }
 
     public function hydrate(array $donnees){
@@ -80,11 +81,20 @@ class CommentModel extends Model{
         return $this->hydrate($comment);
     }
 
-    public function addComment($comment, $articleId, $pseudo){
-        extract($comment);
-        echo 'contenu commentaire: '.$content.'+'.strlen($content);
-        $sql = 'INSERT INTO comment (pseudo, content, date_creation, flag, article_id) VALUES (?, ?, NOW(), ?, ?)';
-        $this->createQuery($sql, [$pseudo, strip_tags($content), 0, $articleId]);
+    public function addComment($post){
+        $firstQuery = 'INSERT INTO comment (content, date_creation, flag, userId, workerId) VALUES (?, NOW(), ?, ?, ?)';
+        $this->createQuery($firstQuery, [strip_tags($post['comment']), 0, $post['userId'], $post['workerId']]);
+        $secondQuery = 'SELECT nb_comments FROM annuaire WHERE id = ?';
+        $result = $this->createQuery($secondQuery, [$post['workerId']]);
+        $nb_comments = $result->fetch(PDO::FETCH_ASSOC);
+        $new_NbComments = intval($nb_comments['nb_comments']) + 1;
+        $thirdQuery = 'UPDATE annuaire SET nb_comments = ? WHERE id = ?';
+        $this->createQuery($thirdQuery, [ $new_NbComments, $post['workerId']]);
+        $lastQuery = 'SELECT comment.id, comment.content, comment.date_creation, comment.flag, user.pseudo FROM comment INNER JOIN user ON user.id = comment.userId WHERE content = ? AND userId = ? AND workerID = ?';
+        $lastResult = $this->createQuery($lastQuery, [strip_tags($post['comment']), $post['userId'], $post['workerId']]);
+        $commentAdded = $lastResult->fetch(PDO::FETCH_ASSOC);
+        $data['commentAdded'] = $commentAdded;
+        return $data;
     }
 
     public function updateComment($comment, $commentId){
@@ -96,6 +106,7 @@ class CommentModel extends Model{
     public function deleteComment($commentId){
         $sql = 'DELETE FROM comment WHERE id = ?';
         $this->createQuery($sql, [$commentId]);
+        return true ;
     }
 
     public function flagComment($commentId){

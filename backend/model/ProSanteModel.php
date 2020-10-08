@@ -216,7 +216,7 @@ class ProSanteModel extends Model {
         $this->hydrate($get);
         $pagination = $this->getPagePagination();
         $sql = ' SELECT id, civilite, nom_professionnel, adresse, telephone, profession, coordonnees, commune, departement, region, contact, sesam_vital, convention_cacs, mode_exercice, nature_exercice, regroupement,
-        type_acte_realise, acte_technique_realise, famille_acte_technique_realise FROM annuaire WHERE commune LIKE :commune AND civilite LIKE :civilite AND profession 
+        type_acte_realise, acte_technique_realise, famille_acte_technique_realise, note, nb_notes, nb_comments FROM annuaire WHERE commune LIKE :commune AND civilite LIKE :civilite AND profession 
         LIKE :profession AND nom_professionnel LIKE :nom_professionnel AND nom_professionnel LIKE :prenom_professionnel AND mode_exercice LIKE :mode_exercice AND 
         regroupement LIKE :regroupement AND nature_exercice LIKE :statut AND departement LIKE :departement AND region LIKE :region ORDER BY nom_professionnel ASC';
         $sql.= ' LIMIT '.$pagination['limite'].' OFFSET '.$pagination['debut']; 
@@ -233,11 +233,25 @@ class ProSanteModel extends Model {
             ':region' => $this->region
         ]);
         $healthworker = $result->fetchAll(PDO::FETCH_ASSOC);
-
+        
         /*-- Requête pour récupérer les informations qui seront affichés sur le marker de la carte pour un professionnel de santé --*/
-        $query = 'SELECT coordonnees, contact, profession FROM annuaire 
+        $coordinates = $this->getDataByCoordinates($get, $pagination);
+        /*---*/
+
+        $data['currentPage'] = $pagination['currentPage'];
+        $data['numberOfResultOnPage'] = count($healthworker);
+        $data['healthworkers'] = $healthworker;
+        $data['coordinates'] = $coordinates;
+        return $data;
+    }
+    /*---*/
+
+    /*-- Fonction qui récupère les informations qui seront affichés sur le marker de la carte pour un professionnel de santé --*/
+    public function getDataByCoordinates($get, $pagination){
+        $query = 'SELECT coordonnees, contact, profession, nom_professionnel FROM annuaire 
         WHERE commune LIKE :commune AND civilite LIKE :civilite AND profession LIKE :profession AND nom_professionnel LIKE :nom_professionnel AND nom_professionnel LIKE :prenom_professionnel
-        AND mode_exercice LIKE :mode_exercice AND regroupement LIKE :regroupement AND nature_exercice LIKE :statut AND departement LIKE :departement AND region LIKE :region';
+        AND mode_exercice LIKE :mode_exercice AND regroupement LIKE :regroupement AND nature_exercice LIKE :statut AND departement LIKE :departement AND region LIKE :region ORDER BY nom_professionnel ASC';
+        $query.= ' LIMIT '.$pagination['limite'].' OFFSET '.$pagination['debut']; 
         $dataQuery = $this->createQuery($query, [
             ':commune'=>$this->commune,
             ':civilite'=>$this->civilite,
@@ -252,15 +266,8 @@ class ProSanteModel extends Model {
 
         ]);
         $coordinates = $dataQuery->fetchAll(PDO::FETCH_ASSOC);
-        /*---*/
-
-        $data['currentPage'] = $pagination['currentPage'];
-        $data['numberOfResultOnPage'] = count($healthworker);
-        $data['healthworkers'] = $healthworker;
-        $data['coordinates'] = $coordinates;
-        return $data;
+        return $coordinates;
     }
-    /*---*/
 
     /*-- Requête pour récupérer les éléments de recherches --*/
     public function getProfessions(){
@@ -318,4 +325,27 @@ class ProSanteModel extends Model {
         return $data;
     }
     /*---*/
+
+    public function addRate($post){
+        $sql = 'INSERT INTO rate (userId, workerId) VALUES (?, ?)';
+        $this->createQuery($sql, [ $post['userId'], $post['workerId'] ]);
+        $querySql = 'SELECT note, nb_notes FROM annuaire WHERE id = ?';
+        $result = $this->createQuery($querySql, [$post['workerId']]);
+        $actualRateofWorker = $result->fetch(PDO::FETCH_ASSOC);
+        if ($actualRateofWorker['note'] != null){
+            $nb_notes = intval($actualRateofWorker['nb_notes']) + 1;
+            echo 'NB NOTES: '.$nb_notes;
+            $rate = ($post['rate'] + intval($actualRateofWorker['note'])) / 2;
+            $sql = 'UPDATE annuaire SET note = ?, nb_notes = ? WHERE id = ?';
+            $this->createQuery($sql, [$rate, $nb_notes, $post['workerId']]);
+            $data['rate'] = $rate;
+            return $data;
+        }
+        else {
+            $sql = 'UPDATE annuaire SET note = ?, nb_notes = ? WHERE id = ?';
+            $this->createQuery($sql, [$post['rate'], 1, $post['workerId']]);
+            $data['rate'] = $post['rate'];
+            return $data;
+        }
+    }
 }

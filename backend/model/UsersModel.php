@@ -49,18 +49,4 @@ class UsersModel extends Model{
         $this->setUsers($users);
         return $data;
     }
-
-    // public function getListUsers(){
-    //     $sql = 'SELECT id, pseudo, email, password, date_creation, role_id FROM user ORDER BY id DESC';
-    //     $result = $this->createQuery($sql);
-    //     $users = [];
-    //     foreach( $result as $row){
-    //         $user = new UserModel();
-    //         $userId = $row['id'];
-    //         $users[$userId] = $user->hydrate($row);
-    //     }
-    //     $result->closeCursor();
-    //     $this->setUsers($users);
-    //     return $users;
-    // }
 }

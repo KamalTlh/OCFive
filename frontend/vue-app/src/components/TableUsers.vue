@@ -24,12 +24,11 @@
                         <td>{{ user.date_creation }}</td>
                         <td v-if="user.role_id == 2">User</td>
                         <td v-else>Administrateur</td>
-                        <td>
-                            <a class="btn btn-primary"><i class="icon_plus_alt2">Ajouter</i></a>
-                            <a class="btn btn-primary" @click="checkUser(user)"><i class="icon_plus_alt2">V</i></a>
-                            <a class="btn btn-success" @click="updateUser(user)"><i class="icon_check_alt2">Modifier</i></a>
-                            <a class="btn btn-danger" @click="deleteUser(user.id)"><i
-                                    class="icon_close_alt2">Suppprimer</i></a>
+                        <td class="actions">
+                            <a class="btn btn-primary"><i class="fas fa-plus-circle"></i></a>
+                            <a class="btn btn-primary" @click="checkUser(user)"><i class="fas fa-eye"></i></a>
+                            <a class="btn btn-success" @click="updateUser(user)"><i class="fas fa-edit"></i></a>
+                            <a class="btn btn-danger" @click="deleteUser(user.id)"><i class="fas fa-trash-alt"></i></a>
                         </td>
                     </tr>
                 </tbody>
@@ -60,7 +59,7 @@ import Axios from 'axios';
           Axios
             .post("http://localhost/annuairesante/backend/index.php", { 
                 route: 'deleteUser',
-                userLoggedPseudo: 'Kamal',
+                userLoggedPseudo: this.$store.state.userLogged.pseudo,
                 id: id
                 }
             )

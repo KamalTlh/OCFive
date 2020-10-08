@@ -25,12 +25,11 @@
                         <td>{{ comment.flag }}</td>
                         <td>{{ comment.userId }}</td>
                         <td>{{ comment.workerId }}</td>
-                        <td>
-                            <a class="btn btn-primary"><i class="icon_plus_alt2">Ajouter</i></a>
-                            <a class="btn btn-primary" ><i class="icon_plus_alt2">V</i></a>
-                            <a class="btn btn-success" ><i class="icon_check_alt2">Modifier</i></a>
-                            <a class="btn btn-danger" @click="deleteComment(comment.id)"><i
-                                    class="icon_close_alt2">Suppprimer</i></a>
+                        <td class="actions">
+                            <a class="btn btn-primary" alt="Ajouter"><i class="fas fa-plus-circle"></i></a>
+                            <a class="btn btn-primary" alt="Voir"><i class="fas fa-eye"></i></a>
+                            <a class="btn btn-success" alt="Modifier"><i class="fas fa-edit"></i></a>
+                            <a class="btn btn-danger" alt="Supprimer" @click="deleteComment(comment.id)"><i class="fas fa-trash-alt"></i></a>
                         </td>
                     </tr>
                 </tbody>
@@ -65,7 +64,7 @@ import Axios from 'axios';
                 }
             )
             .then( response => {
-                this.isDelete = response.data.isDelete;
+                this.isDelete = response.data.commentDeleted;
             })
             .catch(error => {
                 console.log(error)
@@ -83,7 +82,7 @@ import Axios from 'axios';
                 }}
             )
             .then( response => {
-                this.comments = response.data.comments;
+                this.comments = response.data.datas.comments;
                 if(this.totalPages == 0){
                     this.totalResults = response.data.page.totalResults;
                     this.totalPages = response.data.page.totalPages;

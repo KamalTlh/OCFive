@@ -179,4 +179,16 @@ class UserModel extends Model{
         return $result['name'];
     }
 
+    public function getUserPreferences($userId, $workerId){
+        $firstQuery = 'SELECT COUNT(id) as ifFavorite FROM favoris WHERE userId = ? AND workerId = ?';
+        $firstResult = $this->createQuery($firstQuery, [$userId, $workerId]);
+        $ifFavorite = $firstResult->fetch(PDO::FETCH_ASSOC);
+        $data['ifFavorite'] = $ifFavorite;
+        $secondQuery = 'SELECT COUNT(id) as ifRated FROM rate WHERE userId = ? AND workerId = ?';
+        $secondResult = $this->createQuery($secondQuery, [$userId, $workerId]);
+        $ifRated = $secondResult->fetch(PDO::FETCH_ASSOC);
+        $data['ifRated'] = $ifRated;
+        return $data;
+    }
+
 }

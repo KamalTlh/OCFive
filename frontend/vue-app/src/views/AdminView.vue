@@ -42,4 +42,7 @@
   text-align: center;
   font-weight: bold;
 }
+.actions{
+    display: flex;
+}
 </style>

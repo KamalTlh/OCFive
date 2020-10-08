@@ -39,8 +39,20 @@ class Router{
                 elseif( $data['route'] === 'updatePassword' ){
                     $this->userController->updatePassword($data);
                 }
-                elseif( $data['route'] === 'addFavorites' ){
-                    $this->favoritesController->addFavorites($data);
+                elseif( $data['route'] === 'addFavorite' ){
+                    $this->favoritesController->addFavorite($data);
+                }
+                elseif( $data['route'] === 'deleteFavorite' ){
+                    $this->favoritesController->deleteFavorite($data);
+                }
+                elseif( $data['route'] === 'addComment' ){
+                    $this->commentController->addComment($data);
+                }
+                elseif( $data['route'] === 'deleteComment' ){
+                    $this->commentController->deleteComment($data);
+                }
+                elseif( $data['route'] === 'addRate' ){
+                    $this->proSanteController->addRate($data);
                 }
             }
             elseif(isset($_GET) && !empty($_GET)){
@@ -85,6 +97,18 @@ class Router{
                 }
                 elseif($_GET['route'] === 'userFavorites'){
                     $this->favoritesController->getFavoritesOfUser($_GET);
+                }
+                elseif($_GET['route'] === 'userComments'){
+                    $this->commentController->getCommentsOfUser($_GET);
+                }
+                elseif($_GET['route'] === 'workerComments'){
+                    $this->commentController->getCommentsOfWorker($_GET);
+                }
+                elseif($_GET['route'] === 'comments'){
+                    $this->commentController->getListComments($_GET);
+                }
+                elseif($_GET['route'] === 'userPreferences'){
+                    $this->userController->getUserPreferences($_GET);
                 }
             }
             else{

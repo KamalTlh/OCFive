@@ -37,10 +37,17 @@ class FavoritesModel extends Model{
         return $this;
     }
 
-    public function addFavorites($userId, $workerId){
+    public function addFavorite($userId, $workerId){
         $sql = 'INSERT INTO favoris (userId, workerId) VALUES (?, ?) ';
         $this->createQuery($sql, [$userId, $workerId]);
         $data['FavoriteAdded'] = true;
+        return $data;
+    }
+    
+    public function deleteFavorite($userId, $workerId){
+        $sql = 'DELETE FROM favoris WHERE userId = ? AND workerId = ? ';
+        $this->createQuery($sql, [$userId, $workerId]);
+        $data['deleteFavorite'] = true;
         return $data;
     }
 

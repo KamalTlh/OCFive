@@ -3,9 +3,18 @@ namespace controller;
 
 class FavoritesController extends Controller{
 
-    public function addFavorites($post){
+    public function addFavorite($post){
         if(isset($post['userId']) && isset($post['workerId'])){
-            $data = $this->favoritesModel->addFavorites($post['userId'], $post['workerId']);
+            $data = $this->favoritesModel->addFavorite($post['userId'], $post['workerId']);
+            return $this->view->render('JsonResponse',[
+                'data'=> $data
+            ]);
+        }
+    }
+
+    public function deleteFavorite($post){
+        if(isset($post['userId']) && isset($post['workerId'])){
+            $data = $this->favoritesModel->deleteFavorite($post['userId'], $post['workerId']);
             return $this->view->render('JsonResponse',[
                 'data'=> $data
             ]);

@@ -2,7 +2,7 @@
 namespace controller;
 
 class UserController extends Controller{
-
+    
     public function login($post){
         if(isset($post['pseudo']) && isset($post['password'])){
             $data = $this->userModel->login($post['pseudo'], $post['password']);
@@ -48,13 +48,6 @@ class UserController extends Controller{
                 return $this->view->render('JsonResponse',[
                     'data'=> $data
                 ]);
-                // if($this->session->get('role') === 'admin'){
-                //     $this->session->set('account_created', 'Le compte a été crée.');
-                // }
-                // else{
-                // $this->session->set('first_login', 'Vous pouvez vous connectez');
-                // header('Location: index.php?route=login');
-                // }
             }
             return $this->view->render('JsonResponse',[
                 'data'=> $data
@@ -221,6 +214,20 @@ class UserController extends Controller{
                     'data' => $data
                 ]);
             }
+        }
+    }
+
+    public function getUserPreferences($get){
+        if (isset($get['userId']) && isset($get['workerId']) ){
+            $data = $this->userModel->getUserPreferences($get['userId'], $get['workerId']);
+            return $this->view->render('JsonResponse', [
+                'data' => $data
+            ]);
+        }
+        else {
+            return $this->view->render('JsonResponse',[
+                'data'=> 'Erreur lors du traitement des données. Veuillez réessayer plus tard.'
+            ]);
         }
     }
 }

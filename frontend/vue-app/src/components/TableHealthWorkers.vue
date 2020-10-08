@@ -24,13 +24,11 @@
                         <td>{{ healthworker.profession }}</td>
                         <td>{{ healthworker.adresse }}</td>
                         <td>{{ healthworker.telephone }}</td>
-                        <td>
-                            <div class="btn-admin">
-                                <a class="btn btn-primary"><i class="icon_plus_alt2">A</i></a>
-                                <a class="btn btn-primary" @click="sendIdWorker(healthworker.id)"><i class="icon_plus_alt2">V</i></a>
-                                <a class="btn btn-success"><i class="icon_check_alt2">M</i></a>
-                                <a class="btn btn-danger" ><i class="icon_close_alt2">D</i></a>
-                            </div>
+                        <td class="actions">
+                            <a class="btn btn-primary"><i class="fas fa-plus-circle"></i></a>
+                            <a class="btn btn-primary" @click="sendIdWorker(healthworker.id)"><i class="fas fa-eye"></i></a>
+                            <a class="btn btn-success"><i class="fas fa-edit"></i></a>
+                            <a class="btn btn-danger" ><i class="fas fa-trash-alt"></i></a>
                         </td>
                     </tr>
                 </tbody>
@@ -95,7 +93,4 @@ import Axios from 'axios';
 </script>
 
 <style>
-.btn-admin{
-    display: inline-block;
-}
 </style>

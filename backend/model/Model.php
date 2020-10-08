@@ -2,6 +2,7 @@
 namespace model;
 use PDO;
 use Exception;
+
 abstract class Model {
     
     private $connection;
