@@ -21,7 +21,11 @@
                 <router-link to="/about" class="nav-link">A propros</router-link>
               </li>
               <li class="nav-item">
-                <Login v-if="checkSession === false" ></Login>
+                <div v-if="checkSession === false" class="header-main-account account-wrapper">
+                  <router-link to="/login" class="btn account right tooltipped"> <i class="fas fa-sign-in-alt user-pic"></i>
+                    <span>Connexion</span> </router-link> 
+                </div>
+                <!-- <Login v-if="checkSession === false" ></Login> -->
                 <Logout v-if="checkSession === true" ></Logout>
               </li>
           </ul>
@@ -33,12 +37,10 @@
 </template>
 
 <script>
-import Login from '@/components/Login';
 import Logout from '@/components/Logout';
   export default {
     name: 'NavBar',
     components: {
-      Login,
       Logout
     },
     data(){
@@ -97,10 +99,6 @@ import Logout from '@/components/Logout';
   margin-left: 35% !important;
   margin-top: none !important;
 }
-.return-error{
-  text-align: center;
-  color: red;
-}
 /*Buttons designs */
 header .header.header-main {
     color: #fff;
@@ -124,12 +122,14 @@ header .header.header-main {
     z-index: 2;
     -webkit-box-shadow: 0 4px 5px 0 rgba(0,0,0,0.14),0 1px 10px 0 rgba(0,0,0,0.12),0 2px 4px -1px rgba(0,0,0,0.3);
     box-shadow: 0 4px 5px 0 rgba(0,0,0,0.14),0 1px 10px 0 rgba(0,0,0,0.12),0 2px 4px -1px rgba(0,0,0,0.3);
+    width: 195px;
+    line-height: 2rem;
 }
 .account.btn i.user-pic {
     font-size: 25px;
     position: absolute;
     left: -15px;
-    top: -2px;
+    top: -3px;
     z-index: 2;
     border: 3px solid white;
     border-radius: 50%;
@@ -148,7 +148,7 @@ header .header.header-main {
 .dropdown .dropdown-menu {
     top: 100% !important;
     z-index: 1000;
-    padding: .5rem 0;
+    padding: 0.5rem 0.25rem 0.5rem;
     margin: .125rem 0 0;
     font-size: 1rem;
     color: #212529;
@@ -168,6 +168,10 @@ header .header.header-main {
 .btn-group-vertical > .btn {
   position: relative;
   float: left;
+}
+.dropdown-item{
+    padding: 0.5rem 1rem;
+    margin-top: 4%;
 }
 /*---*/
 

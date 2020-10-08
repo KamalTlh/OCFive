@@ -7,10 +7,13 @@
             <header class="panel-heading">
             </header>
             <b-tab title="Utilisateurs" active>
-                <TableUsers id="p2" ></TableUsers>
+              <TableUsers id="p2" ></TableUsers>
+            </b-tab>
+            <b-tab title="Commentaires">
+              <TableComments id="p3"></TableComments>
             </b-tab>
             <b-tab title="Professionnels de Sante">
-            <TableHealthWorkers id="p1"></TableHealthWorkers>
+              <TableHealthWorkers id="p1"></TableHealthWorkers>
             </b-tab>
           </section>
         </b-tabs>
@@ -22,11 +25,14 @@
 <script>
   import TableUsers from '../components/TableUsers';
   import TableHealthWorkers from '../components/TableHealthWorkers';
+  import TableComments from '../components/TableComments';
+
   export default {
     name: "panelAdmin",
     components: {
       TableUsers,
-      TableHealthWorkers
+      TableHealthWorkers,
+      TableComments
     }
   }
 </script>

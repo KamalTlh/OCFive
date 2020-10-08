@@ -1,130 +1,159 @@
 <template>
     <div class="row">
-        <div class="col-md-12">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div id="content" class="content content-full-width">
-                            <!-- begin profile -->
-                            <div class="profile">
-                                <div class="profile-header">
-                                    <!-- BEGIN profile-header-cover -->
-                                    <div class="profile-header-cover"></div>
-                                    <!-- END profile-header-cover -->
-                                    <!-- BEGIN profile-header-content -->
-                                    <div class="profile-header-content">
-                                        <!-- BEGIN profile-header-img -->
-                                        <div class="profile-header-img">
-                                            <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="">
-                                        </div>
-                                        <!-- END profile-header-img -->
-                                        <!-- BEGIN profile-header-info -->
-                                        <div class="profile-header-info">
-                                            <h4 class="m-t-10 m-b-5">{{ healthworker.nom_professionnel }}</h4>
-                                            <p class="m-b-10" > {{ healthworker.profession }} </p>
-                                        </div>
-                                        <!-- END profile-header-info -->
+        <div class="col-md-10">
+            <div id="content" class="content content-full-width">
+                <!-- begin profile -->
+                <div class="profile">
+                    <div class="profile-header">
+                        <!-- BEGIN profile-header-cover -->
+                        <div class="profile-header-cover"></div>
+                        <!-- END profile-header-cover -->
+                        <!-- BEGIN profile-header-content -->
+                        <div class="profile-header-content">
+                            <!-- BEGIN profile-header-info -->
+                            <div class="row worker">
+                                <div class="col-lg-6">
+                                    <div class="profile-header-info-worker">
+                                        <h4 class="m-t-10 m-b-5">{{ healthworker.nom_professionnel }}</h4>
+                                        <p class="m-b-10" > {{ healthworker.profession }} </p>
                                     </div>
-                                    <!-- END profile-header-content -->
-                                    <!-- BEGIN profile-header-tab -->
-                                    <ul class="profile-header-tab nav nav-tabs">
-                                        <li class="nav-item"><a href="#profile-about" class="nav-link active show"
-                                                data-toggle="tab">PROFIL</a></li>
-                                        <li class="nav-item"><a href="#profile-post" class="nav-link"
-                                                data-toggle="tab">POSTS</a></li>
-                                    </ul>
-                                    <!-- END profile-header-tab -->
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="return-btn">
+                                        <button v-if="ifFavorite > 1" type="button" class="btn btn-warning" @click="deleteFromFavorites(healthworker.id)">Supprimer des Favoris</button>
+                                        <router-link type="button" class="btn btn-success" to="/userprofile">Retour</router-link>
+                                    </div>
                                 </div>
                             </div>
-                            <!-- end profile -->
-                            <!-- begin profile-content -->
-                            <div class="profile-content">
-                                <!-- begin tab-content -->
-                                <div class="tab-content p-0">
-                                    <!-- begin #profile-about tab -->
-                                    <div class="tab-pane fade in active show" id="profile-about">
-                                        <!-- begin table -->
-                                        <div class="table-responsive">
-                                            <table class="table table-profile">
-                                                <thead>
-                                                    <tr>
-                                                        <th></th>
-                                                        <th>
-                                                            <h4> {{ healthworker.nom_professionnel }} <small> {{ healthworker.civilite }} </small></h4>
-                                                        </th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr class="highlight">
-                                                        <td class="field">Adresse</td>
-                                                        <td>{{ healthworker.adresse }}</td>
-                                                    </tr>
-                                                    <tr class="divider">
-                                                        <td colspan="2"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="field">Mobile</td>
-                                                        <td><i class="fa fa-mobile fa-lg m-r-5"></i> {{ healthworker.telephone }}</td>
-                                                    </tr>
-                                                    <tr class="divider">
-                                                        <td colspan="2"></td>
-                                                    </tr>
-                                                    <tr class="highlight">
-                                                        <td class="field">Profession</td>
-                                                        <td>{{ healthworker.profession }}</td>
-                                                    </tr>
-                                                    <tr class="highlight">
-                                                        <td class="field">Commune</td>
-                                                        <td>{{ healthworker.commune }}</td>
-                                                    </tr>
-                                                    <tr class="highlight">
-                                                        <td class="field">Departement</td>
-                                                        <td>{{ healthworker.departement }}</td>
-                                                    </tr>
-                                                    <tr class="highlight">
-                                                        <td class="field">Region</td>
-                                                        <td>{{ healthworker.region }}</td>
-                                                    </tr>
-                                                    <tr class="highlight">
-                                                        <td class="field">Carte Vitale</td>
-                                                        <td>{{ healthworker.sesam_vital }}</td>
-                                                    </tr>
-                                                    <tr class="highlight">
-                                                        <td class="field">Regroupement</td>
-                                                        <td>{{ healthworker.regroupement }}</td>
-                                                    </tr>
-                                                    <tr class="highlight">
-                                                        <td class="field">Type Acte Realise</td>
-                                                        <td>{{ healthworker.type_acte_realise }}</td>
-                                                    </tr>
-                                                    <tr class="highlight">
-                                                        <td class="field">Acte Technique Realise</td>
-                                                        <td>{{ healthworker.acte_technique_realise }}</td>
-                                                    </tr>
-                                                    <tr class="highlight">
-                                                        <td class="field">Famille Acte Technique Realise</td>
-                                                        <td>{{ healthworker.famille_acte_technique_realise }}</td>
-                                                    </tr>
-                                                    <tr class="highlight">
-                                                        <td class="field">Contact</td>
-                                                        <td>{{ healthworker.contact }}</td>
-                                                    </tr> 
-                                                    <tr class="divider">
-                                                        <td colspan="2"></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <!-- end table -->
-                                    </div>
-                                    <!-- end #profile-about tab -->
-                                </div>
-                                <!-- end tab-content -->
-                            </div>
-                            <!-- end profile-content -->
+                            <!-- END profile-header-info -->
                         </div>
+                        <!-- END profile-header-content -->
                     </div>
                 </div>
+                <!-- end profile -->
+                <!-- begin profile-content -->
+                <div class="profile-content">
+                    <!-- begin tab-content -->
+                    <div class="tab-content p-0">
+                        <!-- begin #profile-about tab -->
+                        <div class="tab-pane fade in active show" id="profile-about">
+                            <!-- begin table -->
+                            <div class="table-responsive">
+                                <table class="table table-profile">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>
+                                                <h4> {{ healthworker.nom_professionnel }} <small> {{ healthworker.civilite }} </small></h4>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="highlight">
+                                            <td class="field">Adresse</td>
+                                            <td>{{ healthworker.adresse }}</td>
+                                        </tr>
+                                        <tr class="divider">
+                                            <td colspan="2"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="field">Mobile</td>
+                                            <td><i class="fa fa-mobile fa-lg m-r-5"></i> {{ healthworker.telephone }}</td>
+                                        </tr>
+                                        <tr class="divider">
+                                            <td colspan="2"></td>
+                                        </tr>
+                                        <tr class="highlight">
+                                            <td class="field">Profession</td>
+                                            <td>{{ healthworker.profession }}</td>
+                                        </tr>
+                                        <tr class="highlight">
+                                            <td class="field">Commune</td>
+                                            <td>{{ healthworker.commune }}</td>
+                                        </tr>
+                                        <tr class="highlight">
+                                            <td class="field">Departement</td>
+                                            <td>{{ healthworker.departement }}</td>
+                                        </tr>
+                                        <tr class="highlight">
+                                            <td class="field">Region</td>
+                                            <td>{{ healthworker.region }}</td>
+                                        </tr>
+                                        <tr class="highlight">
+                                            <td class="field">Carte Vitale</td>
+                                            <td>{{ healthworker.sesam_vital }}</td>
+                                        </tr>
+                                        <tr class="highlight">
+                                            <td class="field">Regroupement</td>
+                                            <td>{{ healthworker.regroupement }}</td>
+                                        </tr>
+                                        <tr class="highlight">
+                                            <td class="field">Type Acte Realise</td>
+                                            <td>{{ healthworker.type_acte_realise }}</td>
+                                        </tr>
+                                        <tr class="highlight">
+                                            <td class="field">Acte Technique Realise</td>
+                                            <td>{{ healthworker.acte_technique_realise }}</td>
+                                        </tr>
+                                        <tr class="highlight">
+                                            <td class="field">Famille Acte Technique Realise</td>
+                                            <td>{{ healthworker.famille_acte_technique_realise }}</td>
+                                        </tr>
+                                        <tr class="highlight">
+                                            <td class="field">Contact</td>
+                                            <td>{{ healthworker.contact }}</td>
+                                        </tr> 
+                                        <tr class="divider">
+                                            <td colspan="2"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="button-interactions">
+                                <button v-if="ifRated == 0" type="button" class="btn btn-danger" data-toggle="modal" data-target="#form-rate">Noter <i class="far fa-star"></i></button>
+                                <div class="modal fade" id="form-rate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="text-right cross" data-toggle="modal" data-target="#form-rate"> <i class="fa fa-times mr-2"></i> </div>
+                                            <div class="card-body text-center"> <img src=" https://i.imgur.com/d2dKtI7.png" height="100" width="100">
+                                                <div class="comment-box text-center">
+                                                    <!-- <h4>Add a rate</h4> -->
+                                                    <div class="rating"> <input v-model="rating" type="radio" name="rating" value="5" id="5"><label for="5">☆</label> <input v-model="rating" type="radio" name="rating" value="4" id="4"><label for="4">☆</label> <input v-model="rating" type="radio" name="rating" value="3" id="3"><label for="3">☆</label> <input v-model="rating" type="radio" name="rating" value="2" id="2"><label for="2">☆</label> <input v-model="rating" type="radio" name="rating" value="1" id="1"><label for="1">☆</label> </div> 
+                                                    <div class="text-center mt-4"> <button class="send px-5" data-toggle="modal" data-target="#form-rate" type="submit" @click="addRate(healthworker.id)" >Valider note<i class="fas fa-long-arrow-alt-right ml-1"></i></button> </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <button v-if="ifFavorite == 0" type="button" class="btn btn-warning" @click="addFavorite(healthworker.id)">Ajouter un favoris <i class="far fa-star"></i></button>
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#form">Ajouter un commentaire <i class="far fa-comments"></i></button>
+                                    <AddComment @data-commentSent="addComment"/>
+                                </div>
+                            </div>
+                            <hr>
+                            <!-- end table -->
+                            <div v-for="commentWorker in commentsOfWorker" :key="commentWorker.id" class="comments-worker">
+                                <h5>Commentaires</h5>
+                                <div class="media mb-4">
+                                    <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                                    <div class="media-body">
+                                        <h5 class="mt-0">{{ commentWorker.pseudo }}</h5>
+                                        <p> {{ commentWorker.content }} </p>
+                                    </div>
+                                    <p class="date_comment"> {{ commentWorker.date_creation }} </p>
+                                </div>
+                                <p class="flag"><a href="#">Signaler le commentaire</a></p>
+                                <hr>
+                            </div>
+                        </div>
+                        <!-- end #profile-about tab -->
+                    </div>
+                    <!-- end tab-content -->
+                </div>
+                <!-- end profile-content -->
             </div>
         </div>
     </div>
@@ -132,35 +161,172 @@
 
 <script>
 import Axios from 'axios';
+import AddComment from '../components/AddComment';
+
 export default {
-    name: 'UserProfileDetail',
+    name: 'workerDetailView',
+    components: {
+        AddComment
+    },
     data(){
         return {
             healthworker: [],
-            id: this.$store.state.healthworkerId,
+            commentsOfWorker: [],
+            addedComment: {},
+            deleteFavorite: null,
+            rating: null,
+            ifFavorite: null,
+            ifRated: null,
+            id: null
+        }
+    },
+    computed: {
+        commented(){
+            return this.addedComment;
         }
     },
     methods:{
-       getHealthWorker(){
-          Axios
-          .get("http://localhost/annuairesante/backend/index.php", { params: {
-              route: 'healthworkerById',
-              id: this.$store.state.healthworkerId
-              }}
-          )
-          .then( response => {
-              this.healthworker = response.data.healthworker;
-          })
-          .catch(error => {
-              console.log(error)
-              this.errored = true
-          })
-          .finally(() => this.loading = false );
-      }
-  },
-  mounted(){
-      this.getHealthWorker();
-  }
+        getHealthWorker(){
+            Axios
+            .get("http://localhost/annuairesante/backend/index.php", { params: {
+                route: 'healthworkerById',
+                id: this.$store.state.healthworkerId
+                }}
+            )
+            .then( response => {
+                this.healthworker = response.data.healthworker;
+            })
+            .catch(error => {
+                console.log(error)
+                this.errored = true
+            })
+            .finally(() => this.loading = false );
+        },
+        deleteFromFavorites(healthworkerId){
+            Axios
+            .post("http://localhost/annuairesante/backend/index.php", {
+                route: "deleteFavorite",
+                userId: this.$store.state.userLogged.id,
+                workerId: healthworkerId
+            })
+            .then( response => {
+                this.deleteFavorite = response.data.deleteFavorite;
+                if (this.deleteFavorite) {
+                    this.$router.push('/userprofile');
+                }
+            })  
+            .catch(error => {
+                console.log(error)
+                this.errored = true
+            })
+        },
+        getCommentsOfWorker(){
+            Axios
+            .get("http://localhost/annuairesante/backend/index.php", { params: {
+                route: 'workerComments',
+                workerId: this.$store.state.healthworkerId
+                }}
+            )
+            .then( response => {
+                this.commentsOfWorker = response.data.commentsOfWorker;
+            })
+            .catch(error => {
+                console.log(error)
+                this.errored = true
+            })
+        },
+        addFavorite(healthworkerId){
+            Axios
+            .post("http://localhost/annuairesante/backend/index.php", {
+                route: "addFavorite",
+                userId: this.$store.state.userLogged.id,
+                workerId: healthworkerId
+            })
+            .then( response => {
+                if(response.status == 200){
+                    this.favoriteAdded = response.data.FavoriteAddeed;
+                }
+                else {
+                    this.$router.push({ path: '/error500'});
+                }
+            })  
+            .catch(error => {
+                console.log(error)
+                this.errored = true
+            })
+        },
+        addComment(payload){
+            Axios
+            .post("http://localhost/annuairesante/backend/index.php", {
+                route: "addComment",
+                userId: this.$store.state.userLogged.id,
+                workerId: this.$store.state.healthworkerId,
+                comment: payload.textComment,
+                rate: payload.rating
+            })
+            .then( response => {
+                if(response.status == 200){
+                    this.addedComment = response.data.commentAdded;
+                    this.commentsOfWorker.push(this.addedComment);
+                }
+                else {
+                    this.$router.push({ path: '/error500'});
+                }
+            })  
+            .catch(error => {
+                console.log(error)
+                this.errored = true
+            })
+        },
+        addRate(){
+            Axios
+            .post("http://localhost/annuairesante/backend/index.php", {
+                route: "addRate",
+                userId: this.$store.state.userLogged.id,
+                workerId: this.$store.state.healthworkerId,
+                rate: this.rating
+            })
+            .then( response => {
+                if(response.status == 200){
+                    this.addRate = response.data.rateAdded;
+                }
+                else {
+                    this.$router.push({ path: '/error500'});
+                }
+            })  
+            .catch(error => {
+                console.log(error)
+                this.errored = true
+            })
+        },
+        checkUserPreferences(){
+            Axios
+            .get("http://localhost/annuairesante/backend/index.php", { params: {
+                route: 'userPreferences',
+                userId: this.$store.state.userLogged.id,
+                workerId: this.$store.state.healthworkerId
+                }}
+            )
+            .then( response => {
+                this.ifFavorite = response.data.ifFavorite.ifFavorite;
+                this.ifRated = response.data.ifRated.ifRated;
+            })
+            .catch(error => {
+                console.log(error)
+                this.errored = true
+            })
+        }
+    },
+    beforeMount(){
+        this.$store.commit("changeWorker", localStorage.getItem('healthWorkerId'));
+        this.getHealthWorker();
+        this.getCommentsOfWorker();
+        if (localStorage.getItem('sessionLog') == 'true'){
+            const user = JSON.parse(localStorage.getItem('UserLog'));
+            this.$store.commit("setUserLogged", user );
+            this.checkUserPreferences();
+        }
+    }
 };
 </script>
 
@@ -169,10 +335,29 @@ body{
     margin-top:20px;
     background:#eee;
 }
+.button-interactions{
+    display: flex;
+    justify-content: space-evenly;
+}
+.flag{
+    text-align: right;
+}
+.flag a{
+    color: #3276b1;
+}
+.profile-header-info-worker .btn{
+    padding: none;
+    width: 100px;
+}
+.return-btn{
+    display: flex;
+    justify-content: flex-end;    
+}
 
 .profile-header {
     position: relative;
-    overflow: hidden
+    overflow: hidden;
+    padding-top: 3%;
 }
 
 .profile-header .profile-header-cover {

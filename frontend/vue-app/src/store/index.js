@@ -10,7 +10,8 @@ export default new Vuex.Store({
     markers: {},
     workers: {},
     healthworkerId: null,
-    sessionConnected: false
+    sessionConnected: false,
+    isAuthenticated: false
   },
   mutations: {
     changeUser (state, payload ){
@@ -30,6 +31,9 @@ export default new Vuex.Store({
     },
     setMarkers(state, payload){
       state.markers = payload
+    },
+    isAuthenticated (state, payload) {
+      state.isAuthenticated = payload.isAuthenticated
     }
   },
   actions: {

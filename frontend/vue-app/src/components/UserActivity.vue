@@ -6,11 +6,14 @@
                 <div class="col-lg-6">
                     <h5>Listes de médecins favoris</h5>
                     <div v-for="favorite in favorites" :key="favorite.id">
-                        <a href="#" @click="viewWorkerDetail(favorite.id)"> {{ favorite.nom_professionnel }}</a>
+                        <a href="#" @click="viewWorkerDetail(favorite.workerId)"> {{ favorite.nom_professionnel }} </a>
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <h5>Commentaires postés</h5>
+                    <div v-for="comment in comments" :key="comment.id">
+                        <a href="#" @click="viewWorkerDetail(comment.workerId)"> {{ comment.content }} </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -25,6 +28,12 @@ export default {
     data(){
         return {
             favorites: [],
+            comments: []
+        }
+    },
+    computed: {
+        userLogged(){
+            return this.$store.state.user.id;
         }
     },
     methods:{
@@ -32,11 +41,26 @@ export default {
             Axios
             .get("http://localhost/annuairesante/backend/index.php", { params: {
                 route: 'userFavorites',        
-                userId: this.$store.state.userLogged.id
+                userId: this.$store.state.user.id
                 }}
             )
             .then( response => {
                 this.favorites = response.data.favoritesOfUser;
+            })  
+            .catch(error => {
+                console.log(error)
+                this.errored = true
+            })
+        },
+        getCommentsOfUser(){
+            Axios
+            .get("http://localhost/annuairesante/backend/index.php", { params: {
+                route: 'userComments',        
+                userId: this.$store.state.user.id
+                }}
+            )
+            .then( response => {
+                this.comments = response.data.commentsOfUser;
             })  
             .catch(error => {
                 console.log(error)
@@ -50,7 +74,13 @@ export default {
     },
     mounted(){
         if (this.$store.state.sessionConnected){
-            console.log('Connecté, récupération des favoris');
+            console.log('Connecté, récupération des favoris et des commentaires');
+            this.getFavoritesOfUser();
+            this.getCommentsOfUser();
+        }
+    },
+    watch: {
+        userLogged: function(){
             this.getFavoritesOfUser();
         }
     }

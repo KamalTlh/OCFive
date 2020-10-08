@@ -176,7 +176,7 @@
                   </div>
                   <div class="col-lg-6">
                     <div class="form-item form-type-select form-item-departement">
-                      <label class="" for="departement">Département </label>
+                      <label for="departement">Département </label>
                       <select id="departement" name="departement" class="form-select form-control" v-model="dataResearch.selected_departement">
                         <option value="" selected="selected"></option>
                         <option v-for="departement in options_departements"  :key="departement">
@@ -459,7 +459,7 @@ a{
     overflow: hidden;
     height: 1px;
 }
-label {
+.search-med-advanced-form label {
     display: inline-block;
     margin-bottom: 0.5rem;
     font-weight: bold;
@@ -481,16 +481,16 @@ label {
     border-radius: 0.25rem;
     transition: border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out;
 }
-select {
+.search-med-advanced-form select {
     -webkit-appearance: none;
     -moz-appearance: none;
     -o-appearance: none;
     appearance: none;
 }
-button, select {
+.search-med-advanced-form button, select {
     text-transform: none;
 }
-select + i.select-icon {
+.search-med-advanced-form select + i.select-icon {
     background-color: transparent;
     color: #2962FF;
     float: right;
@@ -502,7 +502,7 @@ select + i.select-icon {
 .fa-chevron-down::before {
     content: "\f078";
 }
-select option {
+.search-med-advanced-form select option {
     padding-right: 21px;
 }
 .custom-control {
@@ -524,7 +524,8 @@ label.option {
     margin-bottom: 0;
     vertical-align: top;
 }
-.btn, button.btn, input.btn, a.btn, button.btn, input.btn, a.btn {
+.search-med-advanced-form .btn, .search-med-advanced-form button.btn, .search-med-advanced-form input.btn, .search-med-advanced-form a.btn, 
+.search-med-advanced-form button.btn, .search-med-advanced-form input.btn, .search-med-advanced-form a.btn {
     font-size: 16px;
     border: none;
     border-radius: 150px;
@@ -536,21 +537,21 @@ label.option {
     padding: 0.5rem 0.75rem;
     width: 200px;
 }
-.btn, button.btn, input.btn, a.btn {
+.search-med-advanced-form .btn, .search-med-advanced-form button.btn, .search-med-advanced-form input.btn, .search-med-advanced-form a.btn {
     display: inline-block;
     text-align: center;
     vertical-align: middle;
     user-select: none;
     transition: color 0.15s ease-in-out,background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out;
 }
-.btn-primary, .btn-primary2 {
+.search-med-advanced-form .btn-primary, .search-med-advanced-form .btn-primary2 {
     background-color: #2962FF !important;
     color: #fff !important;
 }
-.btn-primary:not(:disabled):not(.disabled):hover, .btn-primary2:not(:disabled):not(.disabled):hover {
+.search-med-advanced-form .btn-primary:not(:disabled):not(.disabled):hover, .search-med-advanced-form.btn-primary2:not(:disabled):not(.disabled):hover {
     background-color: #1d45b3 !important;
 }
-input {
+.search-med-advanced-form input {
     overflow: visible;
 }
 .custom-control-label::before, .custom-control-label::after {

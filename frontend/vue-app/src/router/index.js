@@ -8,7 +8,12 @@ import UserUpdate from '../views/UserUpdate.vue'
 import PasswordUpdate from '../views/PasswordUpdate.vue'
 import ResearchWorkers from '../views/ResearchWorkers.vue'
 import WorkerDetailView from '../views/WorkerDetailView.vue'
+import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
+import Error404 from '../views/Error404.vue'
+import Error500 from '../views/Error500.vue'
+
+
 
 
 Vue.use(VueRouter)
@@ -58,8 +63,13 @@ Vue.use(VueRouter)
     component: WorkerDetailView
   },
   {
+    path: '/login',
+    name: 'Login',
+    component: Login
+  },
+  {
     path: '/register',
-    name: 'register',
+    name: 'Register',
     component: Register
   },
   {
@@ -69,6 +79,16 @@ Vue.use(VueRouter)
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+  },
+  {
+    path: '/error404',
+    name: 'Error404',
+    component: Error404
+  },
+  {
+    path: '/error500',
+    name: 'Error500',
+    component: Error500
   }
 ]
 
@@ -78,13 +98,26 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  if (!to.matched.length) {
+    // check if the path matches any route before navigation 
+    // if not, redirect to the Not found page.{
+    next({
+      path: '/error404',
+      query: { redirect: to.fullPath },
+    })
+  } else {
+    next() // make sure to always call next()!
+  }
+})
+
+router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
     if (!store.state.sessionConnected) {
       next({
-        path: '/',
-        query: { redirect: to.fullPath }
+        path: '/login',
+        query: { redirect: to.fullPath },
       })
     } else {
       next()
@@ -96,8 +129,8 @@ router.beforeEach((to, from, next) => {
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAdmin)) {
-    // this route requires auth, check if logged in
-    // if not, redirect to login page.
+    // this route requires admin access, check if user have access
+    // if not, redirect to home page.
     if (store.state.userLogged.role_id != 1) {
       next({
         path: '/',

@@ -32,8 +32,23 @@
                             ></b-pagination>
                             <div v-for="healthWorker in healthWorkers" :key="healthWorker.id">
                                 <div class="displayResults z-depth-1">
-                                    <div class="sm-item-header"> 
-                                        <h4> <mdb-icon icon="user-md" size="lg"/> {{ healthWorker.nom_professionnel }}</h4>
+                                    <div class="row sm-item-header">
+                                        <div class="col-8 header-name-rate"> 
+                                            <div class="name-worker">
+                                                <span><mdb-icon icon="user-md" size="lg"/> {{ healthWorker.nom_professionnel }}</span>
+                                            </div>
+                                            <div class="rate-worker">
+                                                <i v-if="healthWorker.note >= 1" class="fas fa-star"></i> <i v-else class="far fa-star"></i>
+                                                <i v-if="healthWorker.note >= 2" class="fas fa-star"></i> <i v-else class="far fa-star"></i>
+                                                <i v-if="healthWorker.note >= 3" class="fas fa-star"></i> <i v-else class="far fa-star"></i>
+                                                <i v-if="healthWorker.note >= 4" class="fas fa-star"></i> <i v-else class="far fa-star"></i>
+                                                <i v-if="healthWorker.note >= 5" class="fas fa-star"></i> <i v-else class="far fa-star"></i>
+                                                <span> {{healthWorker.note}} / 5</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-3">
+                                            <a class="link-comments" @click="seeCommentsOfWorker(healthWorker.id)"> Voir tout les commentaires ({{healthWorker.nb_comments}}) </a>
+                                        </div>
                                     </div>
                                     <div class="sm-item-body">
                                         <div class="row">
@@ -76,9 +91,10 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="sm-item-footer"> 
-                                        <button type="button" class="btn btn-warning" @click="addFavorites(healthWorker.id)"><i class="fas fa-star"></i></button>
-                                        <button type="button" class="btn btn-dark"><i class="fas fa-comments"></i></button>
+                                    <div class="sm-item-footer">
+                                        <div>
+                                            <a class="link-seemore" @click="seeCommentsOfWorker(healthWorker.id)">Voir plus <i class="fas fa-long-arrow-alt-right ml-1"></i></a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -103,6 +119,7 @@ export default {
     name: "ResearchWorkers",
     components: {
         ResearchDesigned,
+        // AddComment,
         LeafleatMap,
         mdbBtn,
         mdbIcon
@@ -121,11 +138,10 @@ export default {
             payload: null,
             dataResearch: null,
             favoriteAdded: null,
-            showContent: false
+            showContent: false,
+            workerId: null,
+            nb_comments: null
 		}
-    },
-    computed: {
-
     },
     methods : {
         resetResearch(){
@@ -149,6 +165,7 @@ export default {
                 this.currentPage = 1;
             } 
             else {
+                this.$refs.map.clearLayersOfResearch();
                 this.getHealthWorkersByFilters();
             }
         },
@@ -171,20 +188,25 @@ export default {
                 }}
             )
             .then( response => {
-                if (response.data.errorData){
-                    console.log('Veuillez renseigner des données avant de lancer la recherche.');
+                if(response.status == 200){
+                    if (response.data.errorData){
+                        console.log('Veuillez renseigner des données avant de lancer la recherche.');
+                    }
+                    else {
+                        this.healthWorkers = response.data.datas.healthworkers;
+                        this.markers = response.data.datas.coordinates;
+                        this.$store.commit("setMarkers", this.markers);
+                        if (this.dataResearch.newRequest === true){
+                            this.dataResearch.newRequest = false;
+                        }
+                        if(this.totalPages == 0){
+                            this.totalResults = response.data.page.totalResults;
+                            this.totalPages = response.data.page.totalPages;
+                        }
+                    }
                 }
                 else {
-                    this.healthWorkers = response.data.datas.healthworkers;
-                    this.markers = response.data.datas.coordinates;
-                    if (this.dataResearch.newRequest === true){
-                        this.dataResearch.newRequest = false;
-                        this.$store.commit("setMarkers", this.markers);
-                    }
-                    if(this.totalPages == 0){
-                        this.totalResults = response.data.page.totalResults;
-                        this.totalPages = response.data.page.totalPages;
-                    }
+                    this.$router.push({ path: '/error500'});
                 }
             })
             .catch(error => {
@@ -196,23 +218,10 @@ export default {
         beforeEnter(el) {
             this.elHeight = el.scrollHeight;
         },
-        addFavorites(healthWorker_Id){
-            Axios
-            .post("http://localhost/annuairesante/backend/index.php", {
-                route: "addFavorites",
-                userId: this.$store.state.userLogged.id,
-                workerId: healthWorker_Id
-            })
-            .then( response => {
-                this.favoriteAdded = response.data.FavoriteAddeed;
-                //    if (this.passwordCorrect){
-                //        this.$router.push({ path: '/userprofile' });
-                //    }
-            })  
-            .catch(error => {
-                console.log(error)
-                this.errored = true
-            })
+        seeCommentsOfWorker(healthWorkerId){
+            localStorage.setItem('healthWorkerId', healthWorkerId);
+            this.$store.commit("changeWorker", healthWorkerId);
+            this.$router.push({ path: '/workerdetailview' });
         }
     },
     watch: {
@@ -261,9 +270,6 @@ export default {
     margin: 3% 0 3% 0;
     color: inherit;
 }
-.displayResults .fas{
-    padding-right: 1%;
-}
 .displayResults h2{
     font-weight: normal;
     font-size: 1.4em;
@@ -273,12 +279,26 @@ export default {
     font-size: 0.9em;
 }
 .sm-item-header{
-    /* background-color: #2962FF; */
     background-color: #0c2050;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
     color: #fff;
-    padding: 0.5rem 1rem 2.5rem;
+    padding: 1.5rem 0rem 1.5rem;
+    /* display: flex;
+    justify-content: space-around; */
+    align-items: center;
+}
+.sm-item-header .header-name-rate{
+    display: flex;
+    align-items: center;  
+}
+.sm-item-header .name-worker{
+    padding-right: 2%;
+    font-size: 18px;
+}
+.sm-item-header .rate-worker{
+    display: flex;
+    align-items: center;
 }
 .sm-item-body {
     border: 1px solid rgba(41,98,255,0.1);
@@ -288,12 +308,33 @@ export default {
     padding: 1.5rem;
 }
 .sm-item-footer {
+    display: flex;
+    justify-content: right;
     background-color: #0c2050;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
     color: #fff;
     padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-right: 10%;
+    align-items: center;
 }
+.sm-item-header .rate-worker{
+    color: orange;
+}
+
+.button-footer{
+    display: flex;
+}
+
+.link-seemore, .link-comments{
+    color: #c7c7d7 !important;
+    cursor: pointer;
+}
+.link-seemore:hover, .link-comments:hover{
+    color: #5656fa !important;
+}
+
 label {
     display: inline-block;
     margin-bottom: 0.5rem;
@@ -303,9 +344,8 @@ label {
     margin-left: 0.4rem;
 }
 .sm-item-footer .btn{
-    position: relative;
-    left: 90%;
     width: auto;
+    margin-right: 20%;
 }
 /*---*/
 

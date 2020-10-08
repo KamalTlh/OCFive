@@ -1,107 +1,93 @@
 <template>
     <div class="row">
         <div class="col-md-12">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div id="content" class="content content-full-width">
-                            <!-- begin profile -->
-                            <div class="profile">
-                                <div class="profile-header">
-                                    <!-- BEGIN profile-header-cover -->
-                                    <div class="profile-header-cover"></div>
-                                    <!-- END profile-header-cover -->
-                                    <!-- BEGIN profile-header-content -->
-                                    <div class="profile-header-content">
-                                        <!-- BEGIN profile-header-img -->
-                                        <div class="profile-header-img">
-                                            <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="">
-                                        </div>
-                                        <!-- END profile-header-img -->
-                                        <!-- BEGIN profile-header-info -->
-                                        <div class="profile-header-info">
-                                            <h4 class="m-t-10 m-b-5">{{ myUserLogged.pseudo }}</h4>
-                                            <p class="m-b-10" v-if="myUserLogged.role_id == 2"> Membre </p>
-                                            <p v-else > Administrateur </p>
-                                        </div>
-                                        <!-- END profile-header-info -->
-                                    </div>
-                                    <!-- END profile-header-content -->
-                                    <!-- BEGIN profile-header-tab -->
-                                    <ul class="profile-header-tab nav nav-tabs">
-                                        <li class="nav-item"><a href="#profile-about" class="nav-link active show"
-                                                data-toggle="tab">PROFIL</a></li>
-                                        <li class="nav-item"><a href="#profile-post" class="nav-link"
-                                                data-toggle="tab">POSTS</a></li>
-                                    </ul>
-                                    <!-- END profile-header-tab -->
-                                </div>
+            <div id="content" class="content content-full-width">
+                <!-- begin profile -->
+                <div class="profile">
+                    <div class="profile-header">
+                        <!-- BEGIN profile-header-cover -->
+                        <div class="profile-header-cover"></div>
+                        <!-- END profile-header-cover -->
+                        <!-- BEGIN profile-header-content -->
+                        <div class="profile-header-content">
+                            <!-- BEGIN profile-header-img -->
+                            <div class="profile-header-img">
+                                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="">
                             </div>
-                            <!-- end profile -->
-                            <!-- begin profile-content -->
-                            <div class="profile-content">
-                                <!-- begin tab-content -->
-                                <div class="tab-content p-0">
-                                    <!-- begin #profile-about tab -->
-                                    <div class="tab-pane fade in active show" id="profile-about">
-                                        <!-- begin table -->
-                                        <section id="register-form">
-                                            <div class="row">
-                                                <div class="col-md-6 mb-4">
-                                                    <div class="pr-1">
-                                                        <div class="card">
-                                                            <h5 class="card-header info-color white-text text-center py-4">
-                                                                <strong>Modifier Utilisateur</strong>
-                                                            </h5>
-                                                            <div class="card-body px-lg-5 pt-0">
-                                                                <form v-on:submit.prevent="updateUser" action='/' class="text-center" style="color: #757575;">
-                                                                    <!-- First name -->
-                                                                    <div class="md-form">
-                                                                        <label for="materialRegisterFormFirstName" class="active">Pseudo</label>
-                                                                        <input type="text" v-model="myUserToUpdate.pseudo" id="materialRegisterFormFirstName"
-                                                                            class="form-control">
-                                                                        <small id="materialRegisterFormPasswordHelpBlock"
-                                                                            class="form-text text-muted mb-4" v-if="this.errorPseudo"> {{ errorPseudo }}
-                                                                        </small>
-                                                                         <small id="materialRegisterFormPasswordHelpBlock"
-                                                                            class="form-text text-muted mb-4" v-if="this.pseudoNotAvailable"> {{ pseudoNotAvailable }}
-                                                                        </small>
-                                                                    </div>
-
-                                                                    <!-- E-mail -->
-                                                                    <div class="md-form">
-                                                                        <label for="materialRegisterFormEmail" class="active">E-mail</label>
-                                                                        <input type="email" v-model="myUserToUpdate.email" id="materialRegisterFormEmail" class="form-control">
-                                                                        <small id="materialRegisterFormPasswordHelpBlock"
-                                                                            class="form-text text-muted mb-4" v-if="this.errorEmail"> {{ errorEmail }} 
-                                                                        </small>                                    
-                                                                    </div>
-                                                                    <div class="submitUpdate">
-                                                                        <button class="btn btn-primary" type="submit" >
-                                                                            Modifier
-                                                                        </button>
-                                                                        <button class="btn btn-primary" type="cancel" @click="cancelUpdate" >
-                                                                            Annuler
-                                                                        </button>
-                                                                    </div>
-                                                                    <hr>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </section>
-                                        <!-- end table -->
-                                    </div>
-                                    <!-- end #profile-about tab -->
-                                </div>
-                                <!-- end tab-content -->
+                            <!-- END profile-header-img -->
+                            <!-- BEGIN profile-header-info -->
+                            <div class="profile-header-info">
+                                <h4 class="m-t-10 m-b-5">{{ myUserLogged.pseudo }}</h4>
+                                <p class="m-b-10" v-if="myUserLogged.role_id == 2"> Membre </p>
+                                <p v-else > Administrateur </p>
                             </div>
-                            <!-- end profile-content -->
+                            <!-- END profile-header-info -->
                         </div>
+                        <!-- END profile-header-content -->
                     </div>
                 </div>
+                <!-- end profile -->
+                <!-- begin profile-content -->
+                <div class="profile-content">
+                    <!-- begin tab-content -->
+                    <div class="tab-content p-0">
+                        <!-- begin #profile-about tab -->
+                        <div class="tab-pane fade in active show" id="profile-about">
+                            <!-- begin table -->
+                            <section id="register-form">
+                                <div class="row">
+                                    <div class="col-md-6 mb-4">
+                                        <div class="pr-1">
+                                            <div class="card">
+                                                <h5 class="card-header info-color white-text text-center py-4">
+                                                    <strong>Modifier Utilisateur</strong>
+                                                </h5>
+                                                <div class="card-body px-lg-5 pt-0">
+                                                    <form v-on:submit.prevent="updateUser" action='/' class="text-center" style="color: #757575;">
+                                                        <!-- First name -->
+                                                        <div class="md-form">
+                                                            <label for="materialRegisterFormFirstName" class="active">Pseudo</label>
+                                                            <input type="text" v-model="myUserToUpdate.pseudo" id="materialRegisterFormFirstName"
+                                                                class="form-control">
+                                                            <small id="materialRegisterFormPasswordHelpBlock"
+                                                                class="form-text text-muted mb-4" v-if="this.errorPseudo"> {{ errorPseudo }}
+                                                            </small>
+                                                                <small id="materialRegisterFormPasswordHelpBlock"
+                                                                class="form-text text-muted mb-4" v-if="this.pseudoNotAvailable"> {{ pseudoNotAvailable }}
+                                                            </small>
+                                                        </div>
+
+                                                        <!-- E-mail -->
+                                                        <div class="md-form">
+                                                            <label for="materialRegisterFormEmail" class="active">E-mail</label>
+                                                            <input type="email" v-model="myUserToUpdate.email" id="materialRegisterFormEmail" class="form-control">
+                                                            <small id="materialRegisterFormPasswordHelpBlock"
+                                                                class="form-text text-muted mb-4" v-if="this.errorEmail"> {{ errorEmail }} 
+                                                            </small>                                    
+                                                        </div>
+                                                        <div class="submitUpdate">
+                                                            <button class="btn btn-success" type="submit" >
+                                                                Modifier
+                                                            </button>
+                                                            <button class="btn btn-primary" type="cancel" @click="cancelUpdate" >
+                                                                Annuler
+                                                            </button>
+                                                        </div>
+                                                        <hr>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <!-- end table -->
+                        </div>
+                        <!-- end #profile-about tab -->
+                    </div>
+                    <!-- end tab-content -->
+                </div>
+                <!-- end profile-content -->
             </div>
         </div>
     </div>
@@ -114,8 +100,6 @@ export default {
     name: 'UserProfileUpdate',
     data(){
         return {
-            // pseudo: this.myUserToUpdate.pseudo,
-            // email: this.myUserToUpdate.email,
             errorPseudo: null,
             errorEmail: null,
             pseudoNotAvailable: null,
@@ -189,6 +173,7 @@ body{
 }
 
 .submitUpdate{
+    display: flex;
     margin: 5%;
 }
 

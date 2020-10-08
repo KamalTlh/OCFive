@@ -47,6 +47,7 @@
         </div>
     </div>
 </template>
+
 <style>
 body {
     font-size: 1em;
