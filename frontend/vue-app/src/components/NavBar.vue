@@ -25,8 +25,7 @@
                   <router-link to="/login" class="btn account right tooltipped"> <i class="fas fa-sign-in-alt user-pic"></i>
                     <span>Connexion</span> </router-link> 
                 </div>
-                <!-- <Login v-if="checkSession === false" ></Login> -->
-                <Logout v-if="checkSession === true" ></Logout>
+                <Logout v-if="checkSession == 'true'" ></Logout>
               </li>
           </ul>
         </div>

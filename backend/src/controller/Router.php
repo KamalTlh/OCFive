@@ -1,7 +1,7 @@
 <?php
 namespace MyApp\Controller;
 use MyApp\Controller;
-
+use MyApp\Config\Authentification;
 class Router{
     private $proSanteController;
     private $commentController;
@@ -9,6 +9,7 @@ class Router{
     private $userController;
     private $favoritesController;
     private $field_data;
+    private $authentification;
     
     public function __construct(){
         $this->proSanteController = new ProSanteController();
@@ -16,6 +17,7 @@ class Router{
         $this->errorController = new ErrorController();
         $this->userController = new UserController();
         $this->favoritesController = new FavoritesController();
+        $this->authentification = new Authentification();
     }
 
     public function run(){
@@ -97,7 +99,10 @@ class Router{
                     $this->proSanteController->getCities();
                 }
                 elseif($_GET['route'] === 'userFavorites'){
-                    $this->favoritesController->getFavoritesOfUser($_GET);
+                    $check = $this->authentification->checkAuthentification();
+                    if ($check['access'] === true){
+                        $this->favoritesController->getFavoritesOfUser($_GET);
+                    }
                 }
                 elseif($_GET['route'] === 'userComments'){
                     $this->commentController->getCommentsOfUser($_GET);

@@ -21,15 +21,15 @@ import '@fortawesome/fontawesome-free/css/all.min.css'
 import 'leaflet-defaulticon-compatibility';
 import 'leaflet/dist/leaflet.css';
 
-Axios.defaults.headers.common['Authorization'] = 'AUTH_TOKEN';
 
 Axios.interceptors.request.use(
   config => {
-      const token = 'localStorage.getItem';
+      const token = localStorage.getItem('token');
+      console.log('token: '+token);
       if (token) {
           config.headers['Authorization'] = 'Bearer ' + token;
       }
-      // config.headers['Content-Type'] = 'application/json';
+      config.headers['Content-Type'] = 'application/json';
       return config;
   },
   error => {

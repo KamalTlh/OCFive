@@ -1,5 +1,5 @@
 <?php
-require "../configDataDb.php";
+require "../config.php";
 // Récupération des identifiants de la base de données.
 
 const DB_HOST = host;

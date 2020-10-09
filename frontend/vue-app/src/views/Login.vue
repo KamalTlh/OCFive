@@ -105,8 +105,8 @@ export default {
                                 this.$store.commit("changeSessionState", response.data.sessionConnected );
                                 this.$store.commit("setUserLogged", response.data.user );
                                 this.$store.commit("changeUser", response.data.user );
-                                localStorage.setItem('UserLog',JSON.stringify(response.data.user) );
-                                localStorage.setItem('sessionLog', response.data.sessionConnected );
+                                localStorage.setItem('token',JSON.stringify(response.data.jwt) );
+                                // localStorage.setItem('sessionLog', response.data.sessionConnected );
                                 this.$router.push({ path: '/'});
                             }
                         } else {

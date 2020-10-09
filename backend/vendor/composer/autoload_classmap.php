@@ -6,11 +6,4 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'MyApp\\Controller\\CommentController' => $baseDir . '/src/controller/CommentController.php',
-    'MyApp\\Controller\\Controller' => $baseDir . '/src/controller/Controller.php',
-    'MyApp\\Controller\\ErrorController' => $baseDir . '/src/controller/ErrorController.php',
-    'MyApp\\Controller\\FavoritesController' => $baseDir . '/src/controller/FavoritesController.php',
-    'MyApp\\Controller\\ProSanteController' => $baseDir . '/src/controller/ProSanteController.php',
-    'MyApp\\Controller\\Router' => $baseDir . '/src/controller/Router.php',
-    'MyApp\\Controller\\UserController' => $baseDir . '/src/controller/UserController.php',
 );
