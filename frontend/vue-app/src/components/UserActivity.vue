@@ -45,10 +45,15 @@ export default {
                 }}
             )
             .then( response => {
-                this.favorites = response.data.favoritesOfUser;
+                if(response.status == 200){
+                    this.favorites = response.data.favoritesOfUser;
+                }
+                else {
+                    console.log('il y a erreur');
+                }
             })  
             .catch(error => {
-                console.log(error)
+                console.log(error.response.data);
                 this.errored = true
             })
         },
@@ -74,7 +79,6 @@ export default {
     },
     mounted(){
         if (this.$store.state.sessionConnected){
-            console.log('Connecté, récupération des favoris et des commentaires');
             this.getFavoritesOfUser();
             this.getCommentsOfUser();
         }

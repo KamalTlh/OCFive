@@ -111,15 +111,42 @@ router.beforeEach((to, from, next) => {
 })
 
 router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+      store.commit("changeSessionState", true );
+      const localUser = localStorage.getItem('user');
+      if (localUser) {
+        const user = JSON.parse(localUser);
+        store.commit("setUserLogged", user );
+      }
+    next()
+  } else {
+    store.commit("changeSessionState", false );
+    next() // make sure to always call next()!
+  }
+})
+
+router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
-    if (!store.state.sessionConnected) {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      store.commit("changeSessionState", false );
       next({
         path: '/login',
         query: { redirect: to.fullPath },
       })
     } else {
+      const localUser = localStorage.getItem('user');
+      if (localUser) {
+        const user = JSON.parse(localUser);
+        store.commit("setUserLogged", user );
+        store.commit("changeSessionState", true );
+        if (from.fullPath != '/adminview'){
+          store.commit("changeUser", user );
+        }
+      }
       next()
     }
   } else {
@@ -131,17 +158,20 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAdmin)) {
     // this route requires admin access, check if user have access
     // if not, redirect to home page.
-    if (store.state.userLogged.role_id != 1) {
-      next({
-        path: '/',
-        query: { redirect: to.fullPath }
-      })
-    } else {
-      next()
+    const localUser = localStorage.getItem('user');
+      if (localUser) {
+        const user = JSON.parse(localUser);
+        if (user.role_id != 1) {
+          next({
+            path: '/',
+            query: { redirect: to.fullPath }
+          })
+        } else {
+          next()
+        }
     }
   } else {
     next() // make sure to always call next()!
   }
 })
-
 export default router

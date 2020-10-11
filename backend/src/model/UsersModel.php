@@ -22,19 +22,9 @@ class UsersModel extends Model{
         return $data;
     }
 
-    // public function getListUsers(){
-    //     $pagination = $this->getPagePagination();
-    //     $sql = 'SELECT * FROM user LIMIT '.$pagination['limite'].' OFFSET '.$pagination['debut'];
-    //     $result = $this->createQuery($sql);
-    //     $users = $result->fetchAll(PDO::FETCH_ASSOC);
-    //     $data['currentPage'] = $pagination['currentPage'];
-    //     $data['users'] = $users;
-    //     return $data;
-    // }
-
     public function getListUsers(){
         $pagination = $this->getPagePagination();
-        $sql = 'SELECT * FROM user LIMIT '.$pagination['limite'].' OFFSET '.$pagination['debut'];
+        $sql = 'SELECT id, pseudo, email, date_creation, role_id FROM user LIMIT '.$pagination['limite'].' OFFSET '.$pagination['debut'];
         $result = $this->createQuery($sql);
         $users = [];
         $usersResult = $result->fetchAll(PDO::FETCH_ASSOC);

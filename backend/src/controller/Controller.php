@@ -10,9 +10,10 @@ use MyApp\Model\UsersModel;
 use MyApp\Model\FavoritesModel;
 use MyApp\View\View;
 use MyApp\Config\Session;
+use MyApp\Config\Authentification;
 use MyApp\Constraint\Validation;
 
-abstract class Controller{
+abstract class Controller extends Authentification{
     protected $proSanteModel;
     protected $prosSanteModel;
     protected $commentModel;
@@ -22,6 +23,7 @@ abstract class Controller{
     protected $favoritesModel;
     protected $view;
     protected $session;
+    protected $authentification;
     protected $validation;
 
     public function __construct(){
@@ -34,6 +36,7 @@ abstract class Controller{
         $this->favoritesModel = new FavoritesModel();
         $this->view = new View();
         $this->session = new Session($_SESSION);
+        $this->authentification = new Authentification();
         $this->validation = new Validation();
     }
 
@@ -55,5 +58,15 @@ abstract class Controller{
         else{
             return true;
         }
+    }
+
+    public function lookAuth($user){
+        $data = $this->authentification->createTokenAuthentification($user);
+        return $data;
+    }
+
+    public function checkAuth(){
+        $data = $this->authentification->checkAuthentification();
+        return $data;
     }
 }

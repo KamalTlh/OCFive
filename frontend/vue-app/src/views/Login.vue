@@ -47,7 +47,8 @@ export default {
 			error: false,
 			errorData: false,
 			errorPseudo: null,
-			errorPassword: null
+            errorPassword: null,
+            user: []
 		};
 	},
 	methods: {
@@ -102,11 +103,12 @@ export default {
                                 this.errorData = response.data.errorData;
                             }
                             else {
+                                this.user = response.data.user;
                                 this.$store.commit("changeSessionState", response.data.sessionConnected );
                                 this.$store.commit("setUserLogged", response.data.user );
                                 this.$store.commit("changeUser", response.data.user );
                                 localStorage.setItem('token',JSON.stringify(response.data.jwt) );
-                                // localStorage.setItem('sessionLog', response.data.sessionConnected );
+                                localStorage.setItem('user', JSON.stringify(this.user) );
                                 this.$router.push({ path: '/'});
                             }
                         } else {
@@ -118,20 +120,7 @@ export default {
                         this.errored = true
                     })
 			}
-        },
-        // login: function () {
-        //     console.log('login');
-        //     const pseudo = this.pseudo;
-        //     const password = this.password;
-        //     this.$auth.login({ pseudo, password }).then(function () {
-        //         // this.$store.commit("changeSessionState", response.data.sessionConnected );
-        //         // this.$store.commit("setUserLogged", response.data.user );
-        //         // this.$store.commit("changeUser", response.data.user );
-        //         // localStorage.setItem('UserLog', response.data.user );
-        //         // localStorage.setItem('sessionLog', response.data.sessionConnected );
-        //         this.$router.push({ path: '/'});
-        //     })
-        // }
+        }
 	}
 }
 </script>

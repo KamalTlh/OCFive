@@ -2,6 +2,7 @@
 namespace MyApp\Controller;
 use MyApp\Controller;
 use MyApp\Config\Authentification;
+
 class Router{
     private $proSanteController;
     private $commentController;
@@ -99,10 +100,7 @@ class Router{
                     $this->proSanteController->getCities();
                 }
                 elseif($_GET['route'] === 'userFavorites'){
-                    $check = $this->authentification->checkAuthentification();
-                    if ($check['access'] === true){
-                        $this->favoritesController->getFavoritesOfUser($_GET);
-                    }
+                    $this->favoritesController->getFavoritesOfUser($_GET);
                 }
                 elseif($_GET['route'] === 'userComments'){
                     $this->commentController->getCommentsOfUser($_GET);

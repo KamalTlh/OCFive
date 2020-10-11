@@ -20,7 +20,7 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="return-btn">
-                                        <button v-if="ifFavorite > 1" type="button" class="btn btn-warning" @click="deleteFromFavorites(healthworker.id)">Supprimer des Favoris</button>
+                                        <button v-if="ifFavorite >= 1" type="button" class="btn btn-warning" @click="deleteFromFavorites(healthworker.id)">Supprimer des Favoris</button>
                                         <router-link type="button" class="btn btn-success" to="/userprofile">Retour</router-link>
                                     </div>
                                 </div>
@@ -177,7 +177,9 @@ export default {
             rating: null,
             ifFavorite: null,
             ifRated: null,
-            id: null
+            id: null,
+            favoriteAdded: null,
+            rateAdded: null
         }
     },
     computed: {
@@ -288,7 +290,7 @@ export default {
             })
             .then( response => {
                 if(response.status == 200){
-                    this.addRate = response.data.rateAdded;
+                    this.rateAdded = response.data.rateAdded;
                 }
                 else {
                     this.$router.push({ path: '/error500'});
@@ -318,16 +320,19 @@ export default {
         }
     },
     beforeMount(){
-        this.$store.commit("changeWorker", localStorage.getItem('healthWorkerId'));
         this.getHealthWorker();
         this.getCommentsOfWorker();
-        if (localStorage.getItem('sessionLog') == 'true'){
-            const user = JSON.parse(localStorage.getItem('UserLog'));
-            this.$store.commit("setUserLogged", user );
+        this.checkUserPreferences();
+    },
+    watch: {
+        rateAdded: function(){
+            this.checkUserPreferences();
+        },
+        favoriteAdded: function(){
             this.checkUserPreferences();
         }
     }
-};
+}
 </script>
 
 <style>

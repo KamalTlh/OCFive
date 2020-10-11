@@ -45,10 +45,16 @@ import Axios from 'axios';
           })
           .then( response => {
             this.$store.commit("changeSessionState", response.data.sessionConnected );
-            localStorage.setItem('sessionLog', response.data.sessionConnected );
             this.$store.commit("setUserLogged", null );
             this.$store.commit("changeUser", null );
             this.$session.set('Logout', 'Merci à bientôt');
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            localStorage.removeItem('id');
+            localStorage.removeItem('pseudo');
+            localStorage.removeItem('email');
+            localStorage.removeItem('date_creation');
+            localStorage.removeItem('role');
             if ( this.$router.currentRoute.name != 'Home'){
               this.$router.push({ path: '/'});
             }

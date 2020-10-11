@@ -9,34 +9,8 @@ class UserController extends Controller{
             $result = $this->userModel->login($post['pseudo'], $post['password']);
             if($result && $result['isPasswordValid']){
                 $result['role'] = $this->userModel->checkUserRole($post['pseudo']);
-
                 /*-- jwt-auth --*/
-                $secret_key = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC8kGa1pSjbSYZVebtTRBLxBz5H 4i2p/llLCrEeQhta5kaQu/RnvuER4W8oDH3+3iuIYW4VQAzyqFpwuzjkDI+17t5t 0tyazyZ8JXw+KgXTxldMPEL95+qVhgXvwtihXC1c5oGbRlEDvDF6Sa53rcFVsYJ4 ehde/zUxo6UvS7UrBQIDAQAB";
-                // $issuer_claim = "Annuaire_Api"; // this can be the servername
-                // $audience_claim = "THE_AUDIENCE";
-                $issuedat_claim = time(); // issued at
-                $notbefore_claim = $issuedat_claim + 10; //not before in seconds
-                $expire_claim = $issuedat_claim + 6000; // expire time in seconds
-                $token = array(
-                    // "iss" => $issuer_claim,
-                    // "aud" => $audience_claim,
-                    "iat" => $issuedat_claim,
-                    // "nbf" => $notbefore_claim,
-                    "exp" => $expire_claim,
-                    "jti" => "63aeec8b-1630-4441-8f0c-e4120834b0ee",
-                    "data" => array(
-                        "Id" => $result['user']['id'],
-                        "Pseudo" => $result['user']['pseudo'],
-                        "Email" => $result['user']['email'],
-                        "Date_Creation" => $result['user']['date_creation'],
-                        "Rôle" => $result['user']['role_id']
-                ));
-                $jwt = JWT::encode($token, $secret_key);
-                $data['message'] = "Successful login.";
-                $data['user'] = $result['user'];
-                $data['sessionConnected'] = true;
-                $data['jwt'] = $jwt;
-                $data['expireAt'] = $expire_claim;
+                $data = $this->lookAuth($result['user']);
                 /*---*/
             }
             else {
@@ -218,7 +192,8 @@ class UserController extends Controller{
             $this->session->set('sessionConnected', false);
             $data['sessionConnected']= $this->session->get('sessionConnected');
             return $this->view->render('JsonResponse', [
-                'data' => $data
+                'data' => $data,
+                'message' => 'User Logout.'
             ]);
         }
         else{

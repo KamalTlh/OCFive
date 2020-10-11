@@ -1,8 +1,8 @@
 <template>
     <b-container>
-        <div class="cantViewOnMap" v-if="cantViewOnMap">
+        <!-- <div class="cantViewOnMap" v-if="cantViewOnMap">
             <p>Les résultats sont trop nombreux pour tous être affichés sur la carte. Seul 25 résultats sont indiqués!</p>
-        </div>
+        </div> -->
         <div class="map" id="map">   
         </div>
     </b-container>
@@ -22,7 +22,7 @@ export default{
             markerIcon: L.icon({
                 iconUrl: 'https://api.geoapify.com/v1/icon/?type=awesome&color=red&icon=clinic-medical&apiKey=9631b09f915244728e90c98a650d59f5'
             }),
-            cantViewOnMap: false,
+            // cantViewOnMap: false,
             lat: null,
             long: null,
             cats: []
@@ -46,25 +46,8 @@ export default{
             let latMarker, longMarker;
             let layers = [];
             const self = this;
-            if (this.$store.state.markers.length > 400 ){
-                this.cantViewOnMap = true;
-                for (let i=0; i<25 ; i++){
-                    const coords = this.$store.state.markers[i].coordonnees.split(',');
-                    latMarker = parseFloat(coords[0]);
-                    longMarker = parseFloat(coords[1]);
-                    let marker= L.marker([latMarker, longMarker], {icon: self.markerIcon});
-                    layers.push(marker);
-                    let popupContent = this.$store.state.markers[i].contact+' / '+this.$store.state.markers[i].profession;
-                    marker.bindPopup(popupContent);
-                }
-                this.layerGroup = L.layerGroup(layers);
-                this.layerGroup.addTo(this.map);
-                this.lat = latMarker;
-                this.long = longMarker;
-            }
-            else {
-                this.cantViewOnMap = false;
-                this.$store.state.markers.forEach((element) => {
+            this.$store.state.markers.forEach((element) => {
+                if (element.coordonnees != ''){
                     const coords = element.coordonnees.split(',');
                     latMarker = parseFloat(coords[0]);
                     longMarker = parseFloat(coords[1]);
@@ -72,12 +55,12 @@ export default{
                     layers.push(marker);
                     let popupContent = element.contact+' / '+element.profession;
                     marker.bindPopup(popupContent);
-                });
-                this.layerGroup = L.layerGroup(layers);
-                this.layerGroup.addTo(this.map);
-                this.lat = latMarker;
-                this.long = longMarker;
-            }
+                }
+            });
+            this.layerGroup = L.layerGroup(layers);
+            this.layerGroup.addTo(this.map);
+            this.lat = latMarker;
+            this.long = longMarker;
         },
         clearLayersOfResearch(){
             if(this.map.hasLayer(this.layerGroup)){

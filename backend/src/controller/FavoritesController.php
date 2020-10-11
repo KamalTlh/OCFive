@@ -22,10 +22,17 @@ class FavoritesController extends Controller{
     }
 
     public function getFavoritesOfUser($post){
-        if(isset($post['userId'])){
-            $data = $this->favoritesModel->getFavoritesOfUser($post['userId']);
+        $check = $this->checkAuth();
+        if ($check['access'] === true){
+            if(isset($post['userId'])){
+                $data = $this->favoritesModel->getFavoritesOfUser($post['userId']);
+                return $this->view->render('JsonResponse',[
+                    'data'=> $data
+                ]);
+            }
+        }else {
             return $this->view->render('JsonResponse',[
-                'data'=> $data
+                'Denied' => 'Access Denied'
             ]);
         }
     }

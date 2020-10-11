@@ -22,18 +22,44 @@ import 'leaflet-defaulticon-compatibility';
 import 'leaflet/dist/leaflet.css';
 
 
-Axios.interceptors.request.use(
-  config => {
-      const token = localStorage.getItem('token');
-      console.log('token: '+token);
-      if (token) {
-          config.headers['Authorization'] = 'Bearer ' + token;
-      }
-      config.headers['Content-Type'] = 'application/json';
-      return config;
-  },
-  error => {
-      Promise.reject(error)
+// Axios.interceptors.request.use(
+//   config => {
+//       const token = localStorage.getItem('token');
+//       if (token) {
+//           Axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+//       }
+//       // config.headers['Content-Type'] = 'application/json';
+//       return config;
+//   },
+//   error => {
+//       Promise.reject(error)
+// });
+
+// Add a request interceptor
+Axios.interceptors.request.use(function (config) {
+    const token = localStorage.getItem('token');
+    if (token) {
+        config.headers['Authorization'] = 'Bearer ' + token;
+        // Axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+    }
+    return config;
+}, function (error) {
+    return Promise.reject(error);
+});
+
+// Add a response interceptor
+Axios.interceptors.response.use(function (response) {
+    return response;
+}, function (error) {
+  if(error.response.status == 401){
+    store.commit("changeSessionState", false );
+    store.commit("setUserLogged", null );
+    store.commit("changeUser", null );
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    router.push({ path: '/login' });
+  }
+  return Promise.reject(error);
 });
 
 Vue.config.productionTip = false

@@ -25,7 +25,7 @@
                   <router-link to="/login" class="btn account right tooltipped"> <i class="fas fa-sign-in-alt user-pic"></i>
                     <span>Connexion</span> </router-link> 
                 </div>
-                <Logout v-if="checkSession == 'true'" ></Logout>
+                <Logout v-if="checkSession === true" ></Logout>
               </li>
           </ul>
         </div>
@@ -44,6 +44,7 @@ import Logout from '@/components/Logout';
     },
     data(){
       return {
+        userConnect: localStorage.getItem('token')
       };
     },
     computed:{
@@ -59,14 +60,12 @@ import Logout from '@/components/Logout';
         this.$store.commit("changeUser", this.$store.state.userLogged);
       }
     },
-    // beforeMount(){
-    //   if(localStorage.sessionLog){
-    //     console.log('ok récup');
-    //     this.$store.commit("changeSessionState", localStorage.sessionLog );
-    //     this.$store.commit("setUserLogged", localStorage.user );
-    //     this.$store.commit("changeUser", localStorage.user );
-    //   }
-    // },
+    watch: {
+      userConnect: function(){
+        console.log('we check');
+        return this.checkSession();
+      }
+    }
   }
 </script>
 
