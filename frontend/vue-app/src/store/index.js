@@ -11,7 +11,7 @@ export default new Vuex.Store({
     workers: {},
     healthworkerId: null,
     sessionConnected: false,
-    isAuthenticated: false
+    needRefresh: false
   },
   mutations: {
     changeUser (state, payload ){
@@ -32,8 +32,8 @@ export default new Vuex.Store({
     setMarkers(state, payload){
       state.markers = payload
     },
-    isAuthenticated (state, payload) {
-      state.isAuthenticated = payload.isAuthenticated
+    needRefresh (state, payload) {
+      state.needRefresh = payload
     }
   },
   actions: {

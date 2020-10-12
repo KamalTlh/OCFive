@@ -7,13 +7,13 @@
             <header class="panel-heading">
             </header>
             <b-tab title="Utilisateurs" active>
-              <TableUsers id="p2" ></TableUsers>
+              <TableUsers ref="users" id="p2"></TableUsers>
             </b-tab>
             <b-tab title="Commentaires">
-              <TableComments id="p3"></TableComments>
+              <TableComments ref="comments" id="p3"></TableComments>
             </b-tab>
             <b-tab title="Professionnels de Sante">
-              <TableHealthWorkers id="p1"></TableHealthWorkers>
+              <TableHealthWorkers ref="workers" id="p1"></TableHealthWorkers>
             </b-tab>
           </section>
         </b-tabs>
@@ -33,6 +33,26 @@
       TableUsers,
       TableHealthWorkers,
       TableComments
+    },
+    data() {
+      return {
+      }
+    },
+    computed: {
+      needRefresh(){
+        return this.$store.state.needRefresh
+      }
+    },
+    methods: {
+    },
+    watch: {
+      needRefresh: function(){
+        if (this.needRefresh === true){
+          this.$refs.users.getUsers();
+          this.$refs.comments.getComments();
+          this.$store.commit('needRefresh' , false);
+        }
+      },
     }
   }
 </script>
@@ -44,5 +64,6 @@
 }
 .actions{
     display: flex;
+    justify-content: space-between;
 }
 </style>

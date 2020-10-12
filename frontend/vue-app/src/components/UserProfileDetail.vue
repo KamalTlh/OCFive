@@ -17,14 +17,14 @@
                                         <p class="m-b-10" > Membre </p>
                                         <router-link to="/userupdate" class="btn btn-xs btn-success">Editer Profil</router-link>
                                     </div>
-                                    <div class="btn-backAdmin">
-                                        <button type="button" @click="setAdminProfil" v-if="this.$store.state.userLogged.role_id == 1" class="btn btn-info btn-sm">Retour au profil Administrateur</button>
-                                        <router-link to="/adminview"  v-if="this.$store.state.userLogged.role_id == 1" class="btn btn-info btn-sm">Retour au panneau administration</router-link>
+                                    <div v-if="this.$store.state.userLogged.role_id == 1" class="btn-backAdmin">
+                                        <button type="button" @click="setAdminProfil" class="btn btn-info btn-sm">Retour au profil Administrateur</button>
+                                        <router-link to="/adminview" class="btn btn-info btn-sm">Retour au panneau administration</router-link>
                                     </div>
                                     <router-link v-if="this.$store.state.userLogged.role_id == 2" to="/passwordupdate" class="btn btn-xs btn-success">Modifier mot de passe</router-link>
                                 </div>
                                 <div v-else>
-                                    <p >Administrateur </p>
+                                    <p>Administrateur </p>
                                     <router-link to="/passwordupdate" class="btn btn-xs btn-success">Modifier mot de passe</router-link>
                                 </div>
                             </div>

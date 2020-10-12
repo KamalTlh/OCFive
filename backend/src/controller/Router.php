@@ -55,6 +55,9 @@ class Router{
                 elseif( $data['route'] === 'deleteComment' ){
                     $this->commentController->deleteComment($data);
                 }
+                elseif( $data['route'] === 'updateComment' ){
+                    $this->commentController->updateComment($data);
+                }
                 elseif( $data['route'] === 'addRate' ){
                     $this->proSanteController->addRate($data);
                 }

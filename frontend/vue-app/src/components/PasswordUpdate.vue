@@ -76,16 +76,13 @@ export default {
     },
     methods:{
         updatePassword(){
-            const CancelToken = Axios.CancelToken;
-            const source = CancelToken.source();    
             Axios
             .post("http://localhost/annuairesante/backend/index.php", {
                 route: "updatePassword",
                 userId: this.myUserLogged.id,
                 currentPassword: this.currentPassword,
                 newPasswordOne: this.newPasswordOne,
-                newPasswordTwo: this.newPasswordTwo,
-                cancelToken: source.token
+                newPasswordTwo: this.newPasswordTwo
             })
             .then( response => {
                 if (response.data.errors){
@@ -94,11 +91,11 @@ export default {
                     this.errornewPasswordTwo = response.data.errors.errornewPasswordTwo;
                 }
                 else {
-                    console.log('Data => '+response.data);
-                    console.log('status => '+response.status);
-                    console.log('statusText => '+response.statusText);
-                    console.log(response.headers);
-                    console.log(response.config);
+                    // console.log('Data => '+response.data);
+                    // console.log('status => '+response.status);
+                    // console.log('statusText => '+response.statusText);
+                    // console.log(response.headers);
+                    // console.log(response.config);
                    this.passwordCorrect = response.data.passwordCorrect;
                    if (this.passwordCorrect){
                        this.$router.push({ path: '/userprofile' });

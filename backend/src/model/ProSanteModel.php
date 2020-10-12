@@ -348,4 +348,11 @@ class ProSanteModel extends Model {
             return $data;
         }
     }
+
+    public function deleteRatesUser($userId){
+        $sql = 'DELETE FROM rate WHERE userId = ?';
+        $this->createQuery($sql, [$userId]);
+        $data['deleteRatesUser'] = true;
+        return $data ;
+    }
 }

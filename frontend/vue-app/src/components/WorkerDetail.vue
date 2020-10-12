@@ -16,6 +16,9 @@
                                     <div class="profile-header-info-worker">
                                         <h4 class="m-t-10 m-b-5">{{ healthworker.nom_professionnel }}</h4>
                                         <p class="m-b-10" > {{ healthworker.profession }} </p>
+                                        <div v-if="this.$store.state.userLogged.role_id == 1" class="btn-backAdmin">
+                                            <router-link to="/adminview" class="btn btn-info btn-sm">Retour au panneau administration</router-link>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">

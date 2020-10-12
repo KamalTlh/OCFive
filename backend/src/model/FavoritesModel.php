@@ -51,6 +51,13 @@ class FavoritesModel extends Model{
         return $data;
     }
 
+    public function deleteFavoritesUser($userId){
+        $sql = 'DELETE FROM favoris WHERE userId = ?';
+        $this->createQuery($sql, [$userId]);
+        $data['deleteFavoritesUser'] = true;
+        return $data;
+    }
+
     public function getFavoritesOfUser($userId){
         $sql = 'SELECT * FROM annuaire INNER JOIN favoris on favoris.workerId = annuaire.id AND favoris.userId = ? ';
         $result = $this->createQuery($sql, [$userId]);

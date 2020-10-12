@@ -1,7 +1,9 @@
 <template>
     <div class="row">
         <div class="col-8">
-            <h5 class="alertUpdate"> {{ this.$session.get('userUpdated') }}</h5>
+            <h5 class="alertUpdate">
+                <a class="btn btn-primary" alt="Créer un utilisateur" @click="createUser"><i class="fas fa-plus-circle"></i></a>
+            </h5>
             <b-pagination v-model="currentPage" :total-rows="totalResults" :per-page="perPage" aria-controls="my-table">
             </b-pagination>
             <table data-toggle="table" data-search="true" data-show-columns="true"
@@ -25,7 +27,6 @@
                         <td v-if="user.role_id == 2">User</td>
                         <td v-else>Administrateur</td>
                         <td class="actions">
-                            <a class="btn btn-primary"><i class="fas fa-plus-circle"></i></a>
                             <a class="btn btn-primary" @click="checkUser(user)"><i class="fas fa-eye"></i></a>
                             <a class="btn btn-success" @click="updateUser(user)"><i class="fas fa-edit"></i></a>
                             <a class="btn btn-danger" @click="deleteUser(user.id)"><i class="fas fa-trash-alt"></i></a>
@@ -39,6 +40,7 @@
 
 <script>
 import Axios from 'axios';
+ import VueCookies from 'vue-cookies';
   export default {
     name: "TableUsers",
     data() {
@@ -101,6 +103,10 @@ import Axios from 'axios';
       updateUser(user){
         this.$store.commit("changeUser", user);
         this.$router.push({ path: '/UserUpdate' });
+      },
+      createUser(){
+        VueCookies.set("previousUrl", window.location.pathname, "60s");
+        this.$router.push({ path: '/register' });
       }
     },
     mounted (){
@@ -109,6 +115,7 @@ import Axios from 'axios';
     watch: {
       isDelete: function(){
         if (this.isDelete === true){
+          this.$store.commit('needRefresh', this.isDelete );
           this.getUsers();
           this.isDelete = false;
         }

@@ -119,7 +119,6 @@ export default {
     name: "ResearchWorkers",
     components: {
         ResearchDesigned,
-        // AddComment,
         LeafleatMap,
         mdbBtn,
         mdbIcon

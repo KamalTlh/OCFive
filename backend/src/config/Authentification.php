@@ -33,7 +33,7 @@ class Authentification{
          $tokenId = base64_encode(random_bytes(32));
          $issuedat_claim = time(); // issued at
          $notbefore_claim = $issuedat_claim + 10; //not before in seconds
-         $expire_claim = $issuedat_claim + 6000; // expire time in seconds
+         $expire_claim = $issuedat_claim + 1800; // expire time in seconds -- 30min session time.
          $token = array(
              "iat" => $issuedat_claim,
              // "nbf" => $notbefore_claim,

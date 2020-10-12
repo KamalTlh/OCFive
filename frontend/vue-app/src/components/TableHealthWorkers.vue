@@ -25,7 +25,7 @@
                         <td>{{ healthworker.adresse }}</td>
                         <td>{{ healthworker.telephone }}</td>
                         <td class="actions">
-                            <a class="btn btn-primary"><i class="fas fa-plus-circle"></i></a>
+                            <!-- <a class="btn btn-primary"><i class="fas fa-plus-circle"></i></a> -->
                             <a class="btn btn-primary" @click="sendIdWorker(healthworker.id)"><i class="fas fa-eye"></i></a>
                             <a class="btn btn-success"><i class="fas fa-edit"></i></a>
                             <a class="btn btn-danger" ><i class="fas fa-trash-alt"></i></a>

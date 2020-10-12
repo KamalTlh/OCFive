@@ -97,10 +97,12 @@ class CommentModel extends Model{
         return $data;
     }
 
-    public function updateComment($comment, $commentId){
-        extract($comment);
+    public function updateComment($commentId, $content){
         $sql = 'UPDATE comment SET content = ? WHERE id = ?';
         $this->createQuery($sql, [strip_tags($content), $commentId]);
+        $data['commentUpdated'] = true;
+        $data['newComment'] = $content;
+        return $data;
     }
 
     public function deleteComment($commentId){

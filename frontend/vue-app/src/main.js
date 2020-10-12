@@ -7,6 +7,9 @@ import Axios from 'axios'
 import VueSessionStorage from 'vue-sessionstorage'
 Vue.use(VueSessionStorage)
 
+import VueCookies from 'vue-cookies'
+Vue.use(VueCookies)
+
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 // Install BootstrapVue
 Vue.use(BootstrapVue)

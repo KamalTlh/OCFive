@@ -62,6 +62,8 @@
 
 <script>
 import Axios from 'axios';
+import VueCookies from 'vue-cookies';
+
 export default {
     name: 'register',
     data() {
@@ -94,7 +96,12 @@ export default {
             this.registration = response.data.registration;
             if ( this.registration === true ) {
                 this.$session.set('signIn', 'Vous pouvez à présent vous connecter.');
-                this.$router.push({ path: '/' });
+                const previousUrl = VueCookies.get("previousUrl");
+                if (previousUrl == '/adminview'){
+                    this.$router.push({ path: '/adminview' });
+                } else {
+                    this.$router.push({ path: '/' });
+                }
             }
           })
           .catch(error => {

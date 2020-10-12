@@ -141,7 +141,6 @@ class UserModel extends Model{
     }
 
     public function updatePassword($password, $userId){
-        extract($user);
         $sql =' UPDATE user SET password = ? WHERE id = ?';
         $this->createQuery($sql, [password_hash($password, PASSWORD_BCRYPT), $userId]);
         return $data['passwordUpdated'] = true;

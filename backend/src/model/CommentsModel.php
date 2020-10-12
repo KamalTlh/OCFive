@@ -41,6 +41,13 @@ class CommentsModel extends Model{
         // return $comments;
     }
 
+    public function deleteCommentsUser($userId){
+        $sql = 'DELETE FROM comment WHERE userId = ?';
+        $this->createQuery($sql, [$userId]);
+        $data['deleteCommentsUser'] = true;
+        return $data ;
+    }
+    
     public function getCommentsOfWorker($workerId){
         $sql= 'SELECT comment.id, comment.content, comment.date_creation, comment.flag, user.pseudo FROM comment INNER JOIN user ON user.id = comment.userId WHERE workerId = ?';
         $result = $this->createQuery($sql, [$workerId]);
