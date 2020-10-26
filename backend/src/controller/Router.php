@@ -58,13 +58,19 @@ class Router{
                 elseif( $data['route'] === 'updateComment' ){
                     $this->commentController->updateComment($data);
                 }
+                elseif( $data['route'] === 'flagComment' ){
+                    $this->commentController->flagComment($data);
+                }
+                elseif( $data['route'] === 'unflagComment' ){
+                    $this->commentController->unflagComment($data);
+                }
                 elseif( $data['route'] === 'addRate' ){
                     $this->proSanteController->addRate($data);
                 }
             }
             elseif(isset($_GET) && !empty($_GET)){
                 if($_GET['route'] === 'filters'){
-                    /* Vérification que les champs de recherche envoyé coté FrontEnd ne soit pas null */
+                    /* Vérification que les champs de recherche envoyé coté FrontEnd ne soient pas null */
                     $this->field_data = 0;
                     foreach ($_GET as $key => $value){
                         if($key != 'route' && $key != 'page' && $key != 'totalPages'){

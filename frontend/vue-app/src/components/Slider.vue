@@ -1,40 +1,44 @@
 <template>
-  <div>
-    <b-carousel
-      id="carousel-1"
-      v-model="slide"
-      :interval="4000"
-      controls
-      indicators
-      background="#ababab"
-      img-width="1920"
-      img-height="480"
-      style="text-shadow: 1px 1px 2px #333;"
-    >
-      <!-- Text slides with image -->
-      <b-carousel-slide
-        caption="First slide"
-        text="Nulla vitae elit libero, a pharetra augue mollis interdum."
-        img-src="/images/doctor-4068134_1920.jpg"
-      ></b-carousel-slide>
-
-      <!-- Slides with custom text -->
-      <b-carousel-slide img-src="/images/doctor-4187242_1920.jpg">
-        <h1>Hello world!</h1>
-      </b-carousel-slide>
-
-      <!-- Slides with image only -->
-      <b-carousel-slide img-src="/images/heart-2211180_1920.jpg"></b-carousel-slide>
-
-      <!-- Slide with blank fluid image to maintain slide aspect ratio -->
-      <b-carousel-slide caption="Blank Image" img-src="/images/stethoscope-2617701_1920.jpg" img-alt="Blank image">
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eros felis, tincidunt
-          a tincidunt eget, convallis vel est. Ut pellentesque ut lacus vel interdum.
-        </p>
-      </b-carousel-slide>
-    </b-carousel>
+<header>
+  <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+      <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+      <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+      <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+    </ol>
+    <div class="carousel-inner" role="listbox">
+      <!-- Slide One - Set the background image for this slide in the line below -->
+      <div class="carousel-item active" style="background-image: url('images/yoga-4541268_1920.jpg')">
+        <div class="carousel-caption d-none d-md-block">
+          <h2 class="display-4">Bien-être</h2>
+          <p class="lead">Prenez soin de votre corps et esprit.</p>
+        </div>
+      </div>
+      <!-- Slide Two - Set the background image for this slide in the line below -->
+      <div class="carousel-item" style="background-image: url('images/vaccine-5103088_1920.jpg')">
+        <div class="carousel-caption d-none d-md-block">
+          <h2 class="display-4">Des professionnels de santé à votre service.</h2>
+          <p class="lead">Contactez un médecin professionnel et prenez rendez-vous auprès de lui.</p>
+        </div>
+      </div>
+      <!-- Slide Three - Set the background image for this slide in the line below -->
+      <div class="carousel-item" style="background-image: url('images/stethoscope-2617701_1920.jpg')">
+        <div class="carousel-caption d-none d-md-block">
+          <h2 class="display-4">Des professionnels de santé à votre service.</h2>
+          <p class="lead">Contactez un médecin professionnel et prenez rendez-vous auprès de lui.</p>
+        </div>
+      </div>
+    </div>
+    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+        </a>
   </div>
+</header>
 </template>
 
 <script>
@@ -47,18 +51,18 @@
       }
     },
     methods: {
-      // onSlideStart(slide) {
-      //   this.sliding = true
-      // },
-      // onSlideEnd(slide) {
-      //   this.sliding = false
-      // }
     }
   }
 </script>
 
 <style>
-.img-fluid{
-  height: 425px!important;
+.carousel-item {
+  height: 60vh;
+  min-height: 350px;
+  background: no-repeat center center scroll;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
 	<div id="app">
-    <strong> {{ random }} </strong>
+    <strong class="random"> {{ random }} </strong>
     <div id="anchor"></div>
         <div v-if="showToolbar" class="invisible-toolbar">
             <a href="#anchor"><div id="scroll-top"  class="action-link"><i class="fas fa-chevron-up"></i></div></a>
@@ -47,6 +47,9 @@ html {
     font-family: arial,verdana,sans-serif;
     font-size: 1em;
     color: #000;
+     background: #007bff;
+  background: linear-gradient(to right, #0062E6, #33AEFF);
+
 }
 #app{
   background-color: rgb(245,255,250);
@@ -56,5 +59,14 @@ html {
 #app #content .pageAdmin, #app #content .password-update {
   padding-top: 7%;
 }
+body {
+  background: #007bff;
+  background: linear-gradient(to right, #0062E6, #33AEFF);
+}
 
+.random{
+  position: fixed;
+  z-index: 1031;
+  top: 0;
+}
 </style>

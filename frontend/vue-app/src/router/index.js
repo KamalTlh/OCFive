@@ -5,15 +5,13 @@ import Home from '../views/Home.vue'
 import AdminView from '../views/AdminView.vue'
 import UserProfile from '../views/UserProfile.vue'
 import UserUpdate from '../views/UserUpdate.vue'
-import PasswordUpdate from '../views/PasswordUpdate.vue'
+import UpdatePasswordView from '../views/UpdatePasswordView.vue'
 import ResearchWorkers from '../views/ResearchWorkers.vue'
 import WorkerDetailView from '../views/WorkerDetailView.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import Error404 from '../views/Error404.vue'
 import Error500 from '../views/Error500.vue'
-
-
 
 
 Vue.use(VueRouter)
@@ -46,9 +44,9 @@ Vue.use(VueRouter)
     meta: { requiresAuth: true }
   },
   {
-    path: '/passwordupdate',
-    name: 'PasswordUpdate',
-    component: PasswordUpdate,
+    path: '/updatepassword',
+    name: 'UpdatePasswordView',
+    component: UpdatePasswordView,
     // a meta field
     meta: { requiresAuth: true }
   },
@@ -70,15 +68,8 @@ Vue.use(VueRouter)
   {
     path: '/register',
     name: 'Register',
-    component: Register
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    component: Register,
+    meta: { requiresLogout: true }
   },
   {
     path: '/error404',
@@ -106,13 +97,18 @@ router.beforeEach((to, from, next) => {
       query: { redirect: to.fullPath },
     })
   } else {
+    window.scroll(0,0);
     next() // make sure to always call next()!
   }
 })
 
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem('token');
-  if (token) {
+  const tokenExpiration = localStorage.getItem('expiration');
+  const d = new Date();
+  const currentDate = parseInt(d.getTime() / 1000); // Date actuelle en secondes.
+  const ifExpirate = tokenExpiration - currentDate;
+  if (token && token != '' && ifExpirate > 0) {
       store.commit("changeSessionState", true );
       const localUser = localStorage.getItem('user');
       if (localUser) {
@@ -121,6 +117,9 @@ router.beforeEach((to, from, next) => {
       }
     next()
   } else {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    localStorage.removeItem('expiration');
     store.commit("changeSessionState", false );
     next() // make sure to always call next()!
   }
@@ -174,4 +173,30 @@ router.beforeEach((to, from, next) => {
     next() // make sure to always call next()!
   }
 })
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresLogoutOrAdmin)) {
+    // this route requires admin access, check if user have access
+    // if not, redirect to home page.
+    const token = localStorage.getItem('token');
+    const localUser = localStorage.getItem('user');
+      if (token || localUser) {
+          const user = JSON.parse(localUser);
+          if (user.role_id != 1) {
+            next({
+              path: '/',
+              query: { redirect: to.fullPath }
+            })
+          } else {
+            next()
+          }
+      } else {
+        next()
+      }
+  }
+  else {
+    next()
+  }
+})
+
 export default router

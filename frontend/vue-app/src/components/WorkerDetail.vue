@@ -11,20 +11,33 @@
                         <!-- BEGIN profile-header-content -->
                         <div class="profile-header-content">
                             <!-- BEGIN profile-header-info -->
-                            <div class="row worker">
-                                <div class="col-lg-6">
-                                    <div class="profile-header-info-worker">
+                            <div class="row">
+                                <div class="col-md-12 worker">
+                                    <div>
                                         <h4 class="m-t-10 m-b-5">{{ healthworker.nom_professionnel }}</h4>
                                         <p class="m-b-10" > {{ healthworker.profession }} </p>
-                                        <div v-if="this.$store.state.userLogged.role_id == 1" class="btn-backAdmin">
-                                            <router-link to="/adminview" class="btn btn-info btn-sm">Retour au panneau administration</router-link>
-                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="return-btn">
-                                        <button v-if="ifFavorite >= 1" type="button" class="btn btn-warning" @click="deleteFromFavorites(healthworker.id)">Supprimer des Favoris</button>
-                                        <router-link type="button" class="btn btn-success" to="/userprofile">Retour</router-link>
+                                    <div>
+                                        <div v-if="token != null" class="">
+                                            <div v-if="ifFavorite >= 1" class="type-1">
+                                                <button to="/researchworkers" @click="deleteFromFavorites(healthworker.id)" class="btn btn-1">
+                                                <span class="txt">Supprimer des Favoris</span>
+                                                <span class="round"><i class="fa fa-chevron-right"></i></span>
+                                                </button>
+                                            </div>
+                                            <div v-if="this.$store.state.userLogged.role_id == 1" class="type-1">
+                                                <router-link to="/adminview" class="btn btn-1">
+                                                <span class="txt">Panneau administration</span>
+                                                <span class="round"><i class="fa fa-chevron-right"></i></span>
+                                                </router-link>
+                                            </div>
+                                        </div>
+                                        <div class="type-1">
+                                            <router-link to="/researchworkers" class="btn btn-1">
+                                            <span class="txt">Retour</span>
+                                            <span class="round"><i class="fa fa-chevron-right"></i></span>
+                                            </router-link>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -43,14 +56,6 @@
                             <!-- begin table -->
                             <div class="table-responsive">
                                 <table class="table table-profile">
-                                    <thead>
-                                        <tr>
-                                            <th></th>
-                                            <th>
-                                                <h4> {{ healthworker.nom_professionnel }} <small> {{ healthworker.civilite }} </small></h4>
-                                            </th>
-                                        </tr>
-                                    </thead>
                                     <tbody>
                                         <tr class="highlight">
                                             <td class="field">Adresse</td>
@@ -87,6 +92,18 @@
                                             <td>{{ healthworker.sesam_vital }}</td>
                                         </tr>
                                         <tr class="highlight">
+                                            <td class="field">Convention</td>
+                                            <td>{{ healthworker.convention_cacs }}</td>
+                                        </tr>
+                                        <tr class="highlight">
+                                            <td class="field">Mode exercice</td>
+                                            <td>{{ healthworker.mode_exercice }}</td>
+                                        </tr>
+                                        <tr class="highlight">
+                                            <td class="field">Nature exercice</td>
+                                            <td>{{ healthworker.nature_exercice }}</td>
+                                        </tr>
+                                        <tr class="highlight">
                                             <td class="field">Regroupement</td>
                                             <td>{{ healthworker.regroupement }}</td>
                                         </tr>
@@ -112,8 +129,13 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="button-interactions">
-                                <button v-if="ifRated == 0" type="button" class="btn btn-danger" data-toggle="modal" data-target="#form-rate">Noter <i class="far fa-star"></i></button>
+                            <div v-if="token != null" class="button-interactions">
+                                <div v-if="ifRated == 0" class="type-1">
+                                    <button id="rate-btn" type="button" class="btn btn-1" data-toggle="modal" data-target="#form-rate">
+                                    <span class="txt">Noter <i class="far fa-star"></i></span>
+                                    <span class="round"><i class="fa fa-chevron-right"></i></span>
+                                    </button>
+                                </div>
                                 <div class="modal fade" id="form-rate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
@@ -128,11 +150,17 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div>
-                                    <button v-if="ifFavorite == 0" type="button" class="btn btn-warning" @click="addFavorite(healthworker.id)">Ajouter un favoris <i class="far fa-star"></i></button>
+                                <div v-if="ifFavorite == 0" class="type-1">
+                                    <button id="favory-btn" type="button" @click="addFavorite(healthworker.id)" class="btn btn-1">
+                                    <span class="txt">Ajouter un favoris <i class="far fa-star"></i></span>
+                                    <span class="round"><i class="fa fa-chevron-right"></i></span>
+                                    </button>
                                 </div>
-                                <div>
-                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#form">Ajouter un commentaire <i class="far fa-comments"></i></button>
+                                <div class="type-1">
+                                    <button id="comment-btn" type="button" class="btn btn-1" data-toggle="modal" data-target="#form">
+                                    <span class="txt">Ajouter un commentaire <i class="far fa-comments"></i></span>
+                                    <span class="round"><i class="fa fa-chevron-right"></i></span>
+                                    </button>
                                     <AddComment @data-commentSent="addComment"/>
                                 </div>
                             </div>
@@ -144,11 +172,18 @@
                                     <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
                                     <div class="media-body">
                                         <h5 class="mt-0">{{ commentWorker.pseudo }}</h5>
-                                        <p> {{ commentWorker.content }} </p>
+                                        <div v-html="commentWorker.content"></div>
                                     </div>
-                                    <p class="date_comment"> {{ commentWorker.date_creation }} </p>
+                                    <p class="date_comment"> {{ new Date(commentWorker.date_creation).toLocaleDateString("fr-FR", options) }} </p>
                                 </div>
-                                <p class="flag"><a href="#">Signaler le commentaire</a></p>
+                                <div v-if="token">
+                                    <div v-if="commentWorker.flag != 1" class="type-1 flag">
+                                        <button @click="flagComment(commentWorker.id)" class="btn btn-1 seemore">
+                                        <span class="txt">Signaler le commentaire</span>
+                                        <span class="round seemoreround"><i class="fa fa-chevron-right"></i></span>
+                                        </button>
+                                    </div>
+                                </div>
                                 <hr>
                             </div>
                         </div>
@@ -182,7 +217,9 @@ export default {
             ifRated: null,
             id: null,
             favoriteAdded: null,
-            rateAdded: null
+            rateAdded: null,
+            token: localStorage.getItem('token'),
+            options : { year: "numeric", month: "long", day: "numeric", hour: "numeric", minute: "numeric" }
         }
     },
     computed: {
@@ -195,7 +232,7 @@ export default {
             Axios
             .get("http://localhost/annuairesante/backend/index.php", { params: {
                 route: 'healthworkerById',
-                id: this.$store.state.healthworkerId
+                id: localStorage.getItem('healthWorkerId')
                 }}
             )
             .then( response => {
@@ -229,7 +266,7 @@ export default {
             Axios
             .get("http://localhost/annuairesante/backend/index.php", { params: {
                 route: 'workerComments',
-                workerId: this.$store.state.healthworkerId
+                workerId: localStorage.getItem('healthWorkerId')
                 }}
             )
             .then( response => {
@@ -309,7 +346,7 @@ export default {
             .get("http://localhost/annuairesante/backend/index.php", { params: {
                 route: 'userPreferences',
                 userId: this.$store.state.userLogged.id,
-                workerId: this.$store.state.healthworkerId
+                workerId: localStorage.getItem('healthWorkerId')
                 }}
             )
             .then( response => {
@@ -320,12 +357,29 @@ export default {
                 console.log(error)
                 this.errored = true
             })
+        },
+        flagComment(commentId){
+            Axios
+            .post("http://localhost/annuairesante/backend/index.php", {
+                route: "flagComment",
+                commentId: commentId
+            })
+            .then( response => {
+                this.commentFlagged = response.data.commentFlagged;
+            })  
+            .catch(error => {
+                console.log(error)
+                this.errored = true
+            })
         }
     },
     beforeMount(){
         this.getHealthWorker();
         this.getCommentsOfWorker();
-        this.checkUserPreferences();
+        let token = localStorage.getItem('token');
+        if (token){
+            this.checkUserPreferences();
+        }
     },
     watch: {
         rateAdded: function(){
@@ -339,435 +393,29 @@ export default {
 </script>
 
 <style>
-body{
-    margin-top:20px;
-    background:#eee;
+.worker{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 .button-interactions{
     display: flex;
     justify-content: space-evenly;
 }
+#rate-btn{
+    background-color: #0D2E62 !important;
+}
+#favory-btn{
+    background-color: #ffc107 !important;
+} 
+#comment-btn{
+    background-color: #dc3545 !important;
+}
+.type-1{
+    margin-top: 1%;
+}
 .flag{
-    text-align: right;
-}
-.flag a{
-    color: #3276b1;
-}
-.profile-header-info-worker .btn{
-    padding: none;
-    width: 100px;
-}
-.return-btn{
     display: flex;
-    justify-content: flex-end;    
-}
-
-.profile-header {
-    position: relative;
-    overflow: hidden;
-    padding-top: 3%;
-}
-
-.profile-header .profile-header-cover {
-    background-color: #00b5ec;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0
-}
-
-.profile-header .profile-header-cover:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, .75) 100%)
-}
-
-.profile-header .profile-header-content {
-    color: #fff;
-    padding: 25px
-}
-
-.profile-header-img {
-    float: left;
-    width: 120px;
-    height: 120px;
-    overflow: hidden;
-    position: relative;
-    z-index: 10;
-    margin: 0 0 -20px;
-    padding: 3px;
-    border-radius: 4px;
-    background: #fff
-}
-
-.profile-header-img img {
-    max-width: 100%
-}
-
-.profile-header-info h4 {
-    font-weight: 500;
-    color: #fff
-}
-
-.profile-header-img+.profile-header-info {
-    margin-left: 140px
-}
-
-.profile-header .profile-header-content,
-.profile-header .profile-header-tab {
-    position: relative
-}
-
-.b-minus-1,
-.b-minus-10,
-.b-minus-2,
-.b-minus-3,
-.b-minus-4,
-.b-minus-5,
-.b-minus-6,
-.b-minus-7,
-.b-minus-8,
-.b-minus-9,
-.b-plus-1,
-.b-plus-10,
-.b-plus-2,
-.b-plus-3,
-.b-plus-4,
-.b-plus-5,
-.b-plus-6,
-.b-plus-7,
-.b-plus-8,
-.b-plus-9,
-.l-minus-1,
-.l-minus-2,
-.l-minus-3,
-.l-minus-4,
-.l-minus-5,
-.l-minus-6,
-.l-minus-7,
-.l-minus-8,
-.l-minus-9,
-.l-plus-1,
-.l-plus-10,
-.l-plus-2,
-.l-plus-3,
-.l-plus-4,
-.l-plus-5,
-.l-plus-6,
-.l-plus-7,
-.l-plus-8,
-.l-plus-9,
-.r-minus-1,
-.r-minus-10,
-.r-minus-2,
-.r-minus-3,
-.r-minus-4,
-.r-minus-5,
-.r-minus-6,
-.r-minus-7,
-.r-minus-8,
-.r-minus-9,
-.r-plus-1,
-.r-plus-10,
-.r-plus-2,
-.r-plus-3,
-.r-plus-4,
-.r-plus-5,
-.r-plus-6,
-.r-plus-7,
-.r-plus-8,
-.r-plus-9,
-.t-minus-1,
-.t-minus-10,
-.t-minus-2,
-.t-minus-3,
-.t-minus-4,
-.t-minus-5,
-.t-minus-6,
-.t-minus-7,
-.t-minus-8,
-.t-minus-9,
-.t-plus-1,
-.t-plus-10,
-.t-plus-2,
-.t-plus-3,
-.t-plus-4,
-.t-plus-5,
-.t-plus-6,
-.t-plus-7,
-.t-plus-8,
-.t-plus-9 {
-    position: relative!important
-}
-
-.profile-header .profile-header-tab {
-    background: #fff;
-    list-style-type: none;
-    margin: -10px 0 0;
-    padding: 0 0 0 140px;
-    white-space: nowrap;
-    border-radius: 0
-}
-
-.text-ellipsis,
-.text-nowrap {
-    white-space: nowrap!important
-}
-
-.profile-header .profile-header-tab>li {
-    display: inline-block;
-    margin: 0
-}
-
-.profile-header .profile-header-tab>li>a {
-    display: block;
-    color: #929ba1;
-    line-height: 20px;
-    padding: 10px 20px;
-    text-decoration: none;
-    font-weight: 700;
-    font-size: 12px;
-    border: none
-}
-
-.profile-header .profile-header-tab>li.active>a,
-.profile-header .profile-header-tab>li>a.active {
-    color: #242a30
-}
-
-.profile-content {
-    padding: 25px;
-    border-radius: 4px
-}
-
-.profile-content:after,
-.profile-content:before {
-    content: '';
-    display: table;
-    clear: both
-}
-
-.profile-content .tab-content,
-.profile-content .tab-pane {
-    background: 0 0
-}
-
-.profile-left {
-    width: 200px;
-    float: left
-}
-
-.profile-right {
-    margin-left: 240px;
-    padding-right: 20px
-}
-
-.profile-image {
-    height: 175px;
-    line-height: 175px;
-    text-align: center;
-    font-size: 72px;
-    margin-bottom: 10px;
-    border: 2px solid #E2E7EB;
-    overflow: hidden;
-    border-radius: 4px
-}
-
-.profile-image img {
-    display: block;
-    max-width: 100%
-}
-
-.profile-highlight {
-    padding: 12px 15px;
-    background: #FEFDE1;
-    border-radius: 4px
-}
-
-.profile-highlight h4 {
-    margin: 0 0 7px;
-    font-size: 12px;
-    font-weight: 700
-}
-
-.table.table-profile>thead>tr>th {
-    border-bottom: none!important
-}
-
-.table.table-profile>thead>tr>th h4 {
-    font-size: 20px;
-    margin-top: 0
-}
-
-.table.table-profile>thead>tr>th h4 small {
-    display: block;
-    font-size: 12px;
-    font-weight: 400;
-    margin-top: 5px
-}
-
-.table.table-profile>tbody>tr>td,
-.table.table-profile>thead>tr>th {
-    border: none;
-    padding-top: 7px;
-    padding-bottom: 7px;
-    color: #242a30;
-    background: 0 0
-}
-
-.table.table-profile>tbody>tr>td.field {
-    width: 20%;
-    text-align: right;
-    font-weight: 600;
-    color: #2d353c
-}
-
-.table.table-profile>tbody>tr.highlight>td {
-    border-top: 1px solid #b9c3ca;
-    border-bottom: 1px solid #b9c3ca
-}
-
-.table.table-profile>tbody>tr.divider>td {
-    padding: 0!important;
-    height: 10px
-}
-
-.profile-section+.profile-section {
-    margin-top: 20px;
-    padding-top: 20px;
-    border-top: 1px solid #b9c3ca
-}
-
-.profile-section:after,
-.profile-section:before {
-    content: '';
-    display: table;
-    clear: both
-}
-
-.profile-section .title {
-    font-size: 20px;
-    margin: 0 0 15px
-}
-
-.profile-section .title small {
-    font-weight: 400
-}
-
-body.flat-black {
-    background: #E7E7E7
-}
-
-.flat-black .navbar.navbar-inverse {
-    background: #212121
-}
-
-.flat-black .navbar.navbar-inverse .navbar-form .form-control {
-    background: #4a4a4a;
-    border-color: #4a4a4a
-}
-
-.flat-black .sidebar,
-.flat-black .sidebar-bg {
-    background: #3A3A3A
-}
-
-.flat-black .page-with-light-sidebar .sidebar,
-.flat-black .page-with-light-sidebar .sidebar-bg {
-    background: #fff
-}
-
-.flat-black .sidebar .nav>li>a {
-    color: #b2b2b2
-}
-
-.flat-black .sidebar.sidebar-grid .nav>li>a {
-    border-bottom: 1px solid #474747;
-    border-top: 1px solid #474747
-}
-
-.flat-black .sidebar .active .sub-menu>li.active>a,
-.flat-black .sidebar .nav>li.active>a,
-.flat-black .sidebar .nav>li>a:focus,
-.flat-black .sidebar .nav>li>a:hover,
-.flat-black .sidebar .sub-menu>li>a:focus,
-.flat-black .sidebar .sub-menu>li>a:hover,
-.sidebar .nav>li.nav-profile>a {
-    color: #fff
-}
-
-.flat-black .sidebar .sub-menu>li>a,
-.flat-black .sidebar .sub-menu>li>a:before {
-    color: #999
-}
-
-.flat-black .page-with-light-sidebar .sidebar .active .sub-menu>li.active>a,
-.flat-black .page-with-light-sidebar .sidebar .active .sub-menu>li.active>a:focus,
-.flat-black .page-with-light-sidebar .sidebar .active .sub-menu>li.active>a:hover,
-.flat-black .page-with-light-sidebar .sidebar .nav>li.active>a,
-.flat-black .page-with-light-sidebar .sidebar .nav>li.active>a:focus,
-.flat-black .page-with-light-sidebar .sidebar .nav>li.active>a:hover {
-    color: #000
-}
-
-.flat-black .page-sidebar-minified .sidebar .nav>li.has-sub:focus>a,
-.flat-black .page-sidebar-minified .sidebar .nav>li.has-sub:hover>a {
-    background: #323232
-}
-
-.flat-black .page-sidebar-minified .sidebar .nav li.has-sub>.sub-menu,
-.flat-black .sidebar .nav>li.active>a,
-.flat-black .sidebar .nav>li.active>a:focus,
-.flat-black .sidebar .nav>li.active>a:hover,
-.flat-black .sidebar .nav>li.nav-profile,
-.flat-black .sidebar .sub-menu>li.has-sub>a:before,
-.flat-black .sidebar .sub-menu>li:before,
-.flat-black .sidebar .sub-menu>li>a:after {
-    background: #2A2A2A
-}
-
-.flat-black .page-sidebar-minified .sidebar .sub-menu>li:before,
-.flat-black .page-sidebar-minified .sidebar .sub-menu>li>a:after {
-    background: #3e3e3e
-}
-
-.flat-black .sidebar .nav>li.nav-profile .cover.with-shadow:before {
-    background: rgba(42, 42, 42, .75)
-}
-
-.bg-white {
-    background-color: #fff!important;
-}
-.p-10 {
-    padding: 10px!important;
-}
-.media.media-xs .media-object {
-    width: 32px;
-}
-.m-b-2 {
-    margin-bottom: 2px!important;
-}
-.media>.media-left, .media>.pull-left {
-    padding-right: 15px;
-}
-.media-body, .media-left, .media-right {
-    display: table-cell;
-    vertical-align: top;
-}
-select.form-control:not([size]):not([multiple]) {
-    height: 34px;
-}
-.form-control.input-inline {
-    display: inline;
-    padding: 0 7px;
-}
-                                    
+    justify-content: flex-end;
+}                               
 </style>

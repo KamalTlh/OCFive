@@ -16,14 +16,18 @@
                 <section  v-else class="container-lg">
                     <div id="nb_results" class="row">
                         <b-col cols="8" class="detail-result">
-                            <span>{{ totalResults }} résultats correspondent à votre recherche </span>
+                            <p>{{ totalResults }} résultats correspondent à votre recherche </p>
                         </b-col>
                         <b-col cols="4">
-                            <input class="btn btn-primary form-submit" type="submit" id="submit_adv_search" name="op"
-                                value="Nouvelle recherche" icon="search" @click="resetResearch"/>
+                            <div class="type-1">
+                                <button type="button" @click="resetResearch" class="btn btn-1">
+                                <span class="txt">Nouvelle recherche</span>
+                                <span class="round"><i class="fa fa-chevron-right"></i></span>
+                                </button>
+                            </div>
                         </b-col>
                     </div>
-                    <div class="row">
+                    <div ref="researchResults" class="row">
                         <div class="col-12">
                             <b-pagination
                             v-model="currentPage"
@@ -43,11 +47,16 @@
                                                 <i v-if="healthWorker.note >= 3" class="fas fa-star"></i> <i v-else class="far fa-star"></i>
                                                 <i v-if="healthWorker.note >= 4" class="fas fa-star"></i> <i v-else class="far fa-star"></i>
                                                 <i v-if="healthWorker.note >= 5" class="fas fa-star"></i> <i v-else class="far fa-star"></i>
-                                                <span> {{healthWorker.note}} / 5</span>
+                                                <span>({{healthWorker.nb_notes}})</span>
                                             </div>
                                         </div>
-                                        <div class="col-3">
-                                            <a class="link-comments" @click="seeCommentsOfWorker(healthWorker.id)"> Voir tout les commentaires ({{healthWorker.nb_comments}}) </a>
+                                        <div class="col-4">
+                                            <div class="type-1">
+                                                <button type="button" @click="seeCommentsOfWorker(healthWorker.id)" class="btn btn-1 seemore">
+                                                <span class="txt">Voir tout les commentaires ({{healthWorker.nb_comments}})</span>
+                                                <span class="round seemoreround"><i class="fa fa-chevron-right"></i></span>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="sm-item-body">
@@ -92,9 +101,6 @@
                                         </div>
                                     </div>
                                     <div class="sm-item-footer">
-                                        <div>
-                                            <a class="link-seemore" @click="seeCommentsOfWorker(healthWorker.id)">Voir plus <i class="fas fa-long-arrow-alt-right ml-1"></i></a>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -171,40 +177,36 @@ export default {
             Axios
             .get("http://localhost/annuairesante/backend/index.php", { params: {
                 route: 'filters',
-                commune: this.dataResearch.dataResearch.commune,
-                civilite: this.dataResearch.dataResearch.selected_civilite,
-                profession: this.dataResearch.dataResearch.selected_profession,
-                nom_professionnel: this.dataResearch.dataResearch.nom_professionnel,
-                prenom_professionnel: this.dataResearch.dataResearch.prenom_professionnel,
-                regroupement: this.dataResearch.dataResearch.selected_groupement,
-                nature_exercice: this.dataResearch.dataResearch.selected_status,
-                mode_exercice: this.dataResearch.dataResearch.selected_mode_exercice,
-                region: this.dataResearch.dataResearch.selected_region,
-                departement: this.dataResearch.dataResearch.selected_departement,
+                commune: this.dataResearch.commune,
+                civilite: this.dataResearch.selected_civilite,
+                profession: this.dataResearch.selected_profession,
+                nom_professionnel: this.dataResearch.nom_professionnel,
+                prenom_professionnel: this.dataResearch.prenom_professionnel,
+                regroupement: this.dataResearch.selected_groupement,
+                nature_exercice: this.dataResearch.selected_status,
+                mode_exercice: this.dataResearch.selected_mode_exercice,
+                region: this.dataResearch.selected_region,
+                departement: this.dataResearch.selected_departement,
                 page: this.page,
                 totalPages: this.totalPages
                 }}
             )
             .then( response => {
-                if(response.status == 200){
-                    if (response.data.errorData){
-                        console.log('Veuillez renseigner des données avant de lancer la recherche.');
-                    }
-                    else {
-                        this.healthWorkers = response.data.datas.healthworkers;
-                        this.markers = response.data.datas.coordinates;
-                        this.$store.commit("setMarkers", this.markers);
-                        if (this.dataResearch.newRequest === true){
-                            this.dataResearch.newRequest = false;
-                        }
-                        if(this.totalPages == 0){
-                            this.totalResults = response.data.page.totalResults;
-                            this.totalPages = response.data.page.totalPages;
-                        }
-                    }
+                if (response.data.errorData){
+                    console.log('Veuillez renseigner des données avant de lancer la recherche.');
                 }
                 else {
-                    this.$router.push({ path: '/error500'});
+                    this.healthWorkers = response.data.datas.healthworkers;
+                    this.markers = response.data.datas.coordinates;
+                    this.$store.commit("setMarkers", this.markers);
+                    if (this.dataResearch.newRequest === true){
+                        this.dataResearch.newRequest = false;
+                    }
+                    if(this.totalPages == 0){
+                        this.totalResults = response.data.page.totalResults;
+                        this.totalPages = response.data.page.totalPages;
+                    }
+                    this.$refs.researchResults.scrollIntoView();
                 }
             })
             .catch(error => {
@@ -212,9 +214,6 @@ export default {
                 this.errored = true
             })
             .finally(() => this.loading = false );
-        },
-        beforeEnter(el) {
-            this.elHeight = el.scrollHeight;
         },
         seeCommentsOfWorker(healthWorkerId){
             localStorage.setItem('healthWorkerId', healthWorkerId);
@@ -242,19 +241,14 @@ export default {
     margin: 0 auto;
 }
 #nb_results{
-    color: #000;
+    align-items: baseline;
     background-color: #e8eaf6;
     text-align: center;
     margin-bottom: 2%;
     border: 3px solid aliceblue;
 }
-#nb_results li{
-    list-style: none;
-}
-#nb_results span{
-    font-weight: normal;
-}
 .detail-result{
+    font-weight: bold;
     text-align: left;
     padding-left: 3%;
 }
@@ -282,8 +276,6 @@ export default {
     border-top-right-radius: 8px;
     color: #fff;
     padding: 1.5rem 0rem 1.5rem;
-    /* display: flex;
-    justify-content: space-around; */
     align-items: center;
 }
 .sm-item-header .header-name-rate{
@@ -306,32 +298,29 @@ export default {
     padding: 1.5rem;
 }
 .sm-item-footer {
-    display: flex;
-    justify-content: right;
+    height: 40px;
     background-color: #0c2050;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
-    color: #fff;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-    padding-right: 10%;
-    align-items: center;
 }
 .sm-item-header .rate-worker{
     color: orange;
 }
 
-.button-footer{
-    display: flex;
+/*--btn comments--*/
+.type-1 .seemore {
+    background-color: #b39800  !important;
 }
-
-.link-seemore, .link-comments{
-    color: #c7c7d7 !important;
-    cursor: pointer;
+.type-1 .seemore {
+    padding: 7px 55px 7px 55px !important;
+    text-transform: initial !important;
+    font-weight: normal !important;
 }
-.link-seemore:hover, .link-comments:hover{
-    color: #5656fa !important;
+.type-1 button .seemoreround {
+    width: 32px;
+    height: 32px !important;
 }
+/*---*/
 
 label {
     display: inline-block;
@@ -341,9 +330,8 @@ label {
 .sm-item-body label + span {
     margin-left: 0.4rem;
 }
-.sm-item-footer .btn{
-    width: auto;
-    margin-right: 20%;
+.rate-worker span {
+    margin-left: 5%;
 }
 /*---*/
 

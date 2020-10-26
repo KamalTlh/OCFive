@@ -1,17 +1,13 @@
 <template>
 	<section class="page">
-    <section>
       <Slider></Slider>
-    </section>
-    <section>
-      <hr>
       <!-- Carte de France interactive -->
-      <article class="container mt-5 map" id="map">
+      <section class="container mt-5 map" id="mapHome">
         <div class="map__image col-lg-6 p-5">
           <MapFr @afficher="viewdep"></MapFr>
         </div>
           <!-- Liste des régions -->
-        <div class="map__list col-lg-3 d-flex flex-column justify-content-center p-5">
+        <div class="map__list col-lg-3 p-5">
           <ul class="list-group">
             <li id="li-GES" class="list-group-item"><router-link to="/professionnelsante" 
                 id="list-GES">Grand-Est</router-link></li>
@@ -40,14 +36,8 @@
             <li id="li-PAC" class="list-group-item"><router-link to="/professionnelsante"
                 id="list-PAC">Provence-Alpes-Côte-d'Azur</router-link></li>
           </ul>
-      </div>
-      </article>
-    </section>
-    <!-- inclusion du footer -->
-    <footer class="mt-5">
-    </footer>
-    <!--/.footer-->
-    <p class="text-center"><small>&copy; 2018 - Tout droits réservés / SIte réalisé par Kamal Tallih.</small></p>
+        </div>
+      </section>
 	</section>
 </template>
 
@@ -69,8 +59,10 @@ export default {
 </script>
 
 <style>
-#map{
+#mapHome{
   display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 .col-lg-3 {
     padding: 0 !important; 
@@ -82,10 +74,16 @@ export default {
 
   .col-sm-3 {
     display: flex;
-    justify-content: center; } }
+    justify-content: center; 
+  } 
+}
+
 @media all and (max-width: 991px) {
   .col-lg-9 {
-    margin-top: 1rem; } }
+    margin-top: 1rem; 
+  } 
+}
+
 /*---------MAP----------*/
 .map__list{
   background-color: rgb(245,255,250) !important;

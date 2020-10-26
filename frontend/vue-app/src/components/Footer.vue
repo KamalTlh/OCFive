@@ -5,7 +5,7 @@
                 <div class="row">
                     <div class="col-md-4 link-block">
                         <div class="h5 link-block-title">
-                            Lorem ipsum 
+                            Lorem ipsum
                         </div>
                         <div class="row">
                             <div class="col-md-9">
@@ -87,20 +87,10 @@
                                 target="_blank"><i class="fab fa-youtube contact-icons"></i></a>
                             <a href="/rss.xml" target="_blank"><i class="fas fa-rss contact-icons"></i></a>
                         </div>
-                        <div class="h5 mt-4 link-block-title">
-                            Données personnelles
-                        </div>
-                        <div class="row">
-                            <div class="col-md-9">
-                                <div class="link-block-links">
-                                    <a href="javascript:Drupal.openRgpdPanel()" id="open-rgpd-popup"
-                                        class="link-block-link footer-visited-link rgpd-link text-white">
-                                        <div class="footer-visited-link-text">Gestion des cookies</div>
-                                        <div class="footer-visited-link-icon"><i class="fas fa-chevron-right"></i></div>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+                    </div>
+                    <div>
+                        <p class="text-center"><small>&copy; 2018 - Tout droits réservés / SIte réalisé par Kamal
+                                Tallih.</small></p>
                     </div>
                 </div>
             </div>

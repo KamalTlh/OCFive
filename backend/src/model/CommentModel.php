@@ -81,17 +81,17 @@ class CommentModel extends Model{
         return $this->hydrate($comment);
     }
 
-    public function addComment($post){
+    public function addComment($comment, $userId, $workerId){
         $firstQuery = 'INSERT INTO comment (content, date_creation, flag, userId, workerId) VALUES (?, NOW(), ?, ?, ?)';
-        $this->createQuery($firstQuery, [strip_tags($post['comment']), 0, $post['userId'], $post['workerId']]);
+        $this->createQuery($firstQuery, [$comment, 0, $userId, $workerId]);
         $secondQuery = 'SELECT nb_comments FROM annuaire WHERE id = ?';
-        $result = $this->createQuery($secondQuery, [$post['workerId']]);
+        $result = $this->createQuery($secondQuery, [$workerId]);
         $nb_comments = $result->fetch(PDO::FETCH_ASSOC);
         $new_NbComments = intval($nb_comments['nb_comments']) + 1;
         $thirdQuery = 'UPDATE annuaire SET nb_comments = ? WHERE id = ?';
-        $this->createQuery($thirdQuery, [ $new_NbComments, $post['workerId']]);
+        $this->createQuery($thirdQuery, [ $new_NbComments, $workerId]);
         $lastQuery = 'SELECT comment.id, comment.content, comment.date_creation, comment.flag, user.pseudo FROM comment INNER JOIN user ON user.id = comment.userId WHERE content = ? AND userId = ? AND workerID = ?';
-        $lastResult = $this->createQuery($lastQuery, [strip_tags($post['comment']), $post['userId'], $post['workerId']]);
+        $lastResult = $this->createQuery($lastQuery, [$comment, $userId, $workerId]);
         $commentAdded = $lastResult->fetch(PDO::FETCH_ASSOC);
         $data['commentAdded'] = $commentAdded;
         return $data;
@@ -114,10 +114,14 @@ class CommentModel extends Model{
     public function flagComment($commentId){
         $sql = 'UPDATE comment SET flag = ? WHERE id = ?';
         $this->createQuery($sql, [1, $commentId]);
+        $data['commentFlag'] = true;
+        return $data;
     }
 
     public function unflagComment($commentId){
         $sql = 'UPDATE comment SET flag = ? WHERE id = ?';
         $this->createQuery($sql, [0, $commentId]);
+        $data['commentUnflag'] = true;
+        return $data;
     }
 }

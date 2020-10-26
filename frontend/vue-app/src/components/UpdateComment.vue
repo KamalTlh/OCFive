@@ -7,13 +7,13 @@
                 <form>
                     <div class="form-group">
                         <label for="message-text" class="col-form-label">Commentaire:</label>
-                        <textarea class="form-control" id="message-text" v-model="updateContent"></textarea>
+                        <textarea class="form-control" id="message-text" v-model="commentContent"></textarea>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" @click="updateComment">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" @click="updateComment">Valider</button>
             </div>
             </div>
         </div>
@@ -36,7 +36,7 @@ export default {
                 .post("http://localhost/annuairesante/backend/index.php", { 
                     route: 'updateComment',
                     id: this.commentId,
-                    content: this.updateContent
+                    content: this.commentContent
                     }
                 )
                 .then( response => {

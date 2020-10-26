@@ -1,39 +1,51 @@
 <template>
-    <div id="login-row" class="container">
-        <div class="row">
-            <div id="login-column" class="col-md-5">
-                <div id="login-box">
-                    <h3 class="text-center text-info">Login</h3>
-                    <div class="errorMessage">
-                        <p class="return-error divider" v-if="this.errorPseudo === true">Pseudo requis</p>
-                        <p class="return-error divider" v-if="this.errorPassword === true">Mot de passe requis</p>
+<div>
+    <div class="container">
+        <!-- Outer Row -->
+        <div class="row justify-content-center">
+            <div class="col-xl-10 col-lg-12 col-md-9">
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+                        <!-- Nested Row within Card Body -->
+                        <div class="row">
+                            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                            <div class="col-lg-6">
+                                <div class="p-5">
+                                    <div class="text-center">
+                                        <h1 class="h4 text-gray-900 mb-4">Connectez-vous!</h1>
+                                    </div>
+                                    <div v-if="error === true" class="alert alert-danger" role="alert">
+                                        <div>L&#039;identifiant ou le mot de passe est incorrect</div>
+                                    </div>
+                                    <form class="user" v-on:submit.prevent="connection" method="post" role="form">
+                                        <div class="form-group">
+                                            <input v-model="pseudo" type="text" class="form-control form-control-user"
+                                                id="exampleInputEmail" aria-describedby="emailHelp"
+                                                placeholder="Entrez votre pseudo...">
+                                            <small class="return-error" v-if="this.errorPseudo === true"><i class="fas fa-exclamation-circle"></i> Cette valeur ne doit pas être vide.</small>
+                                        </div>
+                                        <div class="form-group">
+                                            <input v-model="password" type="password"
+                                                class="form-control form-control-user" id="exampleInputPassword"
+                                                placeholder="Password">
+                                            <small class="return-error" v-if="this.errorPassword === true"> <i class="fas fa-exclamation-circle"></i> Cette valeur ne doit pas être vide.</small>
+                                        </div>
+                                        <input type="submit" name="submit" class="btn btn-primary btn-user btn-block"
+                                            value="Se connecter"> 
+                                    </form>
+                                    <hr>
+                                    <div class="text-center">
+                                        <router-link to="/register" class="text-info">Créer un compte!</router-link>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <form v-on:submit.prevent="connection" method="post" class="px-4 py-3" role="form">
-                        <div class="form-group">
-                            <label for="pseudo" class="text-info">Pseudo</label>
-                            <input v-model="pseudo" type="text" class="form-control" id="pseudo" name="pseudo">
-                        </div>
-                        <div class="form-group">
-                            <label for="password" class="text-info">Mot de passe</label>
-                            <input v-model="password" type="password" class="form-control" id="password"
-                                name="password">
-                        </div>
-                        <div class="form-group">
-                            <label for="remember-me" class="text-info"><span>Remember me</span> <span><input
-                                        id="remember-me" name="remember-me" type="checkbox"></span></label><br>
-                            <input type="submit" name="submit" class="btn btn-info btn-md" value="submit">
-                        </div>
-                        <div id="register-link" class="text-right">
-                            <router-link to="/register" class="text-info">Register here</router-link>
-                        </div>
-                        <div class="return-error divider" v-if="error === true">
-                        Pseudo ou mot de passe incorrect
-                    </div>
-                    </form>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </template>
 
 <script>
@@ -95,25 +107,23 @@ export default {
                         password: this.password
                     })
                     .then( response => {
-                        if (response.status == 200){
-                            if (response.data.isPasswordValid === false){
-                                this.error = true;
-                            }
-                            else if(response.data.errorData) {
-                                this.errorData = response.data.errorData;
-                            }
-                            else {
-                                this.user = response.data.user;
-                                this.$store.commit("changeSessionState", response.data.sessionConnected );
-                                this.$store.commit("setUserLogged", response.data.user );
-                                this.$store.commit("changeUser", response.data.user );
-                                localStorage.setItem('token',JSON.stringify(response.data.jwt) );
-                                localStorage.setItem('user', JSON.stringify(this.user) );
-                                this.$router.push({ path: '/'});
-                            }
-                        } else {
-                            this.$router.push({ path: '/error500'});
+                        if (response.data.isPasswordValid === false){
+                            this.error = true;
                         }
+                        else if(response.data.errorData) {
+                            this.errorData = response.data.errorData;
+                        }
+                        else {
+                            this.user = response.data.user;
+                            this.$store.commit("changeSessionState", response.data.sessionConnected );
+                            this.$store.commit("setUserLogged", response.data.user );
+                            this.$store.commit("changeUser", response.data.user );
+                            localStorage.setItem('token',JSON.stringify(response.data.jwt) );
+                            localStorage.setItem('expiration',JSON.stringify(response.data.expireAt) );
+                            localStorage.setItem('user', JSON.stringify(this.user) );
+                            this.$router.push({ path: '/'});
+                        }
+
                     })
                     .catch(error => {
                         console.log(error.status)
@@ -126,54 +136,34 @@ export default {
 </script>
 
 <style>
-#login-row {
-  margin: 0;
-  padding: 0;
-  background-color: #17a2b8;
-  height: 70vh;
+.alert-danger{ 
+    position: relative;
+    color: #ffffff !important;
+    background-color: #fd565e !important;
+    border-color: #ebccd1;
+    text-align: center;
+    font-family: "Noto serif", arial, sans-serif;
 }
-#login-box {
-    display: flex;
-    flex-direction: column;
-    margin-top: 120px;
-    max-width: 500px;
-    height: 100%;
-    border: 1px solid #9C9C9C;
-    background-color: #EAEAEA;
+.alert-danger::before, .alert-danger::after{
+    top: 100%;
+    left: 260px;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
 }
-#login .container #login-row #login-column #login-box {
-  margin-top: 120px;
-  max-width: 500px;
-  height: 350px;
-  border: 1px solid #9C9C9C;
-  background-color: #EAEAEA;
-}
-#login-box h3{
-    padding-top: 2%;
-}
-#login-form {
-  padding: 20px;
-}
-#register-link {
-  margin-top: -85px;
-}
-.text-center {
-    text-align: center !important;
-}
-.text-info {
-    color: #17a2b8 !important;
-    font-weight: normal;
-}
-.errorMessage{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.alert-danger::after {
+    border-top-color: #fd565e;
+    border-width: 10px;
+    margin-left: -10px;
 }
 .return-error{
-    color: red;
-    display: flex;
-    justify-content: center;
-    position: relative;
-    top: 30%;
+    color: #a94442;
+    font-family: "Noto serif", arial, sans-serif;
+}
+.divider{
+    padding-top: 3%;
 }
 </style>

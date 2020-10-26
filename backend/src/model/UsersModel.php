@@ -26,17 +26,10 @@ class UsersModel extends Model{
         $pagination = $this->getPagePagination();
         $sql = 'SELECT id, pseudo, email, date_creation, role_id FROM user LIMIT '.$pagination['limite'].' OFFSET '.$pagination['debut'];
         $result = $this->createQuery($sql);
-        $users = [];
         $usersResult = $result->fetchAll(PDO::FETCH_ASSOC);
-        foreach( $result as $row){
-            $user = new UserModel();
-            $userId = $row['id'];
-            $users[$userId] = $user->hydrate($row);
-        }
         $result->closeCursor();
         $data['currentPage'] = $pagination['currentPage'];
         $data['users'] = $usersResult;
-        $this->setUsers($users);
         return $data;
     }
 }

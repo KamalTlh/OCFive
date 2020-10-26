@@ -6,7 +6,6 @@
                     <div class="text-right cross" data-toggle="modal" data-target="#form"> <i class="fa fa-times mr-2"></i> </div>
                     <div class="card-body text-center"> <img src=" https://i.imgur.com/d2dKtI7.png" height="100" width="100">
                         <div class="comment-box text-center">
-                            <!-- <h4>Add a comment</h4> -->
                             <div class="comment-area">
                                 <Editor
                                     v-model="textComment"
@@ -19,10 +18,11 @@
                                         'searchreplace visualblocks code fullscreen',
                                         'insertdatetime media table paste code help wordcount'
                                         ],
-                                        toolbar:
-                                        'undo redo | formatselect | bold italic backcolor | \
-                                        alignleft aligncenter alignright alignjustify | \
-                                        bullist numlist outdent indent | removeformat | help'
+                                        toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | \
+                                        alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | \
+                                        fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl',
+                                        valid_children : '+body[style]',
+                                        valid_elements : '*[*]'
                                     }"
                                 />
                             </div>
@@ -84,19 +84,6 @@ body {
 
 .comment-box {
     padding: 5px
-}
-
-.comment-area textarea {
-    resize: none;
-    border: 1px solid #ff0000
-}
-
-.form-control:focus {
-    color: #495057;
-    background-color: #fff;
-    border-color: #ffffff;
-    outline: 0;
-    box-shadow: 0 0 0 1px rgb(255, 0, 0) !important
 }
 
 .send {

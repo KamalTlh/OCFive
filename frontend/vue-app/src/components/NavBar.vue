@@ -18,14 +18,13 @@
                 <router-link to="/researchworkers" class="nav-link">Trouver un professionnel de Sante</router-link>
               </li>
               <li class="nav-item">
-                <router-link to="/about" class="nav-link">A propros</router-link>
-              </li>
-              <li class="nav-item">
-                <div v-if="checkSession === false" class="header-main-account account-wrapper">
-                  <router-link to="/login" class="btn account right tooltipped"> <i class="fas fa-sign-in-alt user-pic"></i>
-                    <span>Connexion</span> </router-link> 
+                <div class="logregister">
+                  <div v-if="checkSession === false" class="header-main-account account-wrapper">
+                    <router-link to="/login" class="btn account right tooltipped"> <i class="fas fa-sign-in-alt user-pic"></i>
+                      <span>Connexion</span> </router-link> 
+                  </div>
+                  <Logout v-if="checkSession === true" ></Logout>
                 </div>
-                <Logout v-if="checkSession === true" ></Logout>
               </li>
           </ul>
         </div>
@@ -146,16 +145,15 @@ header .header.header-main {
 .dropdown .dropdown-menu {
     top: 100% !important;
     z-index: 1000;
-    padding: 0.5rem 0.25rem 0.5rem;
+    padding: 0.5rem 0.8rem 0.5rem;
     margin: .125rem 0 0;
     font-size: 1rem;
     color: #212529;
     text-align: center;
     list-style: none;
-    background-color: #fff;
+    background-color: transparent;
     background-clip: padding-box;
-    border: 1px solid rgba(0,0,0,.15);
-    border-radius: .25rem;
+    border: none;
     overflow: visible;
     width: 230px;
 }

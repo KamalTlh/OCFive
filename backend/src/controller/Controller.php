@@ -9,7 +9,6 @@ use MyApp\Model\UserModel;
 use MyApp\Model\UsersModel;
 use MyApp\Model\FavoritesModel;
 use MyApp\View\View;
-use MyApp\Config\Session;
 use MyApp\Config\Authentification;
 use MyApp\Constraint\Validation;
 
@@ -22,7 +21,6 @@ abstract class Controller extends Authentification{
     protected $usersModel;
     protected $favoritesModel;
     protected $view;
-    protected $session;
     protected $authentification;
     protected $validation;
 
@@ -35,29 +33,8 @@ abstract class Controller extends Authentification{
         $this->usersModel = new UsersModel();
         $this->favoritesModel = new FavoritesModel();
         $this->view = new View();
-        $this->session = new Session($_SESSION);
         $this->authentification = new Authentification();
         $this->validation = new Validation();
-    }
-
-    protected function checkLoggedIn(){
-        if(!($this->session->get('role'))){
-            $this->session->set('need_login', 'Vous devez être vous connectez pour accéder à cette page');
-            header('Location: index.php?route=login');
-        }
-        else{
-            return true;
-        }
-    }
-
-    protected function checkAdmin(){
-        if(!($this->session->get('role') === 'admin')){
-            $this->session->set('need_admin', 'Vous devez être administrateur pour accéder à cette page');
-            header('Location: index.php');
-        }
-        else{
-            return true;
-        }
     }
 
     public function lookAuth($user){
@@ -69,4 +46,21 @@ abstract class Controller extends Authentification{
         $data = $this->authentification->checkAuthentification();
         return $data;
     }
+
+    public function checkAuthAdmin(){
+        $data = $this->authentification->checkAuthAdmin();
+        return $data;
+    }
+
+    public function checkIfScript($string){
+        $content_array = explode(" ", $string);
+        $output1 = '';
+        foreach($content_array as $content1){
+            if(substr($content1, 0, 8) == "<script>"){
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }   
 }

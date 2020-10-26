@@ -102,7 +102,7 @@ class UserModel extends Model{
 
     public function signIn($pseudo, $email, $password){
         $sql = 'INSERT INTO user (pseudo, email, password, date_creation, role_id) VALUES (?, ?, ?, NOW(), 2)';
-        $this->createQuery($sql, [$pseudo, $email, password_hash($password,PASSWORD_BCRYPT)]);
+        $this->createQuery($sql, [htmlspecialchars($pseudo), htmlspecialchars($email), password_hash($password,PASSWORD_BCRYPT)]);
         return [
             'registration'=> true
         ];
@@ -110,7 +110,7 @@ class UserModel extends Model{
 
     public function updateUser($post){
         $sql =' UPDATE user SET pseudo = ?, email = ? WHERE id = ?';
-        $this->createQuery($sql, [$post['pseudo'], $post['email'], $post['id']]);
+        $this->createQuery($sql, [htmlspecialchars($post['pseudo']), htmlspecialchars($post['email']), $post['id']]);
         return [
             'userUpdated'=> true
         ];
@@ -118,7 +118,7 @@ class UserModel extends Model{
 
     public function updateUserByAdmin($post){
         $sql =' UPDATE user SET pseudo = ?, email = ? WHERE id = ?';
-        $this->createQuery($sql, [$post['pseudo'], $post['email'], $post['id']]);
+        $this->createQuery($sql, [htmlspecialchars($post['pseudo']), htmlspecialchars($post['email']), $post['id']]);
         return [
             'userUpdatedByAdmin'=> true
         ];
@@ -134,8 +134,8 @@ class UserModel extends Model{
 
     public function checkPassword($currentPassword, $userId){
         $checkingSql = ' SELECT password FROM user WHERE id = ?';
-        $data = $this->createQuery($checkingSql, [ $userId ]);
-        $result = $data->fetch(PDO::FETCH_ASSOC);
+        $dataSql = $this->createQuery($checkingSql, [ $userId ]);
+        $result = $dataSql->fetch(PDO::FETCH_ASSOC);
         $isPasswordValid = password_verify($currentPassword, $result['password']);
         return $isPasswordValid;
     }

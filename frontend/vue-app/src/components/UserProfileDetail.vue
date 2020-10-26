@@ -8,24 +8,49 @@
                         <div class="profile-header-cover"></div>
                         <div class="profile-header-content">
                             <div class="profile-header-img">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="">
+                                <img src="images/avatar7.png" alt="">
                             </div>
                             <div class="profile-header-info">
                                 <h4 class="m-t-10 m-b-5">{{ userProfile.pseudo }}</h4>
                                 <div class="content-header-info" v-if="userProfile.role_id == 2">
                                     <div>
                                         <p class="m-b-10" > Membre </p>
-                                        <router-link to="/userupdate" class="btn btn-xs btn-success">Editer Profil</router-link>
+                                        <div class="type-1">
+                                            <router-link to="/userupdate" class="btn btn-1">
+                                            <span class="txt">Editer profil</span>
+                                            <span class="round"><i class="fa fa-chevron-right"></i></span>
+                                            </router-link>
+                                        </div>
                                     </div>
                                     <div v-if="this.$store.state.userLogged.role_id == 1" class="btn-backAdmin">
-                                        <button type="button" @click="setAdminProfil" class="btn btn-info btn-sm">Retour au profil Administrateur</button>
-                                        <router-link to="/adminview" class="btn btn-info btn-sm">Retour au panneau administration</router-link>
+                                        <div class="type-1">
+                                            <button type="button" @click="setAdminProfil" class="btn btn-1">
+                                            <span class="txt">Retour au profil Administrateur</span>
+                                            <span class="round"><i class="fa fa-chevron-right"></i></span>
+                                            </button>
+                                        </div>
+                                        <div class="type-1">
+                                            <router-link to="/adminview" class="btn btn-1">
+                                            <span class="txt">Panneau administration</span>
+                                            <span class="round"><i class="fa fa-chevron-right"></i></span>
+                                            </router-link>
+                                        </div>
                                     </div>
-                                    <router-link v-if="this.$store.state.userLogged.role_id == 2" to="/passwordupdate" class="btn btn-xs btn-success">Modifier mot de passe</router-link>
+                                    <div v-if="this.$store.state.userLogged.role_id == 2" class="type-1">
+                                        <router-link to="/updatepassword" class="btn btn-1">
+                                        <span class="txt">Modifier mot de passe</span>
+                                        <span class="round"><i class="fa fa-chevron-right"></i></span>
+                                        </router-link>
+                                    </div>
                                 </div>
                                 <div v-else>
-                                    <p>Administrateur </p>
-                                    <router-link to="/passwordupdate" class="btn btn-xs btn-success">Modifier mot de passe</router-link>
+                                    <p class="m-b-10" > Administrateur </p>
+                                    <div class="type-1">
+                                        <router-link to="/updatepassword" class="btn btn-1">
+                                        <span class="txt">Modifier mot de passe</span>
+                                        <span class="round"><i class="fa fa-chevron-right"></i></span>
+                                        </router-link>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -53,22 +78,22 @@
                                     <tbody>
                                         <tr class="highlight">
                                             <td class="field">Email</td>
-                                            <td><a href="javascript:;"> {{ userProfile.email }}</a></td>
+                                            <td> {{ userProfile.email }} </td>
                                         </tr>
                                         <tr class="divider">
                                             <td colspan="2"></td>
                                         </tr>
                                         <tr>
-                                            <td class="field">Mobile</td>
-                                            <td><i class="fa fa-mobile fa-lg m-r-5"></i> +1-(847)- 367-8924
-                                                <a href="javascript:;" class="m-l-5">Edit</a></td>
+                                            <td class="field">Status</td>
+                                            <td v-if="userProfile.role_id == 1"> Administrateur </td>
+                                            <td v-if="userProfile.role_id == 2"> Membre </td>
                                         </tr>
                                         <tr class="divider">
                                             <td colspan="2"></td>
                                         </tr>
                                         <tr class="highlight">
                                             <td class="field">Date de création</td>
-                                            <td><a href="javascript:;"> {{ userProfile.date_creation }}</a></td>
+                                            <td> {{ dateConverted.toLocaleDateString("fr-FR", options) }} </td>
                                         </tr>
                                         <tr class="divider">
                                             <td colspan="2"></td>
@@ -97,12 +122,17 @@ export default {
     }, 
     data(){
         return {
+            dateConverted: new Date(this.$store.state.user.date_creation),
+            options : { year: "numeric", month: "long", day: "numeric", hour: "numeric", minute: "numeric" }
         }
     },
     computed: {
         userProfile(){
             return this.$store.state.user;
         },
+        convertDate(){
+            return this.dateConverted
+        }
     },
     methods: {
         setAdminProfil(){
@@ -113,10 +143,6 @@ export default {
 </script>
 
 <style>
-body{
-    margin-top:20px;
-    background:#eee;
-}
 .content-header-info{
     display: flex;
     align-items: self-end;
@@ -134,7 +160,7 @@ body{
 }
 
 .profile-header .profile-header-cover {
-    background-color: #00b5ec;
+    background-color: #2962ff;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -191,87 +217,7 @@ body{
     position: relative
 }
 
-.b-minus-1,
-.b-minus-10,
-.b-minus-2,
-.b-minus-3,
-.b-minus-4,
-.b-minus-5,
-.b-minus-6,
-.b-minus-7,
-.b-minus-8,
-.b-minus-9,
-.b-plus-1,
-.b-plus-10,
-.b-plus-2,
-.b-plus-3,
-.b-plus-4,
-.b-plus-5,
-.b-plus-6,
-.b-plus-7,
-.b-plus-8,
-.b-plus-9,
-.l-minus-1,
-.l-minus-2,
-.l-minus-3,
-.l-minus-4,
-.l-minus-5,
-.l-minus-6,
-.l-minus-7,
-.l-minus-8,
-.l-minus-9,
-.l-plus-1,
-.l-plus-10,
-.l-plus-2,
-.l-plus-3,
-.l-plus-4,
-.l-plus-5,
-.l-plus-6,
-.l-plus-7,
-.l-plus-8,
-.l-plus-9,
-.r-minus-1,
-.r-minus-10,
-.r-minus-2,
-.r-minus-3,
-.r-minus-4,
-.r-minus-5,
-.r-minus-6,
-.r-minus-7,
-.r-minus-8,
-.r-minus-9,
-.r-plus-1,
-.r-plus-10,
-.r-plus-2,
-.r-plus-3,
-.r-plus-4,
-.r-plus-5,
-.r-plus-6,
-.r-plus-7,
-.r-plus-8,
-.r-plus-9,
-.t-minus-1,
-.t-minus-10,
-.t-minus-2,
-.t-minus-3,
-.t-minus-4,
-.t-minus-5,
-.t-minus-6,
-.t-minus-7,
-.t-minus-8,
-.t-minus-9,
-.t-plus-1,
-.t-plus-10,
-.t-plus-2,
-.t-plus-3,
-.t-plus-4,
-.t-plus-5,
-.t-plus-6,
-.t-plus-7,
-.t-plus-8,
-.t-plus-9 {
-    position: relative!important
-}
+
 
 .profile-header .profile-header-tab {
     background: #fff;
@@ -427,112 +373,78 @@ body{
     font-weight: 400
 }
 
-body.flat-black {
-    background: #E7E7E7
+/* buttons */
+.type-1 .btn-1 {
+  background-color: #F27935 !important;
+}
+.type-1 .btn-1 .round {
+  background-color: #f59965 !important;
+}
+.type-1 a, .type-1 button {
+  text-decoration: none;
+  -moz-border-radius: 30px;
+  -webkit-border-radius: 30px;
+  border-radius: 30px;
+  padding: 10px 53px 10px 23px;
+  color: #fff;
+  text-transform: uppercase;
+  font-family: sans-serif;
+  font-weight: bold;
+  position: relative;
+  -moz-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  display: inline-block;
+}
+.type-1 a span, .type-1 button span {
+  position: relative;
+  z-index: 3;
+}
+.type-1 a .round, .type-1 button .round {
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  position: absolute;
+  right: 3px;
+  top: 3px;
+  -moz-transition: all 0.3s ease-out;
+  -o-transition: all 0.3s ease-out;
+  -webkit-transition: all 0.3s ease-out;
+  transition: all 0.3s ease-out;
+  z-index: 2;
+}
+.type-1 a .round i, .type-1 button .round i {
+  position: absolute;
+  top: 50%;
+  margin-top: -6px;
+  left: 50%;
+  margin-left: -4px;
+  -moz-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
 }
 
-.flat-black .navbar.navbar-inverse {
-    background: #212121
+.txt {
+  font-size: 14px;
+  line-height: 1.45;
 }
 
-.flat-black .navbar.navbar-inverse .navbar-form .form-control {
-    background: #4a4a4a;
-    border-color: #4a4a4a
+.type-1 a:hover, .type-1 button:hover{
+  padding-left: 48px;
+  padding-right: 28px;
+  color: #fff;
 }
-
-.flat-black .sidebar,
-.flat-black .sidebar-bg {
-    background: #3A3A3A
+.type-1 a:hover .round, .type-1 button:hover .round {
+  width: calc(100% - 6px);
+  -moz-border-radius: 30px;
+  -webkit-border-radius: 30px;
+  border-radius: 30px;
 }
-
-.flat-black .page-with-light-sidebar .sidebar,
-.flat-black .page-with-light-sidebar .sidebar-bg {
-    background: #fff
+.type-1 a:hover .round i, .type-1 button:hover .round i {
+  left: 12%;
 }
-
-.flat-black .sidebar .nav>li>a {
-    color: #b2b2b2
-}
-
-.flat-black .sidebar.sidebar-grid .nav>li>a {
-    border-bottom: 1px solid #474747;
-    border-top: 1px solid #474747
-}
-
-.flat-black .sidebar .active .sub-menu>li.active>a,
-.flat-black .sidebar .nav>li.active>a,
-.flat-black .sidebar .nav>li>a:focus,
-.flat-black .sidebar .nav>li>a:hover,
-.flat-black .sidebar .sub-menu>li>a:focus,
-.flat-black .sidebar .sub-menu>li>a:hover,
-.sidebar .nav>li.nav-profile>a {
-    color: #fff
-}
-
-.flat-black .sidebar .sub-menu>li>a,
-.flat-black .sidebar .sub-menu>li>a:before {
-    color: #999
-}
-
-.flat-black .page-with-light-sidebar .sidebar .active .sub-menu>li.active>a,
-.flat-black .page-with-light-sidebar .sidebar .active .sub-menu>li.active>a:focus,
-.flat-black .page-with-light-sidebar .sidebar .active .sub-menu>li.active>a:hover,
-.flat-black .page-with-light-sidebar .sidebar .nav>li.active>a,
-.flat-black .page-with-light-sidebar .sidebar .nav>li.active>a:focus,
-.flat-black .page-with-light-sidebar .sidebar .nav>li.active>a:hover {
-    color: #000
-}
-
-.flat-black .page-sidebar-minified .sidebar .nav>li.has-sub:focus>a,
-.flat-black .page-sidebar-minified .sidebar .nav>li.has-sub:hover>a {
-    background: #323232
-}
-
-.flat-black .page-sidebar-minified .sidebar .nav li.has-sub>.sub-menu,
-.flat-black .sidebar .nav>li.active>a,
-.flat-black .sidebar .nav>li.active>a:focus,
-.flat-black .sidebar .nav>li.active>a:hover,
-.flat-black .sidebar .nav>li.nav-profile,
-.flat-black .sidebar .sub-menu>li.has-sub>a:before,
-.flat-black .sidebar .sub-menu>li:before,
-.flat-black .sidebar .sub-menu>li>a:after {
-    background: #2A2A2A
-}
-
-.flat-black .page-sidebar-minified .sidebar .sub-menu>li:before,
-.flat-black .page-sidebar-minified .sidebar .sub-menu>li>a:after {
-    background: #3e3e3e
-}
-
-.flat-black .sidebar .nav>li.nav-profile .cover.with-shadow:before {
-    background: rgba(42, 42, 42, .75)
-}
-
-.bg-white {
-    background-color: #fff!important;
-}
-.p-10 {
-    padding: 10px!important;
-}
-.media.media-xs .media-object {
-    width: 32px;
-}
-.m-b-2 {
-    margin-bottom: 2px!important;
-}
-.media>.media-left, .media>.pull-left {
-    padding-right: 15px;
-}
-.media-body, .media-left, .media-right {
-    display: table-cell;
-    vertical-align: top;
-}
-select.form-control:not([size]):not([multiple]) {
-    height: 34px;
-}
-.form-control.input-inline {
-    display: inline;
-    padding: 0 7px;
-}
-                                    
 </style>

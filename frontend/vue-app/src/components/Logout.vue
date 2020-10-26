@@ -11,7 +11,7 @@
                   <router-link to="/adminview" class="btn account right tooltipped dropdown-item" v-if="checkSession === true && checkRole == 1 " >
                   Administration<i class="fas fa-user-lock user-pic"></i>
                   </router-link>
-                  <button type="button" class="btn account right tooltipped dropdown-item" @click="deconnection">
+                  <button type="button" class="btn account right tooltipped dropdown-item" @click="logout">
                     Déconnection <i class="fas fa-sign-out-alt user-pic"></i>
                   </button>
               </div>
@@ -38,7 +38,7 @@ import Axios from 'axios';
       }
     },
     methods: {
-      deconnection(){
+      logout(){
         Axios
           .post("http://localhost/annuairesante/backend/index.php", {
             route: 'logout'
@@ -50,11 +50,7 @@ import Axios from 'axios';
             this.$session.set('Logout', 'Merci à bientôt');
             localStorage.removeItem('token');
             localStorage.removeItem('user');
-            localStorage.removeItem('id');
-            localStorage.removeItem('pseudo');
-            localStorage.removeItem('email');
-            localStorage.removeItem('date_creation');
-            localStorage.removeItem('role');
+            localStorage.removeItem('expiration');
             if ( this.$router.currentRoute.name != 'Home'){
               this.$router.push({ path: '/'});
             }

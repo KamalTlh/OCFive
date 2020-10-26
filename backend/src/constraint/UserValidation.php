@@ -30,8 +30,12 @@ class UserValidation extends Validation{
             $error = $this->checkPassword($name, $value);
             $this->addError($name, $error);
         }
-        elseif($name === 'userlog'){
-            $error = $this->constraint->notEmpty($name, $value);
+        elseif($name === 'passwordOne'){
+            $error = $this->checkPassword($name, $value);
+            $this->addError($name, $error);
+        }
+        elseif($name === 'passwordTwo'){
+            $error = $this->checkPassword($name, $value);
             $this->addError($name, $error);
         }
     }
@@ -54,6 +58,9 @@ class UserValidation extends Validation{
         if($this->constraint->maxLength($name, $value, 30)){
             return $this->constraint->maxLength('pseudo', $value, 30);
         }
+        if($this->constraint->checkIfScript($name, $value)){
+            return $this->constraint->checkIfScript('pseudo', $value);
+        }
     }
 
     private function checkEmail($name, $value){
@@ -69,14 +76,20 @@ class UserValidation extends Validation{
         if($this->constraint->isEmail($name, $value)){
             return $this->constraint->isEmail('email', $value);
         }
+        if($this->constraint->checkIfScript($name, $value)){
+            return $this->constraint->checkIfScript('email', $value);
+        }
     }
 
     private function checkPassword($name, $value){
         if($this->constraint->notEmpty($name, $value)){
             return $this->constraint->notEmpty('mot de passe', $value);
         }
-        if($this->constraint->minLength($name, $value, 2)){
-            return $this->constraint->minLength('mot de passe', $value, 9);
+        if($this->constraint->minLength($name, $value, 4)){
+            return $this->constraint->minLength('mot de passe', $value, 4);
+        }
+        if($this->constraint->checkIfScript($name, $value)){
+            return $this->constraint->checkIfScript('mot de passe', $value);
         }
     }
 }

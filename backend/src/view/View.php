@@ -1,15 +1,9 @@
 <?php
 namespace MyApp\View;
-use MyApp\Config\Session;
 
 class View{
     private $title;
     private $file;
-    private $session;
-    
-    public function __construct(){
-        $this->session = new Session($_SESSION);
-    }
 
     public function render($template, $data=[]){
         if( $template === 'administration'){
@@ -19,17 +13,14 @@ class View{
         $content = $this->renderFile($this->file, $data);
         $view = $this->renderFile('src/view/FirstTemplate.php', [
             'title' => $this->title,
-            'content' => $content,
-            'session' => $this->session
+            'content' => $content
         ]);
         echo $view;
     }
 
     private function renderFile($file, $data){
-        // echo 'file name: '.$file;
         try{
             if(file_exists($file)){
-                // echo 'exist';
                 extract($data);
                 ob_start();
                 require $file;

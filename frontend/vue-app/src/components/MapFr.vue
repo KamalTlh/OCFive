@@ -78,26 +78,26 @@ export default {
 </script>
 
 <style>
-#map {        
+#mapHome {        
   max-width: 100%;
   max-height: 100%;
 }
-#map path {
+#mapHome path {
   fill:#41D1CC;
   stroke:#FFFFFF;
   stroke-width:0.6;
   transition: fill 0.2s, stroke 0.3s;
 }
-#map path:hover {
+#mapHome path:hover {
   fill: #B22222;
   stroke: #BC8F8F;
 }
-#map .separator {
+#mapHome .separator {
   stroke: #ccc;
   fill: none;
   stroke-width:1.5;
 }
-#map .separator:hover {
+#mapHome .separator:hover {
   stroke: #ccc;
   fill: none;
 }

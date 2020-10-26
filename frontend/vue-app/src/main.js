@@ -24,26 +24,11 @@ import '@fortawesome/fontawesome-free/css/all.min.css'
 import 'leaflet-defaulticon-compatibility';
 import 'leaflet/dist/leaflet.css';
 
-
-// Axios.interceptors.request.use(
-//   config => {
-//       const token = localStorage.getItem('token');
-//       if (token) {
-//           Axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
-//       }
-//       // config.headers['Content-Type'] = 'application/json';
-//       return config;
-//   },
-//   error => {
-//       Promise.reject(error)
-// });
-
 // Add a request interceptor
 Axios.interceptors.request.use(function (config) {
     const token = localStorage.getItem('token');
     if (token) {
         config.headers['Authorization'] = 'Bearer ' + token;
-        // Axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
     }
     return config;
 }, function (error) {
@@ -62,13 +47,23 @@ Axios.interceptors.response.use(function (response) {
     localStorage.removeItem('user');
     router.push({ path: '/login' });
   }
+  else if(error.response.status == 500){
+    router.push({ path: '/error500' });
+  }
   return Promise.reject(error);
 });
 
 Vue.config.productionTip = false
 
+// new Vue({
+//   router,
+//   store,
+//   render: h => h(App)
+// }).$mount('#app')
+
 new Vue({
   router,
   store,
-  render: h => h(App)
-}).$mount('#app')
+  el: '#app',
+  render(h) { return h(App) }
+})

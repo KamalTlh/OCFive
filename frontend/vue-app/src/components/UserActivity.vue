@@ -1,18 +1,31 @@
 <template>
     <!-- begin #profile-activity tab -->
     <div class="tab-pane" id="profile-activity">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6">
-                    <h5>Listes de médecins favoris</h5>
-                    <div v-for="favorite in favorites" :key="favorite.id">
-                        <a href="#" @click="viewWorkerDetail(favorite.workerId)"> {{ favorite.nom_professionnel }} </a>
+        <div  class="col-md-12">
+            <div class="row gutters-sm">
+                <div class="col-sm-6 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h6 class="d-flex align-items-center mb-3"><i
+                                    class="material-icons text-info mr-2">Liste Favoris</i></h6>
+                            <div class="favory" v-for="favorite in favorites" :key="favorite.id">
+                                <small @click="viewWorkerDetail(favorite.workerId)"> {{ favorite.nom_professionnel }} </small>
+                                <hr>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <h5>Commentaires postés</h5>
-                    <div v-for="comment in comments" :key="comment.id">
-                        <a href="#" @click="viewWorkerDetail(comment.workerId)"> {{ comment.content }} </a>
+                <div class="col-sm-6 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h6 class="d-flex align-items-center mb-3"><i
+                                    class="material-icons text-info mr-2">Commentaires postés</i></h6>
+                            <div @click="viewWorkerDetail(comment.workerId)" class="commentary" v-for="comment in comments" :key="comment.id">
+                                <small> {{ comment.content.substr(0, 50) }} ... </small>
+                                <small> {{ new Date(comment.date_creation).toLocaleDateString("fr-FR", options) }} </small>
+                                <hr>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -28,7 +41,8 @@ export default {
     data(){
         return {
             favorites: [],
-            comments: []
+            comments: [],
+            options : { year: "numeric", month: "long", day: "numeric", hour: "numeric", minute: "numeric" }
         }
     },
     computed: {
@@ -73,8 +87,9 @@ export default {
             })
         },
         viewWorkerDetail(workerId){
-           this.$store.commit("changeWorker", workerId);
-           this.$router.push({ path: '/workerdetailview' });
+            localStorage.setItem('healthWorkerId', workerId);
+            this.$store.commit("changeWorker", workerId);
+            this.$router.push({ path: '/workerdetailview' });
         }
     },
     mounted(){
@@ -90,3 +105,10 @@ export default {
     }
 }
 </script>
+
+<style>
+.favory:hover, .commentary:hover{
+    color: #2962ff;
+    cursor: pointer;
+}
+</style>

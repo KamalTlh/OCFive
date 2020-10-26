@@ -6,7 +6,8 @@ class CommentController extends Controller{
     public function getListComments($get){
         $check = $this->checkAuth();
         if ($check['access'] === true){
-            if($get['userLoggedRole'] == 1 ) {
+            $accessAdmin = $this->checkAuthAdmin();
+            if($accessAdmin['admin'] === true ) {
                 if($get['totalPages'] == 0){
                     $data['page'] = $this->commentsModel->getCountListComments();;
                 }
@@ -15,9 +16,6 @@ class CommentController extends Controller{
                     'data'=> $data
                 ]);
             }
-            return $this->view->render('JsonResponse',[
-                'data'=> 'Vous n\'avez pas les droits d\'accès.'
-            ]);
         }
     }
 
@@ -34,14 +32,11 @@ class CommentController extends Controller{
     }
 
     public function getCommentsOfWorker($get){
-        $check = $this->checkAuth();
-        if ($check['access'] === true){
-            if(isset($get['workerId'])){
-                $data = $this->commentsModel->getCommentsOfWorker($get['workerId']);
-                return $this->view->render('JsonResponse',[
-                    'data'=> $data
-                ]);
-            }
+        if(isset($get['workerId'])){
+            $data = $this->commentsModel->getCommentsOfWorker($get['workerId']);
+            return $this->view->render('JsonResponse',[
+                'data'=> $data
+            ]);
         }
     }
 
@@ -50,8 +45,12 @@ class CommentController extends Controller{
         if ($check['access'] === true){
             if(isset($post['comment']) && isset($post['userId']) && isset($post['workerId'])){
                 $data['errors'] = $this->validation->validate($post, 'Comment');
+                $output = $this->checkIfScript($post['comment']);
+                if ($output){
+                    $post['comment'] = htmlspecialchars($post['comment']);
+                }
                 if(!($data['errors'])){
-                    $data = $this->commentModel->addComment($post);
+                    $data = $this->commentModel->addComment($post['comment'], $post['userId'], $post['workerId']);
                     return $this->view->render('JsonResponse',[
                         'data'=> $data
                     ]);
@@ -69,23 +68,48 @@ class CommentController extends Controller{
     public function deleteComment($post){
         $check = $this->checkAuth();
         if ($check['access'] === true){
-            if(isset($post['id'])){
-                $data['commentDeleted'] = $this->commentModel->deleteComment($post['id']);
+            $accessAdmin = $this->checkAuthAdmin();
+            if($accessAdmin['admin'] === true ){
+                if(isset($post['id'])){
+                    $data['commentDeleted'] = $this->commentModel->deleteComment($post['id']);
+                    return $this->view->render('JsonResponse',[
+                        'data'=> $data
+                    ]);
+                }
                 return $this->view->render('JsonResponse',[
-                    'data'=> $data
+                    'data'=> 'Erreur lors du traitement des données. Veuillez réessayer plus tard.'
                 ]);
             }
-            return $this->view->render('JsonResponse',[
-                'data'=> 'Erreur lors du traitement des données. Veuillez réessayer plus tard.'
-            ]);
         }
     }
 
     public function updateComment($post){
         $check = $this->checkAuth();
         if ($check['access'] === true){
-            if(isset($post['id']) && $post['content']){
-                $data = $this->commentModel->updateComment($post['id'], $post['content']);
+            $accessAdmin = $this->checkAuthAdmin();
+            if($accessAdmin['admin'] === true ){
+                if(isset($post['id']) && $post['content']){
+                    $output = $this->checkIfScript($post['content']);
+                    if ($output){
+                        $post['content'] = htmlspecialchars($post['content']);
+                    }
+                    $data = $this->commentModel->updateComment($post['id'], $post['content']);
+                    return $this->view->render('JsonResponse',[
+                        'data'=> $data
+                    ]);
+                }
+                return $this->view->render('JsonResponse',[
+                    'data'=> 'Erreur lors du traitement des données. Veuillez réessayer plus tard.'
+                ]);
+            }
+        }
+    }
+
+    public function flagComment($post){
+        $check = $this->checkAuth();
+        if ($check['access'] === true){
+            if (isset($post['commentId'])){
+                $data = $this->commentModel->flagComment($post['commentId']);
                 return $this->view->render('JsonResponse',[
                     'data'=> $data
                 ]);
@@ -96,23 +120,18 @@ class CommentController extends Controller{
         }
     }
 
-    public function flagComment($commentId){
+    public function unflagComment($post){
         $check = $this->checkAuth();
         if ($check['access'] === true){
-            $comment = $this->commentModel->getComment($commentId);
-            $this->commentModel->flagComment($commentId);
-            $this->session->set('flag_comment', 'Le commentaire a bien été signalé.');
-            header('Location: index.php?route=readarticle&articleId='.$comment->getArticle_Id());
-        }
-    }
-
-    public function unflagComment($commentId){
-        $check = $this->checkAuth();
-        if ($check['access'] === true){
-            $comment = $this->commentModel->getComment($commentId);
-            $this->commentModel->unflagComment($commentId);
-            $this->session->set('unflag_comment', 'Le commentaire n\'est plus signalé.');
-            header('Location: index.php?route=administration');
+            if (isset($post['commentId'])){
+                $data = $this->commentModel->unflagComment($post['commentId']);
+                return $this->view->render('JsonResponse',[
+                    'data'=> $data
+                ]);
+            }
+            return $this->view->render('JsonResponse',[
+                'data'=> 'Erreur lors du traitement des données. Veuillez réessayer plus tard.'
+            ]);
         }
     }
 }

@@ -26,4 +26,14 @@ class Constraint{
             return 'Merci de saisir une adresse email valide';
         }
     }
+
+    public function checkIfScript($name, $value){
+        $content_array = explode(" ", $value);
+        $output1 = '';
+        foreach($content_array as $content1){
+            if(substr($content1, 0, 8) == "<script>"){
+                return 'Champ saisi invalide';
+            }
+        }
+    }   
 }

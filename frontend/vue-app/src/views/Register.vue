@@ -1,63 +1,65 @@
 <template>
-    <div class="container my-4">
-        <section id="register-form">
-            <div class="row">
-                <div class="col-md-6 mb-4">
-                    <div class="pr-1">
-                        <div class="card">
-                            <h5 class="card-header info-color white-text text-center py-4">
-                                <strong>Sign up</strong>
-                            </h5>
-                            <div class="card-body px-lg-5 pt-0">
-                                <form v-on:submit.prevent="signIn" action='/' class="text-center" style="color: #757575;">
-                                    <!-- First name -->
-                                    <div class="md-form">
-                                        <label for="materialRegisterFormFirstName" class="active">Pseudo</label>
-                                        <input type="text" v-model="pseudo" id="materialRegisterFormFirstName"
-                                            class="form-control">
-                                        <small id="materialRegisterFormPasswordHelpBlock"
-                                            class="form-text text-muted mb-4" v-if="errorsForm.pseudo"> {{ errorsForm.pseudo }} 
-                                        </small>
-                                    </div>
+    <div class="container">
 
-                                    <!-- E-mail -->
-                                    <div class="md-form">
-                                        <label for="materialRegisterFormEmail" class="active">E-mail</label>
-                                        <input type="email" v-model="email" id="materialRegisterFormEmail" class="form-control">
-                                        <small id="materialRegisterFormPasswordHelpBlock"
-                                            class="form-text text-muted mb-4" v-if="errorsForm.email"> {{ errorsForm.email }} 
-                                        </small>                                    
-                                    </div>
-
-                                    <!-- Password -->
-                                    <div class="md-form">
-                                        <input type="password" v-model="password" id="materialRegisterFormPassword" class="form-control"
-                                            aria-describedby="materialRegisterFormPasswordHelpBlock">
-                                        <label for="materialRegisterFormPassword" class="active">Password</label>
-                                        <small id="materialRegisterFormPasswordHelpBlock"
-                                            class="form-text text-muted mb-4" v-if="errorsForm.password">
-                                            {{ errorsForm.password }}
-                                        </small>
-                                    </div>
-
-                                    <!-- Sign up button -->
-                                    <button class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0"
-                                        type="submit" >Sign in</button>
-                                    <hr>
-                                    <!-- Terms of service -->
-                                    <p>By clicking
-                                        <em>Sign up</em> you agree to our
-                                        <a href="" target="_blank">terms of service</a>
-
-                                    </p>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+    <div class="card o-hidden border-0 shadow-lg my-5">
+      <div class="card-body p-0">
+        <!-- Nested Row within Card Body -->
+        <div class="row">
+          <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+          <div class="col-lg-7">
+            <div class="p-5">
+              <div class="text-center">
+                <h1 class="h4 text-gray-900 mb-4">Créez un compte!</h1>
+              </div>
+              <form v-on:submit.prevent="signIn" action='/' class="user">
+                <div class="form-group">
+                    <input type="text" v-model="pseudo" class="form-control form-control-user" id="exampleFirstName" placeholder="Pseudo">
+                    <small id="materialRegisterFormPasswordHelpBlock"
+                        class="return-error" v-if="errorsForm.pseudo"><i class="fas fa-exclamation-circle"></i> {{ errorsForm.pseudo }} 
+                    </small>
                 </div>
+                <div class="form-group">
+                    <input type="email" v-model="email" class="form-control form-control-user" id="exampleInputEmail" placeholder="Adresse email">
+                    <small id="materialRegisterFormPasswordHelpBlock"
+                        class="return-error" v-if="errorsForm.email"><i class="fas fa-exclamation-circle"></i> {{ errorsForm.email }} 
+                    </small>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                        <input v-model="password" type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Mot de passe">
+                        <small id="materialRegisterFormPasswordHelpBlock"
+                            class="return-error" v-if="errorsForm.password"><i class="fas fa-exclamation-circle"></i>
+                            {{ errorsForm.password }}
+                        </small>
+                    </div>
+                    <div class="col-sm-6">
+                        <input type="password" v-model="passwordConfirmation" class="form-control form-control-user" id="exampleRepeatPassword" placeholder="Confirmer le mot de passe">
+                        <small id="materialRegisterFormPasswordHelpBlock"
+                            class="return-error" v-if="errorsForm.password"><i class="fas fa-exclamation-circle"></i>
+                            {{ errorsForm.password }}
+                        </small>
+                    </div>
+                    <small id="materialRegisterFormPasswordHelpBlock"
+                        class="return-error" v-if="errorConfirmation"><i class="fas fa-exclamation-circle"></i>
+                        Les mots de passe ne correspondent pas
+                    </small>
+                </div>
+                <button class="btn btn-primary btn-user btn-block" type="submit" >S'enregistrer</button>
+                <small>En cliquant sur
+                    <em>S'enregistrer</em> vous acceptez les 
+                    <a href="" target="_blank">conditions d'utilisations</a>
+                </small>
+              </form>
+              <hr>
+              <div class="text-center">
+                <router-link class="small" to="/login">Vous possédez déjà un compte? Connectez-vous!</router-link>
+              </div>
             </div>
-        </section>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -72,42 +74,80 @@ export default {
             pseudo: null,
             email: null,
             password: null,
+            passwordConfirmation: null,
             registration: false,
             errorsForm: {
                 pseudo: null,
                 email: null,
                 password: null
-            }
+            },
+            errorConfirmation: false,
+            emptyPseudo: false,
+            emptyPassword: false,
+            emptyEmail: false
         }
     },
     methods: {
-        signIn(){
-        Axios
-          .post("http://localhost/annuairesante/backend/index.php", {
-            route: 'signIn',
-            pseudo: this.pseudo,
-            email: this.email,
-            password: this.password
-          })
-          .then( response => {
-            if (response.data.errors){
-                this.errorsForm = response.data.errors;
+        checkForm() {
+			if ( !this.pseudo || this.pseudo == '' ) {
+                this.errorsForm.pseudo = 'Le champ saisi est vide';
+            } else {
+                this.errorsForm.pseudo = null;
             }
-            this.registration = response.data.registration;
-            if ( this.registration === true ) {
-                this.$session.set('signIn', 'Vous pouvez à présent vous connecter.');
-                const previousUrl = VueCookies.get("previousUrl");
-                if (previousUrl == '/adminview'){
-                    this.$router.push({ path: '/adminview' });
-                } else {
-                    this.$router.push({ path: '/' });
+
+            if (!this.email || this.email == ''){
+                this.errorsForm.email = 'Le champ saisi est vide';
+            } else {
+                this.errorsForm.email = null;
+            }
+
+            if (!this.password || this.password == ''){
+                this.errorsForm.password = 'Le champ saisi est vide';
+            } else {
+                this.errorsForm.password = null;
+            }
+            
+            if (this.pseudo && this.email && this.password){
+                return true;
+            } else {
+                return false;
+            }
+		},
+        signIn(){
+            if (this.checkForm()){
+                if ( this.password == this.passwordConfirmation ) {
+                    Axios
+                    .post("http://localhost/annuairesante/backend/index.php", {
+                        route: 'signIn',
+                        pseudo: this.pseudo,
+                        email: this.email,
+                        password: this.password
+                    })
+                    .then( response => {
+                        if (response.data.errors){
+                            this.errorsForm = response.data.errors;
+                        }
+                        this.registration = response.data.registration;
+                        if ( this.registration === true ) {
+                            this.$session.set('signIn', 'Vous pouvez à présent vous connecter.');
+                            const previousUrl = VueCookies.get("previousUrl");
+                            if (previousUrl == '/adminview'){
+                                this.$router.push({ path: '/adminview' });
+                            } else {
+                                console.log('ici');
+                                this.$router.push({ path: '/login' });
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error)
+                        this.errored = true
+                    })
+                }
+                else {
+                    this.errorConfirmation = true;
                 }
             }
-          })
-          .catch(error => {
-              console.log(error)
-              this.errored = true
-          })
         }
     }
 }
@@ -116,5 +156,11 @@ export default {
 <style>
 .row{
     justify-content: center;
+}
+.form-control{
+    color: #6e707e !important;
+}
+.text-muted {
+    color: #DC143C !important;
 }
 </style>

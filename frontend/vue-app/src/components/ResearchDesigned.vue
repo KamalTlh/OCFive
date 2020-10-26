@@ -24,9 +24,9 @@
               <div class="col-lg-4">
                 <div class="form-item form-type-select form-item-discipline">
                   <label for="edit-profession">Profession</label>
-                  <select  icon="user-md" name="profession" id="edit-profession" label="Choisir une profession" class="form-select form-control"  v-model="dataResearch.selected_profession">
-                    <option value="" selected="selected"></option>
-                    <option v-for="profession in options_professions" :key="profession" >
+                  <select icon="user-md" name="profession" id="edit-profession" class="form-select form-control"  v-model="selected_profession">
+                    <option value="" :selected="true">Selectionner une profession</option>
+                    <option v-for="profession in options_professions" :key="profession">
                       {{ profession }}
                     </option>
                   </select><i class="select-icon fas fa-chevron-down"></i>
@@ -36,8 +36,8 @@
 
                 <div class="form-item form-type-select form-item-orientation">
                   <label for="edit-regroupement">Regroupement</label>
-                  <select id="edit-regroupement" name="regroupement" class="form-select form-control" v-model="dataResearch.selected_groupement">
-                    <option value="" selected="selected"></option>
+                  <select id="edit-regroupement" name="regroupement" class="form-select form-control" v-model="selected_groupement">
+                    <option value="" selected="selected">Selectionner un regroupement</option>
                     <option v-for="groupement in options_groupementActs"  :key="groupement" >
                       {{ groupement }}
                     </option>
@@ -47,8 +47,8 @@
               <div class="col-lg-4">
                 <div class="form-item form-type-select form-item-titres">
                   <label for="edit-mode_exercice">Mode d'exercice particulier </label>
-                  <select id="edit-mode_exercice" name="mode_exercice" class="form-select form-control" v-model="dataResearch.selected_mode_exercice">
-                    <option value="" selected="selected"></option>
+                  <select id="edit-mode_exercice" name="mode_exercice" class="form-select form-control" v-model="selected_mode_exercice">
+                    <option value="" selected="selected">Selectionner un mode d'exercice</option>
                     <option v-for="mode in options_mode_exercice"  :key="mode" >
                       {{ mode }}
                     </option>
@@ -64,14 +64,14 @@
                 <div class="form-item form-type-textfield form-item-nom-exercice">
                   <label for="edit-nom-exercice">Nom exercice </label>
                   <input placeholder="Nom exercice" class="form-control form-text" type="text" id="edit-nom-exercice"
-                    name="nom_professionnel" v-model="dataResearch.nom_professionnel" size="60" maxlength="255" />
+                    name="nom_professionnel" v-model="nom_professionnel" size="60" maxlength="255" />
                 </div>
               </div>
               <div class="col-lg-6">
                 <div class="form-item form-type-textfield form-item-prenom">
                   <label for="edit-prenom">Prénom </label>
                   <input placeholder="Prénom" class="form-control form-text" type="text" id="edit-prenom" name="prenom"
-                    v-model="dataResearch.prenom_professionnel" size="60" maxlength="255" />
+                    v-model="prenom_professionnel" size="60" maxlength="255" />
                 </div>
               </div>
             </div>
@@ -86,44 +86,44 @@
                     <div class="row">
                       <div class="col-lg-6">
                         <div class="form-item form-type-radio form-item-statut custom-control custom-radio"><input
-                            type="radio" id="edit-statut-1" name="statut" v-model="dataResearch.selected_status" value="Libéral intégral"
+                            type="radio" id="edit-statut-1" name="statut" v-model="selected_status" value="Libéral intégral"
                             class="form-radio custom-control-input" /> <label class="option custom-control-label"
                             for="edit-statut-1"><span>Libéral intégral </span></label>
                         </div>
                         <div class="form-item form-type-radio form-item-statut custom-control custom-radio"><input
-                            type="radio" id="edit-statut-2" name="statut" v-model="dataResearch.selected_status" value="Libéral activité salariée"
+                            type="radio" id="edit-statut-2" name="statut" v-model="selected_status" value="Libéral activité salariée"
                             class="form-radio custom-control-input" /> <label class="option custom-control-label"
                             for="edit-statut-2"><span>Libéral activité salariée </span></label>
                         </div>
                         <div class="form-item form-type-radio form-item-statut custom-control custom-radio"><input
-                            type="radio" id="edit-statut-3" name="statut" v-model="dataResearch.selected_status" value="Libéral temps partiel hospitalier"
+                            type="radio" id="edit-statut-3" name="statut" v-model="selected_status" value="Libéral temps partiel hospitalier"
                             class="form-radio custom-control-input" /> <label class="option custom-control-label"
                             for="edit-statut-3"><span>Libéral temps partiel hospitalier </span></label>
                         </div>
                         <div class="form-item form-type-radio form-item-statut custom-control custom-radio"><input
-                            type="radio" id="edit-statut-4" name="statut" v-model="dataResearch.selected_status" value="Libéral temps plein hospitalier"
+                            type="radio" id="edit-statut-4" name="statut" v-model="selected_status" value="Libéral temps plein hospitalier"
                             class="form-radio custom-control-input" /> <label class="option custom-control-label"
                             for="edit-statut-4"><span>Libéral temps plein hospitalier </span></label>
                         </div>
                       </div>
                       <div class="col-lg-6">
                         <div class="form-item form-type-radio form-item-statut custom-control custom-radio"><input
-                            type="radio" id="edit-statut-5" name="statut" v-model="dataResearch.selected_status" value="T. plein hosp. contrat mixte"
+                            type="radio" id="edit-statut-5" name="statut" v-model="selected_status" value="T. plein hosp. contrat mixte"
                             class="form-radio custom-control-input" /> <label class="option custom-control-label"
                             for="edit-statut-5"><span>T. plein hosp. contrat mixte </span></label>
                         </div>
                         <div class="form-item form-type-radio form-item-statut custom-control custom-radio"><input
-                            type="radio" id="edit-statut-6" name="statut" v-model="dataResearch.selected_status" value="T. plein hosp./mal. aut. med"
+                            type="radio" id="edit-statut-6" name="statut" v-model="selected_status" value="T. plein hosp./mal. aut. med"
                             class="form-radio custom-control-input" /> <label class="option custom-control-label"
                             for="edit-statut-6"><span>T. plein hosp./mal. aut. med </span></label>
                         </div>
                         <div class="form-item form-type-radio form-item-statut custom-control custom-radio"><input
-                            type="radio" id="edit-statut-7" name="statut" v-model="dataResearch.selected_status" value="N’exerce pas actuellement"
+                            type="radio" id="edit-statut-7" name="statut" v-model="selected_status" value="N’exerce pas actuellement"
                             class="form-radio custom-control-input" /> <label class="option custom-control-label"
                             for="edit-statut-7"><span>N’exerce pas actuellement </span></label>
                         </div>
                         <div class="form-item form-type-radio form-item-statut custom-control custom-radio"><input
-                            type="radio" id="edit-statut-8" name="statut" v-model="dataResearch.selected_status" checked="checked"
+                            type="radio" id="edit-statut-8" name="statut" v-model="selected_status" checked="checked"
                             class="form-radio custom-control-input" /> <label class="option custom-control-label"
                             for="edit-statut-8"><span>Indifférent </span></label>
                         </div>
@@ -140,15 +140,15 @@
                   <label class="element-invisible" for="edit-sexe">Sexe </label>
                   <div id="edit-sexe" class="form-radios">
                     <div class="form-item form-type-radio form-item-sexe custom-control custom-radio"><input
-                        type="radio" id="edit-sexe-1" name="sexe" v-model="dataResearch.selected_civilite" value="Homme" class="form-radio custom-control-input" />
+                        type="radio" id="edit-sexe-1" name="sexe" v-model="selected_civilite" value="Homme" class="form-radio custom-control-input" />
                       <label class="option custom-control-label" for="edit-sexe-1"><span>Masculin </span></label>
                     </div>
                     <div class="form-item form-type-radio form-item-sexe custom-control custom-radio"><input
-                        type="radio" id="edit-sexe-2" name="sexe" v-model="dataResearch.selected_civilite" value="Femme" class="form-radio custom-control-input" />
+                        type="radio" id="edit-sexe-2" name="sexe" v-model="selected_civilite" value="Femme" class="form-radio custom-control-input" />
                       <label class="option custom-control-label" for="edit-sexe-2"><span>Feminin </span></label>
                     </div>
                     <div class="form-item form-type-radio form-item-sexe custom-control custom-radio"><input
-                        type="radio" id="edit-sexe-3" name="sexe" v-model="dataResearch.selected_civilite"  checked="checked"
+                        type="radio" id="edit-sexe-3" name="sexe" v-model="selected_civilite"  checked="checked"
                         class="form-radio custom-control-input" /> <label class="option custom-control-label"
                         for="edit-sexe-3"><span>Indifférent </span></label>
                     </div>
@@ -166,8 +166,8 @@
                   <div class="col-lg-6">
                     <div class="form-item form-type-select form-item-region">
                       <label for="region">Région </label>
-                      <select id="region" name="region" class="form-select form-control" v-model="dataResearch.selected_region">
-                        <option value="" selected="selected"></option>
+                      <select id="region" name="region" class="form-select form-control" v-model="selected_region">
+                        <option value="" selected="selected">Selectionner une région</option>
                         <option v-for="region in options_regions"  :key="region">
                           {{ region }}
                         </option>
@@ -177,8 +177,8 @@
                   <div class="col-lg-6">
                     <div class="form-item form-type-select form-item-departement">
                       <label for="departement">Département </label>
-                      <select id="departement" name="departement" class="form-select form-control" v-model="dataResearch.selected_departement">
-                        <option value="" selected="selected"></option>
+                      <select id="departement" name="departement" class="form-select form-control" v-model="selected_departement">
+                        <option value="" selected="selected">Selectionner un département</option>
                         <option v-for="departement in options_departements"  :key="departement">
                           {{ departement }}
                         </option>
@@ -189,14 +189,7 @@
                     <div class="form-item form-type-textfield form-item-localite">
                       <label for="edit-localite">Commune </label>
                       <input placeholder="Commune" class="form-control form-text" type="text" id="edit-localite"
-                        name="commune" size="60" maxlength="30" v-model="dataResearch.commune"/>
-                    </div>
-                  </div>
-                  <div class="col-lg-6">
-                    <div class="form-item form-type-textfield form-item-rue">
-                      <label for="edit-rue">Adresse </label>
-                      <input placeholder="Adresse" class="form-control form-text" type="text" id="edit-rue" name="adresse"
-                        size="60" maxlength="255" />
+                        name="commune" size="60" maxlength="30" v-model="commune"/>
                     </div>
                   </div>
                 </div>
@@ -224,18 +217,18 @@ import Axios from 'axios';
     name: "ResearchDesigned",
     data() {
       return {
-        dataResearch: { 
-            nom_professionnel: null,
-            prenom_professionnel: null,
-            selected_profession: null,
-            selected_civilite: null,
-            selected_groupement: null,
-            selected_mode_exercice: null,
-            selected_status: null,
-            selected_region: null,
-            selected_departement: null,
-            commune: null
-        },
+
+            nom_professionnel: '',
+            prenom_professionnel: '',
+            selected_profession: '',
+            selected_civilite: '',
+            selected_groupement: '',
+            selected_mode_exercice: '',
+            selected_status: '',
+            selected_region: '',
+            selected_departement: '',
+            commune: '',
+  
         options_professions: [],
         options_groupementActs: [],
         options_mode_exercice: [],
@@ -339,20 +332,30 @@ import Axios from 'axios';
       },
       /*---*/
       checkFieldsData(){
-        for (const property in this.dataResearch) {
-          if (this.dataResearch[property]  != null){
-            this.field_data+=1;
-          }
+        if(this.nom_professionnel == '' && this.selected_profession == '' && this.selected_civilite== '' && this.selected_groupement == '' && this.selected_mode_exercice == ''
+          && this.selected_status == '' && this.selected_region == '' && this.selected_departement == '' && this.commune == '') {
+            return true;
+        } else {
+          return false;
         }
+
+        // for (const property in this.dataResearch) {
+        //   if (this.dataResearch[property]  != null){
+        //     this.field_data+=1;
+        //   }
+        // }
       },
       sendDataResearch() {
-        this.checkFieldsData();
-        if(this.field_data == 0){
+        // this.checkFieldsData();
+        if(this.checkFieldsData()){
           this.emptyDataResearch = true;
           this.$refs['errorData'].show();
         }
         else{
-          this.$emit('data-sent', { 'newRequest': true, 'dataResearch': this.dataResearch });
+          this.$emit('data-sent', { 'newRequest': true, 'nom_professionnel': this.nom_professionnel, 'selected_profession': this.selected_profession,
+          'selected_civilite': this.selected_civilite,  'selected_groupement': this.selected_groupement, 'selected_mode_exercice': this.selected_mode_exercice,
+          'selected_status': this.selected_status, 'selected_region': this.selected_region, 'selected_departement': this.selected_departement, 
+          'commune': this.commune });
         }
       }, 
     },

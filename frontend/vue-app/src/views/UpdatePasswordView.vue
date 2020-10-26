@@ -1,14 +1,15 @@
 <template>
 <div class="container password-update">
-    <PasswordUpdate />
+    <UpdatePassword />
 </div>
 </template>
 
 <script>
-import PasswordUpdate from '../components/PasswordUpdate';
+import UpdatePassword from '../components/UpdatePassword';
 export default {
+    name: "UpdatePasswordView",
     components: {
-        PasswordUpdate
+        UpdatePassword
     }
 };
 </script>

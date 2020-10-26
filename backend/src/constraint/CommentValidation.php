@@ -39,5 +39,8 @@ class CommentValidation extends Validation{
         if($this->constraint->minLength($name, $value, 3)){
             return $this->constraint->minLength('contenu', $value, 3);
         }
+        if($this->constraint->checkIfScript($name, $value)){
+            return $this->constraint->checkIfScript('contenu', $value);
+        }
     }
 }

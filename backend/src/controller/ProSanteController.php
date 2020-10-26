@@ -3,51 +3,20 @@ namespace MyApp\Controller;
 
 class ProSanteController extends Controller{
 
-    // function jwt_request($token) {
-    //     $curl = curl_init();
-
-    //     curl_setopt_array($curl, array(
-    //     CURLOPT_URL => "http://localhost/annuairesante/backend/index.php",
-    //     CURLOPT_RETURNTRANSFER => true,
-    //     CURLOPT_ENCODING => "",
-    //     CURLOPT_MAXREDIRS => 10,
-    //     CURLOPT_TIMEOUT => 0,
-    //     CURLOPT_FOLLOWLOCATION => true,
-    //     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    //     CURLOPT_CUSTOMREQUEST => "GET",
-    //     CURLOPT_HTTPHEADER => array(
-    //     "Authorization: Bearer eyJ0eciOiJSUzI1NiJ9.eyJMiIsInNjb3BlcyI6W119.K3lW1STQhMdxfAxn00E4WWFA3uN3iIA"
-    //     ),
-    //     ));
-
-    //     $response = curl_exec($curl);
-    //     $data = json_decode($response, true);
-
-    //     var_dump($response);
-
-    //     header('Content-Type: application/json'); // Specify the type of data
-    //     $ch = curl_init('http://localhost/annuairesante/backend/index.php'); // Initialise cURL
-    //     $authorization = "Authorization: Bearer ".$token; // Prepare the authorisation token
-    //     curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json' , $authorization )); // Inject the token into the header
-    //     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    //     curl_setopt($ch, CURLOPT_POST, 1); // Specify the request method as POST
-    //     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1); // This will follow any redirects
-    //     $result = curl_exec($ch); // Execute the cURL statement
-    //     curl_close($ch); // Close the cURL connection
-    //     return json_decode($result); // Return the received data
- 
-    //  }
-
     public function getHealthWorkers($get){
-        // $token = "9b90d5d8b1642db4dc3151853032ef18fa2d179d"; // Get your token from a cookie or database
-        // $this->jwt_request($token);
-        if($_GET['totalPages'] == 0){
-            $data['page'] = $this->proSanteModel->getCountListWorkers();
+        $check = $this->checkAuth();
+        if ($check['access'] === true){
+            $accessAdmin = $this->checkAuthAdmin();
+            if($accessAdmin['admin'] === true ) {
+                if($_GET['totalPages'] == 0){
+                    $data['page'] = $this->prosSanteModel->getCountListWorkers();
+                }
+                $data['datas'] = $this->prosSanteModel->getListHealthWorkers();
+                return $this->view->render('JsonResponse',[
+                    'data'=> $data
+                ]);
+            }
         }
-        $data['datas'] = $this->proSanteModel->getListHealthWorkers();
-        return $this->view->render('JsonResponse',[
-            'data'=> $data
-        ]);
     }
 
     public function getHealthWorkerById($get){
@@ -58,35 +27,35 @@ class ProSanteController extends Controller{
     }
 
     public function getProfessions(){
-        $data = $this->proSanteModel->getProfessions();
+        $data = $this->prosSanteModel->getProfessions();
         return $this->view->render('JsonResponse',[
             'data'=> $data
         ]);
     }
 
     public function getGroupementsActs(){
-        $data = $this->proSanteModel->getGroupementsActs();
+        $data = $this->prosSanteModel->getGroupementsActs();
         return $this->view->render('JsonResponse',[
             'data'=> $data
         ]);
     }
     
     public function getModeExercices(){
-        $data = $this->proSanteModel->getModeExercices();
+        $data = $this->prosSanteModel->getModeExercices();
         return $this->view->render('JsonResponse',[
             'data'=> $data
         ]);
     }
 
     public function getRegions(){
-        $data = $this->proSanteModel->getRegions();
+        $data = $this->prosSanteModel->getRegions();
         return $this->view->render('JsonResponse',[
             'data'=> $data
         ]);
     }
 
     public function getCities(){
-        $data = $this->proSanteModel->getCities();
+        $data = $this->prosSanteModel->getCities();
         return $this->view->render('JsonResponse',[
             'data'=> $data
         ]);
@@ -94,9 +63,9 @@ class ProSanteController extends Controller{
 
     public function workersByFilters($get){
         if($_GET['totalPages'] == 0){
-            $data['page'] = $this->proSanteModel->getCountWorkersByFilters($get);
+            $data['page'] = $this->prosSanteModel->getCountWorkersByFilters($get);
         }
-        $data['datas'] = $this->proSanteModel->gethealthWorkersByFilters($get);
+        $data['datas'] = $this->prosSanteModel->gethealthWorkersByFilters($get);
         return $this->view->render('JsonResponse',[
             'data'=> $data
         ]);

@@ -1,8 +1,5 @@
 <template>
     <b-container>
-        <!-- <div class="cantViewOnMap" v-if="cantViewOnMap">
-            <p>Les résultats sont trop nombreux pour tous être affichés sur la carte. Seul 25 résultats sont indiqués!</p>
-        </div> -->
         <div class="map" id="map">   
         </div>
     </b-container>
@@ -22,7 +19,6 @@ export default{
             markerIcon: L.icon({
                 iconUrl: 'https://api.geoapify.com/v1/icon/?type=awesome&color=red&icon=clinic-medical&apiKey=9631b09f915244728e90c98a650d59f5'
             }),
-            // cantViewOnMap: false,
             lat: null,
             long: null,
             cats: []
