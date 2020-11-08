@@ -1,35 +1,41 @@
 <template>
-    <div class="row">
-        <div class="col-md-10">
+    <div class="row row justify-content-md-center">
+        <div class="col-md-12">
             <div id="content" class="content content-full-width">
                 <!-- begin profile -->
                 <div class="profile">
                     <div class="profile-header">
+                        <!-- BEGIN profile-header-cover -->
                         <div class="profile-header-cover"></div>
+                        <!-- END profile-header-cover -->
+                        <!-- BEGIN profile-header-content -->
                         <div class="profile-header-content">
+                            <!-- BEGIN profile-header-img -->
                             <div class="profile-header-img">
                                 <img src="images/avatar7.png" alt="">
                             </div>
+                            <!-- END profile-header-img -->
+                            <!-- BEGIN profile-header-info -->
                             <div class="profile-header-info">
                                 <h4 class="m-t-10 m-b-5">{{ userProfile.pseudo }}</h4>
                                 <div class="content-header-info" v-if="userProfile.role_id == 2">
                                     <div>
                                         <p class="m-b-10" > Membre </p>
                                         <div class="type-1">
-                                            <router-link to="/userupdate" class="btn btn-1">
+                                            <button @click="userUpdate(userProfile)" class="btn btn-1">
                                             <span class="txt">Editer profil</span>
                                             <span class="round"><i class="fa fa-chevron-right"></i></span>
-                                            </router-link>
+                                            </button>
                                         </div>
                                     </div>
                                     <div v-if="this.$store.state.userLogged.role_id == 1" class="btn-backAdmin">
-                                        <div class="type-1">
+                                        <div class="type-1 adminbtn">
                                             <button type="button" @click="setAdminProfil" class="btn btn-1">
                                             <span class="txt">Retour au profil Administrateur</span>
                                             <span class="round"><i class="fa fa-chevron-right"></i></span>
                                             </button>
                                         </div>
-                                        <div class="type-1">
+                                        <div class="type-1 adminbtn">
                                             <router-link to="/adminview" class="btn btn-1">
                                             <span class="txt">Panneau administration</span>
                                             <span class="round"><i class="fa fa-chevron-right"></i></span>
@@ -53,7 +59,9 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- END profile-header-info -->
                         </div>
+                        <!-- END profile-header-content -->
                         <ul class="profile-header-tab nav nav-tabs">
                             <li class="nav-item"><a href="#profile-about" class="nav-link active show"
                                     data-toggle="tab">PROFIL</a></li>
@@ -62,6 +70,8 @@
                         </ul>
                     </div>
                 </div>
+                <!-- end profile -->
+                <!-- begin profile-content -->
                 <div class="profile-content">
                     <div class="tab-content p-0">
                         <div class="tab-pane fade in active show" id="profile-about">
@@ -107,6 +117,7 @@
                         <!-- end #profile-activity tab -->
                     </div>
                 </div>
+                <!-- end profile-content -->
             </div>
         </div>
     </div>
@@ -137,314 +148,17 @@ export default {
     methods: {
         setAdminProfil(){
             this.$store.commit("changeUser", this.$store.state.userLogged);
+        },
+        userUpdate(){
+            this.$store.commit("changeUser", this.$store.state.user);
+            this.$router.push("/userupdate");
         }
     }
 };
 </script>
 
-<style>
-.content-header-info{
-    display: flex;
-    align-items: self-end;
-    justify-content: space-between;
-}
-.btn-backAdmin .btn{
-    width: auto;
-    font-size: 12px;
-}
-
-.profile-header {
-    position: relative;
-    overflow: hidden;
-    padding-top: 3%;
-}
-
-.profile-header .profile-header-cover {
-    background-color: #2962ff;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0
-}
-
-.profile-header .profile-header-cover:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, .75) 100%)
-}
-
-.profile-header .profile-header-content {
-    color: #fff;
-    padding: 25px
-}
-
-.profile-header-img {
-    float: left;
-    width: 120px;
-    height: 120px;
-    overflow: hidden;
-    position: relative;
-    z-index: 10;
-    margin: 0 0 -20px;
-    padding: 3px;
-    border-radius: 4px;
-    background: #fff
-}
-
-.profile-header-img img {
-    max-width: 100%
-}
-
-.profile-header-info h4 {
-    font-weight: 500;
-    color: #fff
-}
-
-.profile-header-img+.profile-header-info {
-    margin-left: 140px
-}
-
-.profile-header .profile-header-content,
-.profile-header .profile-header-tab {
-    position: relative
-}
-
-
-
-.profile-header .profile-header-tab {
-    background: #fff;
-    list-style-type: none;
-    margin: -10px 0 0;
-    padding: 0 0 0 140px;
-    white-space: nowrap;
-    border-radius: 0
-}
-
-.text-ellipsis,
-.text-nowrap {
-    white-space: nowrap!important
-}
-
-.profile-header .profile-header-tab>li {
-    display: inline-block;
-    margin: 0
-}
-
-.profile-header .profile-header-tab>li>a {
-    display: block;
-    color: #929ba1;
-    line-height: 20px;
-    padding: 10px 20px;
-    text-decoration: none;
-    font-weight: 700;
-    font-size: 12px;
-    border: none
-}
-
-.profile-header .profile-header-tab>li.active>a,
-.profile-header .profile-header-tab>li>a.active {
-    color: #242a30
-}
-
-.profile-content {
-    padding: 25px;
-    border-radius: 4px
-}
-
-.profile-content:after,
-.profile-content:before {
-    content: '';
-    display: table;
-    clear: both
-}
-
-.profile-content .tab-content,
-.profile-content .tab-pane {
-    background: 0 0
-}
-
-.profile-left {
-    width: 200px;
-    float: left
-}
-
-.profile-right {
-    margin-left: 240px;
-    padding-right: 20px
-}
-
-.profile-image {
-    height: 175px;
-    line-height: 175px;
-    text-align: center;
-    font-size: 72px;
-    margin-bottom: 10px;
-    border: 2px solid #E2E7EB;
-    overflow: hidden;
-    border-radius: 4px
-}
-
-.profile-image img {
-    display: block;
-    max-width: 100%
-}
-
-.profile-highlight {
-    padding: 12px 15px;
-    background: #FEFDE1;
-    border-radius: 4px
-}
-
-.profile-highlight h4 {
-    margin: 0 0 7px;
-    font-size: 12px;
-    font-weight: 700
-}
-
-.table.table-profile>thead>tr>th {
-    border-bottom: none!important
-}
-
-.table.table-profile>thead>tr>th h4 {
-    font-size: 20px;
-    margin-top: 0
-}
-
-.table.table-profile>thead>tr>th h4 small {
-    display: block;
-    font-size: 12px;
-    font-weight: 400;
-    margin-top: 5px
-}
-
-.table.table-profile>tbody>tr>td,
-.table.table-profile>thead>tr>th {
-    border: none;
-    padding-top: 7px;
-    padding-bottom: 7px;
-    color: #242a30;
-    background: 0 0
-}
-
-.table.table-profile>tbody>tr>td.field {
-    width: 20%;
-    text-align: right;
-    font-weight: 600;
-    color: #2d353c
-}
-
-.table.table-profile>tbody>tr.highlight>td {
-    border-top: 1px solid #b9c3ca;
-    border-bottom: 1px solid #b9c3ca
-}
-
-.table.table-profile>tbody>tr.divider>td {
-    padding: 0!important;
-    height: 10px
-}
-
-.profile-section+.profile-section {
-    margin-top: 20px;
-    padding-top: 20px;
-    border-top: 1px solid #b9c3ca
-}
-
-.profile-section:after,
-.profile-section:before {
-    content: '';
-    display: table;
-    clear: both
-}
-
-.profile-section .title {
-    font-size: 20px;
-    margin: 0 0 15px
-}
-
-.profile-section .title small {
-    font-weight: 400
-}
-
-/* buttons */
-.type-1 .btn-1 {
-  background-color: #F27935 !important;
-}
-.type-1 .btn-1 .round {
-  background-color: #f59965 !important;
-}
-.type-1 a, .type-1 button {
-  text-decoration: none;
-  -moz-border-radius: 30px;
-  -webkit-border-radius: 30px;
-  border-radius: 30px;
-  padding: 10px 53px 10px 23px;
-  color: #fff;
-  text-transform: uppercase;
-  font-family: sans-serif;
-  font-weight: bold;
-  position: relative;
-  -moz-transition: all 0.3s;
-  -o-transition: all 0.3s;
-  -webkit-transition: all 0.3s;
-  transition: all 0.3s;
-  display: inline-block;
-}
-.type-1 a span, .type-1 button span {
-  position: relative;
-  z-index: 3;
-}
-.type-1 a .round, .type-1 button .round {
-  -moz-border-radius: 50%;
-  -webkit-border-radius: 50%;
-  border-radius: 50%;
-  width: 38px;
-  height: 38px;
-  position: absolute;
-  right: 3px;
-  top: 3px;
-  -moz-transition: all 0.3s ease-out;
-  -o-transition: all 0.3s ease-out;
-  -webkit-transition: all 0.3s ease-out;
-  transition: all 0.3s ease-out;
-  z-index: 2;
-}
-.type-1 a .round i, .type-1 button .round i {
-  position: absolute;
-  top: 50%;
-  margin-top: -6px;
-  left: 50%;
-  margin-left: -4px;
-  -moz-transition: all 0.3s;
-  -o-transition: all 0.3s;
-  -webkit-transition: all 0.3s;
-  transition: all 0.3s;
-}
-
-.txt {
-  font-size: 14px;
-  line-height: 1.45;
-}
-
-.type-1 a:hover, .type-1 button:hover{
-  padding-left: 48px;
-  padding-right: 28px;
-  color: #fff;
-}
-.type-1 a:hover .round, .type-1 button:hover .round {
-  width: calc(100% - 6px);
-  -moz-border-radius: 30px;
-  -webkit-border-radius: 30px;
-  border-radius: 30px;
-}
-.type-1 a:hover .round i, .type-1 button:hover .round i {
-  left: 12%;
+<style scoped>
+.adminbtn{
+    margin-top: 1%;
 }
 </style>

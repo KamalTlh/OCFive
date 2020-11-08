@@ -1,5 +1,5 @@
 <template>
-<div class="container">
+<div class="container" id="userprofilview">
     <UserProfileDetail />
 </div>
 </template>
@@ -13,5 +13,8 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+#userprofilview{
+    min-height: 77vh;
+}
 </style>

@@ -21,8 +21,8 @@
                             <h6 class="d-flex align-items-center mb-3"><i
                                     class="material-icons text-info mr-2">Commentaires postés</i></h6>
                             <div @click="viewWorkerDetail(comment.workerId)" class="commentary" v-for="comment in comments" :key="comment.id">
-                                <small> {{ comment.content.substr(0, 50) }} ... </small>
-                                <small> {{ new Date(comment.date_creation).toLocaleDateString("fr-FR", options) }} </small>
+                                <small class="commentarycontent" v-html="comment.content">...</small><br>
+                                <small class="datecomment"> {{ new Date(comment.date_creation).toLocaleDateString("fr-FR", options) }} </small>
                                 <hr>
                             </div>
                         </div>
@@ -106,9 +106,17 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .favory:hover, .commentary:hover{
     color: #2962ff;
     cursor: pointer;
+}
+.datecomment{
+    display: flex;
+    justify-content: center;
+}
+.commentarycontent{
+    display: flex;
+    justify-content: left;
 }
 </style>

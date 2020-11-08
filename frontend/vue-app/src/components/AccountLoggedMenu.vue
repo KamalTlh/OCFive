@@ -6,10 +6,10 @@
               </button>
               <div class="dropdown-menu dropdown-menu-right">
                   <router-link to="/userprofile" class="btn account right tooltipped dropdown-item" @click="display">
-                  Profil<i class="fas fa-user user-pic"></i>
+                    Profil<i class="fas fa-user user-pic"></i>
                   </router-link>
                   <router-link to="/adminview" class="btn account right tooltipped dropdown-item" v-if="checkSession === true && checkRole == 1 " >
-                  Administration<i class="fas fa-user-lock user-pic"></i>
+                    Administration<i class="fas fa-user-lock user-pic"></i>
                   </router-link>
                   <button type="button" class="btn account right tooltipped dropdown-item" @click="logout">
                     Déconnection <i class="fas fa-sign-out-alt user-pic"></i>
@@ -67,5 +67,5 @@ import Axios from 'axios';
   };
 </script>
 
-<style>
+<style scoped>
 </style>

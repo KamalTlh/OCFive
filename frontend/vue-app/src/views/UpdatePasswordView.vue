@@ -1,5 +1,5 @@
 <template>
-<div class="container password-update">
+<div class="container password-update" id="updatepasswordview">
     <UpdatePassword />
 </div>
 </template>
@@ -14,5 +14,8 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+#updatepasswordview{
+    min-height: 77vh;
+}
 </style>

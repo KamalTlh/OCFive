@@ -4,22 +4,20 @@ import router from './router'
 import store from './store'
 import Axios from 'axios'
 
+// Install VueSessionStorage
 import VueSessionStorage from 'vue-sessionstorage'
 Vue.use(VueSessionStorage)
 
+// Install VueCookies
 import VueCookies from 'vue-cookies'
 Vue.use(VueCookies)
 
-import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 // Install BootstrapVue
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 Vue.use(BootstrapVue)
-// Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin)
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
 
-import 'bootstrap-css-only/css/bootstrap.min.css'
-import '@fortawesome/fontawesome-free/css/all.min.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 import 'leaflet-defaulticon-compatibility';
 import 'leaflet/dist/leaflet.css';
@@ -55,15 +53,8 @@ Axios.interceptors.response.use(function (response) {
 
 Vue.config.productionTip = false
 
-// new Vue({
-//   router,
-//   store,
-//   render: h => h(App)
-// }).$mount('#app')
-
 new Vue({
   router,
   store,
-  el: '#app',
-  render(h) { return h(App) }
-})
+  render: h => h(App)
+}).$mount('#app')

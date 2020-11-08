@@ -82,7 +82,7 @@ class UserController extends Controller{
     public function updateUser($post){
         $check = $this->checkAuth();
         if ($check['access'] === true){
-            $accessAdmin = $this->checkAuthAdmin();
+            // $accessAdmin = $this->checkAuthAdmin();
             if(isset($post['pseudo']) && isset($post['email']) && isset($post['id'])){
                 $data['errors'] = $this->validation->validate($post, 'User');
                 if($this->userModel->isPseudoUnique($post, $post['id'])){
@@ -96,7 +96,7 @@ class UserController extends Controller{
                         'data'=> $data
                     ]);
                 }
-                elseif($accessAdmin['admin'] === true){
+                elseif($this->checkAuthAdmin()){
                     $data = $this->userModel->updateUserByAdmin($post);
                     $data['sessionUpdatedByAdmin'] = 'Les informations de l\'utilisateur ont été mis à jour.';
                     return $this->view->render('JsonResponse',[

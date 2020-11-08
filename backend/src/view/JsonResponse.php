@@ -1,5 +1,4 @@
 <?php
-$this->title = "Accueil";
 
 header("Content-Type: application/json");
 header('Access-Control-Allow-Origin: *');

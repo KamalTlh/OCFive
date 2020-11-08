@@ -58,8 +58,7 @@ import Editor from '@tinymce/tinymce-vue'
  }
 </script>
 
-<style>
-
+<style scoped>
 html,
 body {
     height: 100%

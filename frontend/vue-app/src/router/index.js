@@ -142,9 +142,6 @@ router.beforeEach((to, from, next) => {
         const user = JSON.parse(localUser);
         store.commit("setUserLogged", user );
         store.commit("changeSessionState", true );
-        if (from.fullPath != '/adminview'){
-          store.commit("changeUser", user );
-        }
       }
       next()
     }

@@ -84,60 +84,6 @@
   }
 </script>
 
-<style>
-.wrapper{
-  display: flex;
-}
-.sidebar{
-  padding-top: 5%;
-}
-.tab-content{
-  padding-top: 5%;
-  width: 100%;
-}
-.alertUpdate{
-  text-align: center;
-  font-weight: bold;
-}
-.actions{
-  display: flex;
-  justify-content: space-evenly;
-  color: #000;
-}
-.page-link {
-  color: #858796 !important;
-}
-.card-header h6{
-  text-align: center;
-}
-.fa-eye, .fa-edit, .fa-check-square{
-  color: #000;
-}
-
-/*-- breakpoints --*/
-@media (min-width: 320px) and (max-width: 767px) {
-  .sidebar.toggled {
-    width: 6rem !important;
-    overflow: visible;
-	}
-}
-@media (min-width: 470px) and (max-width: 767px) {
-	.sidebar {
-		padding-top: 14%;
-  }
-  .tab-content{
-    padding-top: 14%;
-  }
-}
-@media (min-width: 320px) and (max-width: 470px) {
-	.sidebar {
-		padding-top: 25%;
-  }
-  .tab-content{
-    padding-top: 25%;
-  }
-}
-/*---*/
-
-
+<style scoped>
+@import '../../public/assets/css/sb-admin-2.css';
 </style>

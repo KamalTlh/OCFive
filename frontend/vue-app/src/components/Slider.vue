@@ -55,7 +55,7 @@
   }
 </script>
 
-<style>
+<style scoped>
 .carousel-item {
   height: 60vh;
   min-height: 350px;

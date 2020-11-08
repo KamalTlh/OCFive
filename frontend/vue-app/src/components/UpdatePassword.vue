@@ -1,6 +1,6 @@
 <template>
-    <section id="register-form">
-        <div class="row">
+    <section>
+        <div class="row justify-form">
             <div class="col-md-6 mb-4">
                 <div class="pr-1">
                     <div class="card">
@@ -50,13 +50,13 @@
                                 </div>
                                 <div class="submitUpdate">
                                     <div class="type-1">
-                                        <button id="validation" type="submit" class="btn btn-1">
+                                        <button type="submit" class="btn btn-1 validation">
                                         <span class="txt">Modifier</span>
                                         <span class="round"><i class="fa fa-chevron-right"></i></span>
                                         </button>
                                     </div>
                                     <div class="type-1">
-                                        <button id="cancellation" type="cancel" @click="cancelUpdate" class="btn btn-1">
+                                        <button type="cancel" @click="cancelUpdate" class="btn btn-1 cancellation">
                                         <span class="txt">Annuler</span>
                                         <span class="round"><i class="fa fa-chevron-right"></i></span>
                                         </button>
@@ -139,4 +139,15 @@ export default {
 </script>
 
 <style>
+.submitUpdate {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 4%;
+}
+.validation{
+  background-color: #28a745 !important;
+}
+.cancellation{
+  background-color: #17a2b8 !important;
+}
 </style>

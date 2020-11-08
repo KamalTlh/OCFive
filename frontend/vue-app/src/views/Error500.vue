@@ -24,7 +24,7 @@
 </div>
 </template>
 
-<style>
+<style scoped>
 #snippet-preview {
     position: relative;
     top: 0px;
@@ -45,10 +45,6 @@
     align-items: center;
     justify-content: center;
 }
-/* .container::before, .container::after {
-    display: table;
-    content: " ";
-} */
 .error-template {
     padding: 40px 15px;text-align: center;
 }

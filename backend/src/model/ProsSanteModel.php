@@ -4,7 +4,7 @@ use PDO;
 class ProsSanteModel extends Model {
 
     public function getCountListWorkers(){
-        $sql = 'SELECT id FROM annuaire';
+        $sql = 'SELECT id FROM prossante';
         $result = $this->createQuery($sql);
         $results = $result->fetchAll(PDO::FETCH_ASSOC);
         $data = $this->dataPagination($results);
@@ -14,7 +14,7 @@ class ProsSanteModel extends Model {
     /*-- Requête qui récupère la totalité des données sur tout les médecins de la base de donnée trier par ID --*/
     public function getListHealthWorkers(){
         $pagination = $this->getPagePagination();
-        $sql = 'SELECT id, civilite, nom_professionnel, adresse, telephone, profession, commune, region FROM annuaire ORDER BY id ASC LIMIT '.$pagination['limite'].' OFFSET '.$pagination['debut'];
+        $sql = 'SELECT id, civilite, nom_professionnel, adresse, telephone, profession, commune, region FROM prossante ORDER BY id ASC LIMIT '.$pagination['limite'].' OFFSET '.$pagination['debut'];
         $result = $this->createQuery($sql);
         $healthworkers = $result->fetchAll(PDO::FETCH_ASSOC);
         $data['currentPage'] = $pagination['currentPage'];
@@ -27,7 +27,7 @@ class ProsSanteModel extends Model {
     public function getCountWorkersByFilters($get){
         $proSante = new ProSanteModel();
         $proSante-> hydrate($get);
-        $query = ' SELECT id FROM annuaire WHERE commune LIKE :commune AND civilite LIKE :civilite AND profession LIKE :profession AND nom_professionnel LIKE :nom_professionnel 
+        $query = ' SELECT id FROM prossante WHERE commune LIKE :commune AND civilite LIKE :civilite AND profession LIKE :profession AND nom_professionnel LIKE :nom_professionnel 
         AND nom_professionnel LIKE :prenom_professionnel AND mode_exercice LIKE :mode_exercice AND regroupement LIKE :regroupement AND nature_exercice LIKE :statut 
         AND departement LIKE :departement AND region LIKE :region';
         $result = $this->createQuery($query, [
@@ -54,9 +54,9 @@ class ProsSanteModel extends Model {
         $proSante-> hydrate($get);
         $pagination = $this->getPagePagination();
         $sql = ' SELECT id, civilite, nom_professionnel, adresse, telephone, profession, coordonnees, commune, departement, region, contact, sesam_vital, convention_cacs, mode_exercice, nature_exercice, regroupement,
-        type_acte_realise, acte_technique_realise, famille_acte_technique_realise, note, nb_notes, nb_comments FROM annuaire WHERE commune LIKE :commune AND civilite LIKE :civilite AND profession 
+        type_acte_realise, acte_technique_realise, famille_acte_technique_realise, note, nb_notes, nb_comments FROM prossante WHERE commune LIKE :commune AND civilite LIKE :civilite AND profession 
         LIKE :profession AND nom_professionnel LIKE :nom_professionnel AND nom_professionnel LIKE :prenom_professionnel AND mode_exercice LIKE :mode_exercice AND 
-        regroupement LIKE :regroupement AND nature_exercice LIKE :statut AND departement LIKE :departement AND region LIKE :region ORDER BY nom_professionnel ASC';
+        regroupement LIKE :regroupement AND nature_exercice LIKE :statut AND departement LIKE :departement AND region LIKE :region ORDER BY note DESC';
         $sql.= ' LIMIT '.$pagination['limite'].' OFFSET '.$pagination['debut']; 
         $result = $this->createQuery($sql, [
             ':commune'=>$proSante->getCommune(),
@@ -88,7 +88,7 @@ class ProsSanteModel extends Model {
     public function getDataByCoordinates($get, $pagination){
         $proSante = new ProSanteModel();
         $proSante-> hydrate($get);
-        $query = 'SELECT coordonnees, contact, profession, nom_professionnel FROM annuaire 
+        $query = 'SELECT coordonnees, contact, profession, nom_professionnel FROM prossante 
         WHERE commune LIKE :commune AND civilite LIKE :civilite AND profession LIKE :profession AND nom_professionnel LIKE :nom_professionnel AND nom_professionnel LIKE :prenom_professionnel
         AND mode_exercice LIKE :mode_exercice AND regroupement LIKE :regroupement AND nature_exercice LIKE :statut AND departement LIKE :departement AND region LIKE :region ORDER BY nom_professionnel ASC';
         $query.= ' LIMIT '.$pagination['limite'].' OFFSET '.$pagination['debut']; 
@@ -111,7 +111,7 @@ class ProsSanteModel extends Model {
 
     /*-- Requête pour récupérer les éléments de recherches --*/
     public function getProfessions(){
-        $sql = ' SELECT profession, COUNT(* ) FROM annuaire GROUP BY profession ORDER BY profession ASC';
+        $sql = ' SELECT profession, COUNT(* ) FROM prossante GROUP BY profession ORDER BY profession ASC';
         $result = $this->createQuery($sql);
         $professions = $result->fetchAll(PDO::FETCH_ASSOC);
         $data = array();
@@ -122,7 +122,7 @@ class ProsSanteModel extends Model {
     }
 
     public function getGroupementsActs(){
-        $sql = ' SELECT regroupement, COUNT(* ) FROM annuaire GROUP BY regroupement  ORDER BY regroupement ASC ';
+        $sql = ' SELECT regroupement, COUNT(* ) FROM prossante GROUP BY regroupement  ORDER BY regroupement ASC ';
         $result = $this->createQuery($sql);
         $groupementsActs = $result->fetchAll(PDO::FETCH_ASSOC);
         $data = array();
@@ -133,7 +133,7 @@ class ProsSanteModel extends Model {
     }
 
     public function getModeExercices(){
-        $sql = ' SELECT mode_exercice, COUNT(* ) FROM annuaire GROUP BY mode_exercice  ORDER BY mode_exercice ASC ';
+        $sql = ' SELECT mode_exercice, COUNT(* ) FROM prossante GROUP BY mode_exercice  ORDER BY mode_exercice ASC ';
         $result = $this->createQuery($sql);
         $modes_exercice = $result->fetchAll(PDO::FETCH_ASSOC);
         $data = array();
@@ -144,7 +144,7 @@ class ProsSanteModel extends Model {
     }
 
     public function getRegions(){
-        $sql = ' SELECT region, COUNT(* ) FROM annuaire GROUP BY region ';
+        $sql = ' SELECT region, COUNT(* ) FROM prossante GROUP BY region ';
         $result = $this->createQuery($sql);
         $regions = $result->fetchAll(PDO::FETCH_ASSOC);
         $data = array();
@@ -155,7 +155,7 @@ class ProsSanteModel extends Model {
     }
 
     public function getCities(){
-        $sql = ' SELECT departement, COUNT(* ) FROM annuaire GROUP BY departement ';
+        $sql = ' SELECT departement, COUNT(* ) FROM prossante GROUP BY departement ';
         $result = $this->createQuery($sql);
         $cities = $result->fetchAll(PDO::FETCH_ASSOC);
         $data = array();

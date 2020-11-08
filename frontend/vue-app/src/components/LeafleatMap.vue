@@ -80,16 +80,16 @@ export default{
 }
 </script>
 
-<style>
+<style scoped>
 #map {
     width: 70%;
     height: 450px;
     margin: 4% 15% 4% 15%;
-    border: 1px solid black;
+    border: 20px solid rgba(41,98,255,0.1);
     z-index: 99 !important;
     position: relative;
+    border-radius: 8px;
 }
-
 .leaflet-popup-content-wrapper {
     border: 1px solid #929292 !important;
     box-shadow: 0px 2px 4px 2px rgba(0,0,0,.1) !important;
@@ -118,9 +118,5 @@ export default{
 
 .leaflet-popup{
     left: -162px !important;
-}
-.cantViewOnMap{
-    text-align: center;
-    font-weight: bold;
 }
 </style>

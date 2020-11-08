@@ -4,105 +4,102 @@
         <LeafleatMap ref="map"></LeafleatMap>
         <div v-if="showContent">
             <div class="loading" v-if="loading">
-                    <mdb-btn color="primary" disabled>
+                    <button color="primary" disabled>
                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                         Chargement...
-                    </mdb-btn>
+                    </button>
             </div>
             <div >
                 <section  v-if="errored">
                     <p>Nous sommes désolés, nous ne sommes pas en mesure de récupérer ces informations pour le moment. Veuillez réessayer ultérieurement.</p>
                 </section>
-                <section  v-else class="container-lg">
+                <section ref="researchResults" v-else class="container-lg">
                     <div id="nb_results" class="row">
-                        <b-col cols="8" class="detail-result">
+                        <div class="detail-result">
                             <p>{{ totalResults }} résultats correspondent à votre recherche </p>
-                        </b-col>
-                        <b-col cols="4">
+                        </div>
+                        <div>
                             <div class="type-1">
                                 <button type="button" @click="resetResearch" class="btn btn-1">
                                 <span class="txt">Nouvelle recherche</span>
                                 <span class="round"><i class="fa fa-chevron-right"></i></span>
                                 </button>
                             </div>
-                        </b-col>
+                        </div>
                     </div>
-                    <div ref="researchResults" class="row">
+                    <div class="row">
                         <div class="col-12">
                             <b-pagination
                             v-model="currentPage"
                             :total-rows="totalResults"
                             :per-page="perPage"
                             ></b-pagination>
-                            <div v-for="healthWorker in healthWorkers" :key="healthWorker.id">
-                                <div class="displayResults z-depth-1">
-                                    <div class="row sm-item-header">
-                                        <div class="col-8 header-name-rate"> 
-                                            <div class="name-worker">
-                                                <span><mdb-icon icon="user-md" size="lg"/> {{ healthWorker.nom_professionnel }}</span>
-                                            </div>
-                                            <div class="rate-worker">
-                                                <i v-if="healthWorker.note >= 1" class="fas fa-star"></i> <i v-else class="far fa-star"></i>
-                                                <i v-if="healthWorker.note >= 2" class="fas fa-star"></i> <i v-else class="far fa-star"></i>
-                                                <i v-if="healthWorker.note >= 3" class="fas fa-star"></i> <i v-else class="far fa-star"></i>
-                                                <i v-if="healthWorker.note >= 4" class="fas fa-star"></i> <i v-else class="far fa-star"></i>
-                                                <i v-if="healthWorker.note >= 5" class="fas fa-star"></i> <i v-else class="far fa-star"></i>
-                                                <span>({{healthWorker.nb_notes}})</span>
-                                            </div>
+                            <div class="container displayResults z-depth-1" v-for="healthWorker in healthWorkers" :key="healthWorker.id">
+                                <div class="row sm-item-header">
+                                    <div class="col header-name-rate"> 
+                                        <div class="name-worker">
+                                            <span><i class="fas fa-user-md"></i> {{ healthWorker.nom_professionnel }}</span>
                                         </div>
-                                        <div class="col-4">
-                                            <div class="type-1">
-                                                <button type="button" @click="seeCommentsOfWorker(healthWorker.id)" class="btn btn-1 seemore">
-                                                <span class="txt">Voir tout les commentaires ({{healthWorker.nb_comments}})</span>
-                                                <span class="round seemoreround"><i class="fa fa-chevron-right"></i></span>
-                                                </button>
-                                            </div>
+                                        <div class="rate-worker">
+                                            <i v-if="healthWorker.note >= 1" class="fas fa-star"></i> <i v-else class="far fa-star"></i>
+                                            <i v-if="healthWorker.note >= 2" class="fas fa-star"></i> <i v-else class="far fa-star"></i>
+                                            <i v-if="healthWorker.note >= 3" class="fas fa-star"></i> <i v-else class="far fa-star"></i>
+                                            <i v-if="healthWorker.note >= 4" class="fas fa-star"></i> <i v-else class="far fa-star"></i>
+                                            <i v-if="healthWorker.note >= 5" class="fas fa-star"></i> <i v-else class="far fa-star"></i>
+                                            <span>({{healthWorker.nb_notes}})</span>
                                         </div>
-                                    </div>
-                                    <div class="sm-item-body">
-                                        <div class="row">
-                                            <div class="col-12 col-lg-6">
-                                                <div>
-                                                    <label>Tél: </label> <span> {{ healthWorker.telephone }}</span>
-                                                </div>
-                                                <div>
-                                                    <label>Adresse: </label> <span> {{ healthWorker.adresse }}</span>
-                                                </div>
-                                                <div>
-                                                    <label>Commune: </label> <span> {{ healthWorker.commune }}</span>
-                                                </div>
-                                                <div>
-                                                    <label>Région: </label> <span> {{ healthWorker.region }}</span>
-                                                </div>
-                                                <div>
-                                                    <label>Statut: </label> <span> {{ healthWorker.nature_exercice }}</span>
-                                                </div>
-                                                <div>
-                                                    <label>Mode d'exerice particulier: </label> <span> {{ healthWorker.mode_exercice }}</span>
-                                                </div>
-                                            </div>
-                                            <div class="col-12 col-lg-6">
-                                                <div>
-                                                    <label>Profession: </label> <span> {{ healthWorker.profession }}</span>
-                                                </div>
-                                                <div>
-                                                    <label>Regroupement: </label> <span> {{ healthWorker.regroupement }}</span>
-                                                </div>
-                                                <div>
-                                                    <label>Type Acte: </label> <span> {{ healthWorker.type_acte_realise }}</span>
-                                                </div>
-                                                <div>
-                                                    <label>Carte vitale: </label> <span> {{ healthWorker.sesam_vital }}</span>
-                                                </div>
-                                                <div>
-                                                    <label>Convention: </label> <span> {{ healthWorker.convention_cacs }}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="sm-item-footer">
                                     </div>
                                 </div>
+                                <div class="sm-item-body">
+                                    <div class="row">
+                                        <div class="col-12 col-lg-6">
+                                            <div>
+                                                <label>Tél: </label> <span> {{ healthWorker.telephone }}</span>
+                                            </div>
+                                            <div>
+                                                <label>Adresse: </label> <span> {{ healthWorker.adresse }}</span>
+                                            </div>
+                                            <div>
+                                                <label>Commune: </label> <span> {{ healthWorker.commune }}</span>
+                                            </div>
+                                            <div>
+                                                <label>Région: </label> <span> {{ healthWorker.region }}</span>
+                                            </div>
+                                            <div>
+                                                <label>Statut: </label> <span> {{ healthWorker.nature_exercice }}</span>
+                                            </div>
+                                            <div>
+                                                <label>Mode d'exerice particulier: </label> <span> {{ healthWorker.mode_exercice }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-lg-6">
+                                            <div>
+                                                <label>Profession: </label> <span> {{ healthWorker.profession }}</span>
+                                            </div>
+                                            <div>
+                                                <label>Regroupement: </label> <span> {{ healthWorker.regroupement }}</span>
+                                            </div>
+                                            <div>
+                                                <label>Type Acte: </label> <span> {{ healthWorker.type_acte_realise }}</span>
+                                            </div>
+                                            <div>
+                                                <label>Carte vitale: </label> <span> {{ healthWorker.sesam_vital }}</span>
+                                            </div>
+                                            <div>
+                                                <label>Convention: </label> <span> {{ healthWorker.convention_cacs }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="sm-item-footer">
+                                    <div class="type-1">
+                                        <button type="button" @click="seeCommentsOfWorker(healthWorker.id)" class="btn btn-1">
+                                        <span class="txt">commentaires ({{healthWorker.nb_comments}})</span>
+                                        <span class="round"><i class="fa fa-chevron-right"></i></span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <hr>
                             </div>
                         </div>
                     </div>
@@ -117,17 +114,11 @@ import Axios from 'axios';
 import ResearchDesigned from '../components/ResearchDesigned';
 import LeafleatMap from '../components/LeafleatMap';
 
-import {
-        mdbBtn,
-        mdbIcon
-    } from "mdbvue";
 export default {
     name: "ResearchWorkers",
     components: {
         ResearchDesigned,
-        LeafleatMap,
-        mdbBtn,
-        mdbIcon
+        LeafleatMap
     },
 	data() {
 		return {
@@ -232,7 +223,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .site-inner{
     width: 979px;
     display: flex;
@@ -246,6 +237,8 @@ export default {
     text-align: center;
     margin-bottom: 2%;
     border: 3px solid aliceblue;
+    display: flex;
+    justify-content: space-between;
 }
 .detail-result{
     font-weight: bold;
@@ -258,10 +251,6 @@ export default {
     justify-content: space-between;
 }
 /*-- Design Results --*/
-.displayResults{
-    margin: 3% 0 3% 0;
-    color: inherit;
-}
 .displayResults h2{
     font-weight: normal;
     font-size: 1.4em;
@@ -274,13 +263,16 @@ export default {
     background-color: #0c2050;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
     color: #fff;
     padding: 1.5rem 0rem 1.5rem;
     align-items: center;
 }
 .sm-item-header .header-name-rate{
     display: flex;
-    align-items: center;  
+    align-items: center; 
+    justify-content: space-between;
 }
 .sm-item-header .name-worker{
     padding-right: 2%;
@@ -298,29 +290,18 @@ export default {
     padding: 1.5rem;
 }
 .sm-item-footer {
-    height: 40px;
+    height: 4rem;
     background-color: #0c2050;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .sm-item-header .rate-worker{
     color: orange;
 }
 
-/*--btn comments--*/
-.type-1 .seemore {
-    background-color: #b39800  !important;
-}
-.type-1 .seemore {
-    padding: 7px 55px 7px 55px !important;
-    text-transform: initial !important;
-    font-weight: normal !important;
-}
-.type-1 button .seemoreround {
-    width: 32px;
-    height: 32px !important;
-}
-/*---*/
 
 label {
     display: inline-block;
@@ -346,57 +327,25 @@ label {
     z-index: 100 !important;
 }
 
-/*--Anchor scroll--*/
-#anchor {
-    position: absolute;
-    top: 0;
+/* -- breakpoints mediaqueries -- */
+@media all and (max-width: 768px) {
+    /* .sm-item-footer .type-1{
+        margin-top: 3% !important;
+    } */
+    .sm-item-footer .txt{
+        font-weight: normal !important;
+    }
+    #nb_results{
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .detail-result{
+        text-align: center;
+        padding-left: 0;
+    }
+    .displayResults[data-v-9fad0b60] {
+        margin: auto !important;
+    }
 }
-.invisible-toolbar {
-    display: flex;
-    bottom: 20px;
-    flex-direction: column-reverse;
-    padding: 0;
-    position: fixed;
-    right: 50px;
-    text-align: center;
-    width: 40px;
-    z-index: 10;
-}
-#scroll-top {
-    background-color: #1000C1;
-    display: block;
-    text-align: center;
-}
-.action-link {
-    height: 80px;
-    width: 80px;
-    background-color: #2962FF;
-    border-radius: 50%;
-    cursor: pointer;
-    margin-top: 5px;
-    transition: box-shadow 0.5s ease-out;
-    -webkit-box-shadow: 0 4px 5px 0 rgba(0,0,0,0.14),0 1px 10px 0 rgba(0,0,0,0.12),0 2px 4px -1px rgba(0,0,0,0.3);
-    box-shadow: 0 4px 5px 0 rgba(0,0,0,0.14),0 1px 10px 0 rgba(0,0,0,0.12),0 2px 4px -1px rgba(0,0,0,0.3);
-}
-.action-link:hover {
-    -webkit-box-shadow: 0 24px 38px 3px rgba(0,0,0,0.14),0 9px 46px 8px rgba(0,0,0,0.12),0 11px 15px -7px rgba(0,0,0,0.2);
-    box-shadow: 0 24px 38px 3px rgba(0,0,0,0.14),0 9px 46px 8px rgba(0,0,0,0.12),0 11px 15px -7px rgba(0,0,0,0.2);
-}
-.action-link#scroll-top i {
-    font-size: 2.5rem;
-    margin: 1.25rem;
-}
-#scroll-top i {
-    color: #536DFE;
-    font-size: 20px;
-    line-height: 1;
-    margin: 10px;
-}
-.action-link i {
-    color: #fff;
-    line-height: 40px;
-    font-size: 1.25rem;
-    text-align: center;
-}
-/*--*/
 </style>

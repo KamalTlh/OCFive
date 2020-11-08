@@ -9,10 +9,10 @@
                         <div class="profile-header-cover"></div>
                         <!-- END profile-header-cover -->
                         <!-- BEGIN profile-header-content -->
-                        <div class="profile-header-content">
+                        <div class="profile-header-content" id="profilcontent">
                             <!-- BEGIN profile-header-img -->
                             <div class="profile-header-img">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="">
+                                <img src="images/avatar7.png" alt="">
                             </div>
                             <!-- END profile-header-img -->
                             <!-- BEGIN profile-header-info -->
@@ -34,8 +34,8 @@
                         <!-- begin #profile-about tab -->
                         <div class="tab-pane fade in active show" id="profile-about">
                             <!-- begin table -->
-                            <section id="register-form">
-                                <div class="row">
+                            <section>
+                                <div class="row justify-form">
                                     <div class="col-md-6 mb-4">
                                         <div class="pr-1">
                                             <div class="card">
@@ -67,13 +67,13 @@
                                                         </div>
                                                         <div class="submitUpdate">
                                                             <div class="type-1">
-                                                                <button id="validation" type="submit" class="btn btn-1">
+                                                                <button type="submit" class="btn btn-1 validation">
                                                                 <span class="txt">Modifier</span>
                                                                 <span class="round"><i class="fa fa-chevron-right"></i></span>
                                                                 </button>
                                                             </div>
                                                             <div class="type-1">
-                                                                <button id="cancellation" type="cancel" @click="cancelUpdate" class="btn btn-1">
+                                                                <button type="cancel" @click="cancelUpdate" class="btn btn-1 cancellation">
                                                                 <span class="txt">Annuler</span>
                                                                 <span class="round"><i class="fa fa-chevron-right"></i></span>
                                                                 </button>
@@ -120,7 +120,6 @@ export default {
         name(){
             return this.myUserLogged.pseudo;
         },
-
         mail(){
             return this.myUserLogged.email;
         }
@@ -176,16 +175,16 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .submitUpdate {
     display: flex;
     justify-content: space-evenly;
     margin-top: 4%;
 }
-#validation{
-    background-color: #28a745 !important;
+.validation{
+  background-color: #28a745 !important;
 }
-#cancellation{
-    background-color: #17a2b8 !important;
+.cancellation{
+  background-color: #17a2b8 !important;
 }
 </style>

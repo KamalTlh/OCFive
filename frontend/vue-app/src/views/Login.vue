@@ -1,10 +1,9 @@
 <template>
-<div>
-    <div class="container">
+    <div class="container" id="loginview">
         <!-- Outer Row -->
         <div class="row justify-content-center">
             <div class="col-xl-10 col-lg-12 col-md-9">
-                <div class="card o-hidden border-0 shadow-lg my-5">
+                <div class="card o-hidden border-0 shadow-lg">
                     <div class="card-body p-0">
                         <!-- Nested Row within Card Body -->
                         <div class="row">
@@ -45,7 +44,6 @@
             </div>
         </div>
     </div>
-</div>
 </template>
 
 <script>
@@ -135,7 +133,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .alert-danger{ 
     position: relative;
     color: #ffffff !important;
@@ -159,11 +157,11 @@ export default {
     border-width: 10px;
     margin-left: -10px;
 }
-.return-error{
-    color: #a94442;
-    font-family: "Noto serif", arial, sans-serif;
-}
 .divider{
     padding-top: 3%;
+}
+#loginview{
+    margin-top: 10rem;
+    min-height: 60vh;
 }
 </style>

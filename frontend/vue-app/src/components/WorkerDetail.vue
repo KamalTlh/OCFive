@@ -1,5 +1,5 @@
 <template>
-    <div class="row">
+    <div class="row justify-content-md-center">
         <div class="col-md-10">
             <div id="content" class="content content-full-width">
                 <!-- begin profile -->
@@ -177,11 +177,10 @@
                                     <p class="date_comment"> {{ new Date(commentWorker.date_creation).toLocaleDateString("fr-FR", options) }} </p>
                                 </div>
                                 <div v-if="token">
-                                    <div v-if="commentWorker.flag != 1" class="type-1 flag">
-                                        <button @click="flagComment(commentWorker.id)" class="btn btn-1 seemore">
-                                        <span class="txt">Signaler le commentaire</span>
-                                        <span class="round seemoreround"><i class="fa fa-chevron-right"></i></span>
-                                        </button>
+                                    <div v-if="commentWorker.flag != 1" class="flag">
+                                        <a @click="flagComment(commentWorker.id)" class="nav-link">
+                                        <span>Signaler le commentaire</span>
+                                        </a>
                                     </div>
                                 </div>
                                 <hr>
@@ -392,7 +391,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .worker{
     display: flex;
     justify-content: space-between;

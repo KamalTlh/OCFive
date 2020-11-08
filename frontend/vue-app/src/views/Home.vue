@@ -1,53 +1,102 @@
 <template>
 	<section class="page">
-      <Slider></Slider>
-      <!-- Carte de France interactive -->
-      <section class="container mt-5 map" id="mapHome">
-        <div class="map__image col-lg-6 p-5">
-          <MapFr @afficher="viewdep"></MapFr>
+    <!-- Slider -->
+    <Slider/>
+
+    <!-- Icons Grid -->
+    <section class="features-icons bg-light text-center">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
+              <div class="features-icons-icon d-flex">
+                <i class="fas fa-laptop-medical m-auto text-primary"></i>
+              </div>
+              <h3>Recherchez</h3>
+                  <ul class="detailContentHome lead mb-0">
+                    <li>La profession</li>
+                    <li>La proximité</li>
+                    <li>Le nom du professionnel</li>
+                    <li> Le Status</li>
+                    <li>...</li>
+                  </ul>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
+              <div class="features-icons-icon d-flex">
+                <i class="fas fa-file-medical-alt  m-auto text-primary"></i>
+              </div>
+              <h3>Trouvez</h3>
+              <p class="lead mb-0">
+                <ul class="detailContentHome">
+                  <li>Les coordonnées</li>
+                  <li>Le détail de l’activité</li>
+                  <li>Le type de convention</li>
+                  <li>L'équipement carte vitale</li>
+                  <li>...</li>
+                </ul>
+              </p>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="features-icons-item mx-auto mb-0 mb-lg-3">
+              <div class="features-icons-icon d-flex">
+                <i class="fas fa-comment-medical m-auto text-primary"></i>
+              </div>
+              <h3>Comparez</h3>
+              <p class="lead mb-0">
+                  <ul class="detailContentHome">
+                    <li>Les notes</li>
+                    <li>Les commentaires</li>
+                    <li>...</li>
+                  </ul>
+              </p>
+            </div>
+          </div>
         </div>
-          <!-- Liste des régions -->
-        <div class="map__list col-lg-3 p-5">
-          <ul class="list-group">
-            <li id="li-GES" class="list-group-item"><router-link to="/professionnelsante" 
-                id="list-GES">Grand-Est</router-link></li>
-            <li id="li-NAQ" class="list-group-item"><router-link to="/professionnelsante"
-                id="list-NAQ">Nouvelle-Aquitaine</router-link></li>
-            <li id="li-ARA" class="list-group-item"><router-link to="/professionnelsante"
-                id="list-ARA">Auvergne-Rhône-Alpes</router-link></li>
-            <li id="li-BFC" class="list-group-item"><router-link to="/professionnelsante"
-                id="list-BFC">Bourgogne-Franche-Comté</router-link></li>
-            <li id="li-BRE" class="list-group-item"><router-link to="/professionnelsante"
-                id="list-BRE">Bretagne</router-link></li>
-            <li id="li-CVL" class="list-group-item"><router-link to="/professionnelsante"
-                id="list-CVL">Centre-Val-de-Loire</router-link></li>
-            <li id="li-COR" class="list-group-item"><router-link to="/professionnelsante" 
-                id="list-COR">Corse</router-link></li>
-            <li id="li-IDF" class="list-group-item"><router-link to="/professionnelsante"
-                id="list-IDF">Île-de-France</router-link></li>
-            <li id="li-OCC" class="list-group-item"><router-link to="/professionnelsante"
-                id="list-OCC">Occitanie</router-link></li>
-            <li id="li-HDF" class="list-group-item"><router-link to="/professionnelsante"
-                id="list-HDF">Hauts-de-France</router-link></li>
-            <li id="li-NOR" class="list-group-item"><router-link to="/professionnelsante" 
-                id="list-NOR">Normandie</router-link></li>
-            <li id="li-PDL" class="list-group-item"><router-link to="/professionnelsante"
-                id="list-PDL">Pays-de-la-Loire</router-link></li>
-            <li id="li-PAC" class="list-group-item"><router-link to="/professionnelsante"
-                id="list-PAC">Provence-Alpes-Côte-d'Azur</router-link></li>
-          </ul>
+      </div>
+    </section>
+
+    <!-- Image Showcases -->
+    <section class="showcase">
+      <div class="container-fluid p-0">
+        <div class="row ml-0 mr-0">
+          <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image: url('images/health-2082630_1280.jpg');"></div>
+          <div class="col-lg-6 order-lg-1 my-auto showcase-text">
+            <h2>Recherchez un professionnel de santé</h2>
+            <p class="lead mb-0">AnnuaireSanté vous permet de recherche un professionnel de santé selon plusieurs critères: sa profession, la région, la ville, l'adresse,
+              le nom du professionnel, son status, etc...
+            </p>
+          </div>
         </div>
-      </section>
+        <div class="row ml-0 mr-0">
+          <div class="col-lg-6 text-white showcase-img" style="background-image: url('images/pexels-pixabay-40568.jpg');"></div>
+          <div class="col-lg-6 my-auto showcase-text">
+            <h2>Trouvez des informations sur un professionnel de santé</h2>
+            <p class="lead mb-0">Vous pourrez consulter les informations disponibles sur un médecin tel que ses informations de contact, son type d'activité, son type de convention,
+              etc...
+            </p>
+          </div>
+        </div>
+        <div class="row ml-0 mr-0">
+          <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image: url('images/heart-665177_1920.jpg');"></div>
+          <div class="col-lg-6 order-lg-1 my-auto showcase-text">
+            <h2>Visitez le profil d'un professionnel</h2>
+            <p class="lead mb-0">Vous pourrez consulter les profils de vos médecins, voir leurs notes, leurs commentaire et vous connectez à votre compte AnnuaireSanté pour vous même
+              laisser une note ou un commentaire! </p>
+          </div>
+        </div>
+      </div>
+    </section>
 	</section>
 </template>
 
 <script>
-import MapFr from '../components/MapFr';
 import Slider from '../components/Slider';
 export default {
 	name: "Contact",
 	components: {
-    MapFr,
     Slider
 	},
 	methods: {
@@ -58,57 +107,9 @@ export default {
 }
 </script>
 
-<style>
-#mapHome{
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
-.col-lg-3 {
-    padding: 0 !important; 
-}
-  
-@media all and (max-width: 575px) {
-  img.float-right {
-    float: none !important; }
-
-  .col-sm-3 {
-    display: flex;
-    justify-content: center; 
-  } 
-}
-
-@media all and (max-width: 991px) {
-  .col-lg-9 {
-    margin-top: 1rem; 
-  } 
-}
-
-/*---------MAP----------*/
-.map__list{
-  background-color: rgb(245,255,250) !important;
-}
-
-.map__list a {
-  color: inherit;
-  text-decoration: none;
-  transition: color 0.3s;
-  display: block;
-  padding: 0;
-  margin: 0; 
-}
-.map__list a:hover{
-    text-decoration: none;
-}
-.list-group{
-  background: url("/images/maintenance_bas.gif") no-repeat scroll 0 0 #0000004d;
-  clear: both;
-  height: 430px;  
-}
-
-.list-group-item {
-  background-color: rgb(245,255,250) !important;
-  padding: .3rem 1rem !important;
-  border: none !important;
+<style scoped>
+.detailContentHome{
+  list-style: none;
+  padding-left: inherit;
 }
 </style>

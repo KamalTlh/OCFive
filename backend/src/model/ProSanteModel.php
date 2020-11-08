@@ -161,7 +161,7 @@ class ProSanteModel extends Model {
     }
 
     public function getHealthWorkerById($workerId){
-        $sql = 'SELECT * FROM annuaire WHERE id = ?';
+        $sql = 'SELECT * FROM prossante WHERE id = ?';
         $result = $this->createQuery($sql, [$workerId]);
         $healthworker = $result->fetch(PDO::FETCH_ASSOC);
         $data['healthworker'] = $healthworker;
@@ -171,20 +171,20 @@ class ProSanteModel extends Model {
     public function addRate($post){
         $sql = 'INSERT INTO rate (userId, workerId) VALUES (?, ?)';
         $this->createQuery($sql, [ $post['userId'], $post['workerId'] ]);
-        $querySql = 'SELECT note, nb_notes FROM annuaire WHERE id = ?';
+        $querySql = 'SELECT note, nb_notes FROM prossante WHERE id = ?';
         $result = $this->createQuery($querySql, [$post['workerId']]);
         $actualRateofWorker = $result->fetch(PDO::FETCH_ASSOC);
         if ($actualRateofWorker['note'] != null){
             $nb_notes = intval($actualRateofWorker['nb_notes']) + 1;
             echo 'NB NOTES: '.$nb_notes;
             $rate = ($post['rate'] + intval($actualRateofWorker['note'])) / 2;
-            $sql = 'UPDATE annuaire SET note = ?, nb_notes = ? WHERE id = ?';
+            $sql = 'UPDATE prossante SET note = ?, nb_notes = ? WHERE id = ?';
             $this->createQuery($sql, [$rate, $nb_notes, $post['workerId']]);
             $data['rate'] = $rate;
             return $data;
         }
         else {
-            $sql = 'UPDATE annuaire SET note = ?, nb_notes = ? WHERE id = ?';
+            $sql = 'UPDATE prossante SET note = ?, nb_notes = ? WHERE id = ?';
             $this->createQuery($sql, [$post['rate'], 1, $post['workerId']]);
             $data['rate'] = $post['rate'];
             return $data;
