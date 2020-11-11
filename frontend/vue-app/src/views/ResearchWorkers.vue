@@ -166,7 +166,7 @@ export default {
         },
         getHealthWorkersByFilters(){
             Axios
-            .get("http://localhost/annuairesante/backend/index.php", { params: {
+            .get("https://apiannuaire.jean-forteroche-dwj.fr/index.php", { params: {
                 route: 'filters',
                 commune: this.dataResearch.commune,
                 civilite: this.dataResearch.selected_civilite,

@@ -1,13 +1,12 @@
 <?php
-namespace MyApp\Controller;
+namespace MyApp\controller;
 
 class CommentController extends Controller{
 
     public function getListComments($get){
         $check = $this->checkAuth();
         if ($check['access'] === true){
-            $accessAdmin = $this->checkAuthAdmin();
-            if($accessAdmin['admin'] === true ) {
+            if($this->checkAuthAdmin()) {
                 if($get['totalPages'] == 0){
                     $data['page'] = $this->commentsModel->getCountListComments();;
                 }
@@ -68,8 +67,7 @@ class CommentController extends Controller{
     public function deleteComment($post){
         $check = $this->checkAuth();
         if ($check['access'] === true){
-            $accessAdmin = $this->checkAuthAdmin();
-            if($accessAdmin['admin'] === true ){
+            if($this->checkAuthAdmin()){
                 if(isset($post['id'])){
                     $data['commentDeleted'] = $this->commentModel->deleteComment($post['id']);
                     return $this->view->render('JsonResponse',[
@@ -86,8 +84,7 @@ class CommentController extends Controller{
     public function updateComment($post){
         $check = $this->checkAuth();
         if ($check['access'] === true){
-            $accessAdmin = $this->checkAuthAdmin();
-            if($accessAdmin['admin'] === true ){
+            if($this->checkAuthAdmin()){
                 if(isset($post['id']) && $post['content']){
                     $output = $this->checkIfScript($post['content']);
                     if ($output){

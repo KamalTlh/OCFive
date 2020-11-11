@@ -100,7 +100,7 @@ export default {
                 this.notMatch = true;
             } else {
                 Axios
-                .post("http://localhost/annuairesante/backend/index.php", {
+                .post("https://apiannuaire.jean-forteroche-dwj.fr/index.php", {
                     route: "updatePassword",
                     userId: this.myUserLogged.id,
                     password: this.currentPassword,

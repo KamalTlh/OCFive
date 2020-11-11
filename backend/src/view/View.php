@@ -1,5 +1,5 @@
 <?php
-namespace MyApp\View;
+namespace MyApp\view;
 
 class View{
     private $title;

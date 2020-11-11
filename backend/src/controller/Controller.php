@@ -1,16 +1,16 @@
 <?php
-namespace MyApp\Controller;
+namespace MyApp\controller;
 
-use MyApp\Model\ProSanteModel;
-use MyApp\Model\ProsSanteModel;
-use MyApp\Model\CommentModel;
-use MyApp\Model\CommentsModel;
-use MyApp\Model\UserModel;
-use MyApp\Model\UsersModel;
-use MyApp\Model\FavoritesModel;
-use MyApp\View\View;
-use MyApp\Config\Authentification;
-use MyApp\Constraint\Validation;
+use MyApp\model\ProSanteModel;
+use MyApp\model\ProsSanteModel;
+use MyApp\model\CommentModel;
+use MyApp\model\CommentsModel;
+use MyApp\model\UserModel;
+use MyApp\model\UsersModel;
+use MyApp\model\FavoritesModel;
+use MyApp\view\View;
+use MyApp\config\Authentification;
+use MyApp\constraint\Validation;
 
 abstract class Controller extends Authentification{
     protected $proSanteModel;

@@ -9,21 +9,21 @@
     <div class="carousel-inner" role="listbox">
       <!-- Slide One - Set the background image for this slide in the line below -->
       <div class="carousel-item active" style="background-image: url('images/yoga-4541268_1920.jpg')">
-        <div class="carousel-caption d-none d-md-block">
+        <div class="carousel-caption d-md-block">
           <h2 class="display-4">Bien-être</h2>
           <p class="lead">Prenez soin de votre corps et esprit.</p>
         </div>
       </div>
       <!-- Slide Two - Set the background image for this slide in the line below -->
       <div class="carousel-item" style="background-image: url('images/vaccine-5103088_1920.jpg')">
-        <div class="carousel-caption d-none d-md-block">
+        <div class="carousel-caption d-md-block">
           <h2 class="display-4">Des professionnels de santé à votre service.</h2>
           <p class="lead">Contactez un médecin professionnel et prenez rendez-vous auprès de lui.</p>
         </div>
       </div>
       <!-- Slide Three - Set the background image for this slide in the line below -->
       <div class="carousel-item" style="background-image: url('images/stethoscope-2617701_1920.jpg')">
-        <div class="carousel-caption d-none d-md-block">
+        <div class="carousel-caption d-md-block">
           <h2 class="display-4">Des professionnels de santé à votre service.</h2>
           <p class="lead">Contactez un médecin professionnel et prenez rendez-vous auprès de lui.</p>
         </div>

@@ -1,5 +1,5 @@
 <?php 
-namespace MyApp\Model;
+namespace MyApp\model;
 require "src/config/Datadb.php";
 use PDO;
 use Exception;

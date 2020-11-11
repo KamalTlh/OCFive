@@ -40,7 +40,7 @@ import Axios from 'axios';
     methods: {
       logout(){
         Axios
-          .post("http://localhost/annuairesante/backend/index.php", {
+          .post("https://apiannuaire.jean-forteroche-dwj.fr/index.php", {
             route: 'logout'
           })
           .then( response => {

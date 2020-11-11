@@ -254,7 +254,7 @@ import Axios from 'axios';
       /*-- Récupération données de l'API pour afficher des éléments de recherche --*/
       getProfessions(){
           Axios
-          .get("http://localhost/annuairesante/backend/index.php", { params: {
+          .get("https://apiannuaire.jean-forteroche-dwj.fr/index.php", { params: {
               route: 'professions',
               }}
           )
@@ -272,7 +272,7 @@ import Axios from 'axios';
       },
       getGroupementsActs(){
           Axios
-          .get("http://localhost/annuairesante/backend/index.php", { params: {
+          .get("https://apiannuaire.jean-forteroche-dwj.fr/index.php", { params: {
               route: 'groupementsActs',
               }}
           )
@@ -290,7 +290,7 @@ import Axios from 'axios';
       },
       getModeExercices(){
           Axios
-          .get("http://localhost/annuairesante/backend/index.php", { params: {
+          .get("https://apiannuaire.jean-forteroche-dwj.fr/index.php", { params: {
               route: 'modes_exercice',
               }}
           )
@@ -308,7 +308,7 @@ import Axios from 'axios';
       },
       getRegions(){
           Axios
-          .get("http://localhost/annuairesante/backend/index.php", { params: {
+          .get("https://apiannuaire.jean-forteroche-dwj.fr/index.php", { params: {
               route: 'regions',
               }}
           )
@@ -326,7 +326,7 @@ import Axios from 'axios';
       },
       getCities(){
           Axios
-          .get("http://localhost/annuairesante/backend/index.php", { params: {
+          .get("https://apiannuaire.jean-forteroche-dwj.fr/index.php", { params: {
               route: 'cities',
               }}
           )

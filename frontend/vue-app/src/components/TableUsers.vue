@@ -80,7 +80,7 @@ import Axios from 'axios';
     methods: {
       deleteUser(id){
           Axios
-            .post("http://localhost/annuairesante/backend/index.php", { 
+            .post("https://apiannuaire.jean-forteroche-dwj.fr/index.php", { 
                 route: 'deleteUser',
                 userLoggedPseudo: this.$store.state.userLogged.pseudo,
                 id: id
@@ -97,7 +97,7 @@ import Axios from 'axios';
       },
       getUsers(){
           Axios
-          .get("http://localhost/annuairesante/backend/index.php", { params: {
+          .get("https://apiannuaire.jean-forteroche-dwj.fr/index.php", { params: {
               route: 'users',
               userLoggedRole: this.$store.state.userLogged.role_id,
               page: this.page,

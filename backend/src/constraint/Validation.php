@@ -1,5 +1,5 @@
 <?php
-namespace MyApp\Constraint;
+namespace MyApp\constraint;
 
 class Validation{
     public function validate($data, $name){

@@ -1,13 +1,12 @@
 <?php
-namespace MyApp\Controller;
+namespace MyApp\controller;
 
 class ProSanteController extends Controller{
 
     public function getHealthWorkers($get){
         $check = $this->checkAuth();
         if ($check['access'] === true){
-            $accessAdmin = $this->checkAuthAdmin();
-            if($accessAdmin['admin'] === true ) {
+            if($this->checkAuthAdmin()) {
                 if($_GET['totalPages'] == 0){
                     $data['page'] = $this->prosSanteModel->getCountListWorkers();
                 }

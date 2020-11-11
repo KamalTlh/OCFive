@@ -53,7 +53,7 @@ export default {
     methods:{
         getFavoritesOfUser(){
             Axios
-            .get("http://localhost/annuairesante/backend/index.php", { params: {
+            .get("https://apiannuaire.jean-forteroche-dwj.fr/index.php", { params: {
                 route: 'userFavorites',        
                 userId: this.$store.state.user.id
                 }}
@@ -73,7 +73,7 @@ export default {
         },
         getCommentsOfUser(){
             Axios
-            .get("http://localhost/annuairesante/backend/index.php", { params: {
+            .get("https://apiannuaire.jean-forteroche-dwj.fr/index.php", { params: {
                 route: 'userComments',        
                 userId: this.$store.state.user.id
                 }}

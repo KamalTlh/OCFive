@@ -33,7 +33,7 @@ export default {
     methods: {
         updateComment(){
             Axios
-                .post("http://localhost/annuairesante/backend/index.php", { 
+                .post("https://apiannuaire.jean-forteroche-dwj.fr/index.php", { 
                     route: 'updateComment',
                     id: this.commentId,
                     content: this.commentContent

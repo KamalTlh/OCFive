@@ -388,6 +388,15 @@ header .header.header-main {
 
 
 /* --Breakpoints mediaqueries-- */
+@media (min-width: 320px) and (max-width: 768px) {
+  .display-4 {
+    font-size: 1.5rem;
+  }
+  .lead {
+    font-size: 1rem;
+    font-weight: 300;
+  }
+}
 @media (min-width: 320px) and (max-width: 990px) {
 	.account.btn {
 		margin-left: 0;

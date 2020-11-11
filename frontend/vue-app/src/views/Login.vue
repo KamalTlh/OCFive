@@ -99,7 +99,7 @@ export default {
 		connection(){
 			if (this.checkForm()){
 				Axios
-                    .post("http://localhost/annuairesante/backend/index.php", {
+                    .post("https://apiannuaire.jean-forteroche-dwj.fr/index.php", {
                         route: 'login',
                         pseudo: this.pseudo,
                         password: this.password

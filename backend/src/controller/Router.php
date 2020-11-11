@@ -1,7 +1,7 @@
 <?php
-namespace MyApp\Controller;
-use MyApp\Controller;
-use MyApp\Config\Authentification;
+namespace MyApp\controller;
+use MyApp\controller;
+use MyApp\config\Authentification;
 
 class Router{
     private $proSanteController;

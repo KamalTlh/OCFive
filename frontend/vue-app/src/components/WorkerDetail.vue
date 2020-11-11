@@ -229,7 +229,7 @@ export default {
     methods:{
         getHealthWorker(){
             Axios
-            .get("http://localhost/annuairesante/backend/index.php", { params: {
+            .get("https://apiannuaire.jean-forteroche-dwj.fr/index.php", { params: {
                 route: 'healthworkerById',
                 id: localStorage.getItem('healthWorkerId')
                 }}
@@ -245,7 +245,7 @@ export default {
         },
         deleteFromFavorites(healthworkerId){
             Axios
-            .post("http://localhost/annuairesante/backend/index.php", {
+            .post("https://apiannuaire.jean-forteroche-dwj.fr/index.php", {
                 route: "deleteFavorite",
                 userId: this.$store.state.userLogged.id,
                 workerId: healthworkerId
@@ -263,7 +263,7 @@ export default {
         },
         getCommentsOfWorker(){
             Axios
-            .get("http://localhost/annuairesante/backend/index.php", { params: {
+            .get("https://apiannuaire.jean-forteroche-dwj.fr/index.php", { params: {
                 route: 'workerComments',
                 workerId: localStorage.getItem('healthWorkerId')
                 }}
@@ -278,7 +278,7 @@ export default {
         },
         addFavorite(healthworkerId){
             Axios
-            .post("http://localhost/annuairesante/backend/index.php", {
+            .post("https://apiannuaire.jean-forteroche-dwj.fr/index.php", {
                 route: "addFavorite",
                 userId: this.$store.state.userLogged.id,
                 workerId: healthworkerId
@@ -298,7 +298,7 @@ export default {
         },
         addComment(payload){
             Axios
-            .post("http://localhost/annuairesante/backend/index.php", {
+            .post("https://apiannuaire.jean-forteroche-dwj.fr/index.php", {
                 route: "addComment",
                 userId: this.$store.state.userLogged.id,
                 workerId: this.$store.state.healthworkerId,
@@ -321,7 +321,7 @@ export default {
         },
         addRate(){
             Axios
-            .post("http://localhost/annuairesante/backend/index.php", {
+            .post("https://apiannuaire.jean-forteroche-dwj.fr/index.php", {
                 route: "addRate",
                 userId: this.$store.state.userLogged.id,
                 workerId: this.$store.state.healthworkerId,
@@ -342,7 +342,7 @@ export default {
         },
         checkUserPreferences(){
             Axios
-            .get("http://localhost/annuairesante/backend/index.php", { params: {
+            .get("https://apiannuaire.jean-forteroche-dwj.fr/index.php", { params: {
                 route: 'userPreferences',
                 userId: this.$store.state.userLogged.id,
                 workerId: localStorage.getItem('healthWorkerId')
@@ -359,7 +359,7 @@ export default {
         },
         flagComment(commentId){
             Axios
-            .post("http://localhost/annuairesante/backend/index.php", {
+            .post("https://apiannuaire.jean-forteroche-dwj.fr/index.php", {
                 route: "flagComment",
                 commentId: commentId
             })

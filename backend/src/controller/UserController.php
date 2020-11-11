@@ -1,5 +1,5 @@
 <?php
-namespace MyApp\Controller;
+namespace MyApp\controller;
 use \Firebase\JWT\JWT;
 
 class UserController extends Controller{
@@ -56,8 +56,7 @@ class UserController extends Controller{
     public function getUsers($get){
         $check = $this->checkAuth();
         if ($check['access'] === true){
-            $accessAdmin = $this->checkAuthAdmin();
-            if($accessAdmin['admin'] === true ) {
+            if($this->checkAuthAdmin()) {
                 if($get['totalPages'] == 0){
                     $data['page'] = $this->usersModel->getCountListUsers();;
                 }
@@ -82,7 +81,6 @@ class UserController extends Controller{
     public function updateUser($post){
         $check = $this->checkAuth();
         if ($check['access'] === true){
-            // $accessAdmin = $this->checkAuthAdmin();
             if(isset($post['pseudo']) && isset($post['email']) && isset($post['id'])){
                 $data['errors'] = $this->validation->validate($post, 'User');
                 if($this->userModel->isPseudoUnique($post, $post['id'])){
@@ -121,8 +119,7 @@ class UserController extends Controller{
     public function deleteUser($post){
         $check = $this->checkAuth();
         if ($check['access'] === true){
-            $accessAdmin = $this->checkAuthAdmin();
-            if($accessAdmin['admin'] === true ){
+            if($this->checkAuthAdmin()){
                 $data = $this->userModel->checkUserRole($post['userLoggedPseudo']);
                 if($data['role_id'] == 1 ){
                     $data = $this->commentsModel->deleteCommentsUser($post['id']);

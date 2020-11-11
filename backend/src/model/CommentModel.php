@@ -1,5 +1,5 @@
 <?php
-namespace MyApp\Model;
+namespace MyApp\model;
 use PDO;
 
 class CommentModel extends Model{

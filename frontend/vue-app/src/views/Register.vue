@@ -124,7 +124,7 @@ export default {
             if (this.checkForm()){
                 if ( this.password == this.passwordConfirmation ) {
                     Axios
-                    .post("http://localhost/annuairesante/backend/index.php", {
+                    .post("https://apiannuaire.jean-forteroche-dwj.fr/index.php", {
                         route: 'signIn',
                         pseudo: this.pseudo,
                         email: this.email,

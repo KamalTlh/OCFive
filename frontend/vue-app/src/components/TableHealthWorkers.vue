@@ -74,7 +74,7 @@ import Axios from 'axios';
     methods: {
       getHealthWorkers(){
           Axios
-          .get("http://localhost/annuairesante/backend/index.php", { params: {
+          .get("https://apiannuaire.jean-forteroche-dwj.fr/index.php", { params: {
               route: 'healthworkers',
               page: this.page,
               totalPages: this.totalPages

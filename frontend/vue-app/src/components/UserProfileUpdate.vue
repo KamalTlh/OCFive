@@ -134,7 +134,7 @@ export default {
             }
             else {
                 Axios
-                .post("http://localhost/annuairesante/backend/index.php", {
+                .post("https://apiannuaire.jean-forteroche-dwj.fr/index.php", {
                     route: 'updateUser',
                     userLoggedPseudo: this.myUserLogged.pseudo,
                     id: this.myUserToUpdate.id,

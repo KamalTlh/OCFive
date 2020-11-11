@@ -124,7 +124,7 @@ import UpdateComment from '../components/UpdateComment';
         },
         readComment(commentId, workerId){
             Axios
-            .get("http://localhost/annuairesante/backend/index.php", { params: {
+            .get("https://apiannuaire.jean-forteroche-dwj.fr/index.php", { params: {
                 route: 'comments',
                 userLoggedRole: this.$store.state.userLogged.role_id,
                 id: commentId,
@@ -146,7 +146,7 @@ import UpdateComment from '../components/UpdateComment';
         },
         deleteComment(commentId){
             Axios
-            .post("http://localhost/annuairesante/backend/index.php", { 
+            .post("https://apiannuaire.jean-forteroche-dwj.fr/index.php", { 
                 route: 'deleteComment',
                 id: commentId
                 }
@@ -162,7 +162,7 @@ import UpdateComment from '../components/UpdateComment';
         },
         getComments(){
             Axios
-            .get("http://localhost/annuairesante/backend/index.php", { params: {
+            .get("https://apiannuaire.jean-forteroche-dwj.fr/index.php", { params: {
                 route: 'comments',
                 userLoggedRole: this.$store.state.userLogged.role_id,
                 page: this.page,
@@ -184,7 +184,7 @@ import UpdateComment from '../components/UpdateComment';
         },
         unflagComment(commentId){
             Axios
-            .post("http://localhost/annuairesante/backend/index.php", {
+            .post("https://apiannuaire.jean-forteroche-dwj.fr/index.php", {
                 route: "unflagComment",
                 commentId: commentId
             })
