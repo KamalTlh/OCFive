@@ -1,14 +1,15 @@
 <template>
-<!-- Begin Page Content -->
 <div class="container-fluid">
-  <!-- DataTales -->
   <div class="card shadow mb-4">
     <div class="card-header py-3">
       <h6 class="m-0 font-weight-bold text-primary">Professionnels de sante</h6>
     </div>
     <div class="card-body">
+      <!-- Pagination du tableau -->
       <b-pagination v-model="currentPage" :total-rows="totalResults" :per-page="perPage" aria-controls="my-table">
       </b-pagination>
+
+      <!-- Tableau administration des commentaires -->
       <div class="table-responsive">
         <table class="table table-bordered table-hover" role="grid" aria-discribedby="dataTable_info" id="dataTable"
           width="100%" cellspacing="0">
@@ -42,9 +43,11 @@
               <td>{{ healthworker.profession }}</td>
               <td>{{ healthworker.adresse }}</td>
               <td>{{ healthworker.telephone }}</td>
+              <!-- Boutons administration -->
               <td class="actions">
                 <a class="btn btn-primary" @click="sendIdWorker(healthworker.id)"><i class="fas fa-eye"></i></a>
               </td>
+              <!-- Fin boutons administration -->
             </tr>
           </tbody>
         </table>
@@ -52,7 +55,6 @@
     </div>
   </div>
 </div>
-<!-- /.container-fluid -->
 </template>
 
 <script>
@@ -72,9 +74,10 @@ import Axios from 'axios';
       }
     },
     methods: {
+      /*-- Récupération des professionnels de santé --*/
       getHealthWorkers(){
           Axios
-          .get("https://apiannuaire.jean-forteroche-dwj.fr/index.php", { params: {
+          .get(process.env.VUE_APP_API_URL, { params: {
               route: 'healthworkers',
               page: this.page,
               totalPages: this.totalPages
@@ -93,6 +96,7 @@ import Axios from 'axios';
           })
           .finally(() => this.loading = false );
       },
+      /*-- Stockage en local et en store de l'id d'un professionnel pour afficher son profil --*/
       sendIdWorker(healthworkerId){
         localStorage.setItem('healthWorkerId', healthworkerId);
         this.$store.commit("changeWorker", healthworkerId);
@@ -100,6 +104,7 @@ import Axios from 'axios';
       }
     },
     watch: {
+      /*-- A chaque changement de page on reload la nouvelle page de professionnels --*/
       currentPage: function(){
         this.page = this.currentPage;
           this.getHealthWorkers();

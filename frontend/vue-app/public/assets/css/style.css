@@ -1,5 +1,5 @@
 html, body{
-  color: #000 !important;
+  color: #0c2050 !important;
   font-family: Roboto;
 }
 
@@ -68,7 +68,8 @@ html, body{
 }
 .profile-header .profile-header-content {
     color: #fff;
-    padding: 25px
+    padding: 25px;
+    margin: 3% 2% 5% 2%;
 }
 .profile-header-img {
     float: left;
@@ -447,7 +448,7 @@ header .header.header-main {
     justify-content: center;
   }
   .profile-header .profile-header-content {
-    padding: 0;
+    /* padding: 0; */
     margin: 27% 2% 10% 2%;
   }
   .profile-header-img + .profile-header-info {
@@ -471,13 +472,13 @@ header .header.header-main {
 
 @media (min-width: 591px) and (max-width: 990px) {
   .profile-header .profile-header-content {
-    padding: 0;
+    /* padding: 0; */
     margin: 14% 2% 10% 2%;
   }
 }
 @media (min-width: 991px) and (max-width: 1200px) {
   .profile-header .profile-header-content {
-    padding: 0;
+    /* padding: 0; */
     margin: 7% 2% 7% 2%;
   }
 }

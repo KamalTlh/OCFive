@@ -146,9 +146,11 @@ export default {
         }
     },
     methods: {
+        /*-- Afficher le profil administrateur --*/
         setAdminProfil(){
             this.$store.commit("changeUser", this.$store.state.userLogged);
         },
+        /*-- Afficher la page de mise à jour des informations du profil --*/
         userUpdate(){
             this.$store.commit("changeUser", this.$store.state.user);
             this.$router.push("/userupdate");

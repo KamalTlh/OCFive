@@ -50,17 +50,5 @@ abstract class Controller extends Authentification{
     public function checkAuthAdmin(){
         $data = $this->authentification->checkAuthAdmin();
         return $data;
-    }
-
-    public function checkIfScript($string){
-        $content_array = explode(" ", $string);
-        $output1 = '';
-        foreach($content_array as $content1){
-            if(substr($content1, 0, 8) == "<script>"){
-                return true;
-            } else {
-                return false;
-            }
-        }
-    }   
+    } 
 }

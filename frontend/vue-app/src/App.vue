@@ -1,10 +1,10 @@
 <template>
 	<div id="app">
+    <NavBar></NavBar>
     <div id="anchor"></div>
     <div v-if="showToolbar" class="invisible-toolbar">
         <a href="#anchor"><div id="scroll-top"  class="action-link"><i class="fas fa-chevron-up"></i></div></a>
     </div>
-    <NavBar></NavBar>
     <Footer></Footer>
 	</div>
 </template>
@@ -40,21 +40,12 @@
   }
 </script>
 
-<style>
+<style scoped>
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap');
-html {
-    font-family: arial,verdana,sans-serif;
-    font-size: 1em;
-    color: #000;
-     background: #007bff;
-  background: linear-gradient(to right, #0062E6, #33AEFF);
-
-}
 #app{
   background-color: rgb(245,255,250);
   padding-top: 3%;
 }
-
 #app #content .pageAdmin, #app #content .password-update {
   padding-top: 7%;
 }
@@ -62,7 +53,6 @@ body {
   background: #007bff;
   background: linear-gradient(to right, #0062E6, #33AEFF);
 }
-
 /*--Anchor scroll--*/
 #anchor {
     position: absolute;
@@ -130,5 +120,4 @@ body {
       margin: 0.75rem;
     }
 }
-
 </style>

@@ -1,6 +1,8 @@
 <template>
 	<section class="page">
+        <!-- Récupération des éléments de la recherche -->
         <ResearchDesigned @data-sent="fetchData"></ResearchDesigned>
+        <!-- Affichage de la carte -->
         <LeafleatMap ref="map"></LeafleatMap>
         <div v-if="showContent">
             <div class="loading" v-if="loading">
@@ -10,9 +12,11 @@
                     </button>
             </div>
             <div >
+                <!-- Si aucuns résultats retournés -->
                 <section  v-if="errored">
                     <p>Nous sommes désolés, nous ne sommes pas en mesure de récupérer ces informations pour le moment. Veuillez réessayer ultérieurement.</p>
                 </section>
+                <!-- Début affichage des résultats -->
                 <section ref="researchResults" v-else class="container-lg">
                     <div id="nb_results" class="row">
                         <div class="detail-result">
@@ -104,6 +108,7 @@
                         </div>
                     </div>
                 </section>
+                <!-- Fin affichage des résultats -->
             </div>
         </div>
 	</section>
@@ -140,6 +145,7 @@ export default {
 		}
     },
     methods : {
+        /*-- Supprimer les résultats afficher sur la page et la carte --*/
         resetResearch(){
             this.healthWorkers = [];
             this.totalPages = 0;
@@ -147,10 +153,13 @@ export default {
             this.$refs.map.clearLayersOfResearch();
             this.showContent = false;            
         },
+        /*-- Récupérer les résultats de la recherche avec les éléments renseignés --*/
         fetchData(payload){
             this.showContent = true;
             this.errored = false;
             this.dataResearch = payload;
+            /*-- Si c'est une nouvelle recherche on effectue une recherche qui récupérera le total des résultats
+                pour effectuer notre pagination --*/
             if (this.dataResearch.newRequest === true){
                 this.$refs.map.clearLayersOfResearch();
                 this.loading = true;
@@ -159,14 +168,16 @@ export default {
                 this.getHealthWorkersByFilters();
                 this.currentPage = 1;
             } 
+            /*-- sinon on envoi une recherche simple qui renvoie les résultats par page --*/
             else {
                 this.$refs.map.clearLayersOfResearch();
                 this.getHealthWorkersByFilters();
             }
         },
+        /*-- Récupération des résultats avec les filtres de recherche --*/
         getHealthWorkersByFilters(){
             Axios
-            .get("https://apiannuaire.jean-forteroche-dwj.fr/index.php", { params: {
+            .get(process.env.VUE_APP_API_URL, { params: {
                 route: 'filters',
                 commune: this.dataResearch.commune,
                 civilite: this.dataResearch.selected_civilite,
@@ -183,9 +194,11 @@ export default {
                 }}
             )
             .then( response => {
+                /*-- Vérification qu'au moins un champ de recherche est renseigné --*/
                 if (response.data.errorData){
                     console.log('Veuillez renseigner des données avant de lancer la recherche.');
                 }
+                /*--*/
                 else {
                     this.healthWorkers = response.data.datas.healthworkers;
                     this.markers = response.data.datas.coordinates;
@@ -206,6 +219,7 @@ export default {
             })
             .finally(() => this.loading = false );
         },
+        /*-- Aller à la page de profil du professionnel pour voir les commentaires --*/
         seeCommentsOfWorker(healthWorkerId){
             localStorage.setItem('healthWorkerId', healthWorkerId);
             this.$store.commit("changeWorker", healthWorkerId);
@@ -213,6 +227,7 @@ export default {
         }
     },
     watch: {
+        /*-- A chaque changement de page on effectue un appel Axios pour retourner les résultats selon la page --*/
         currentPage: function(){
             this.page = this.currentPage;
             if( !(this.dataResearch.newRequest)){

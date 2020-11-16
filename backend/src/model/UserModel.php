@@ -74,7 +74,7 @@ class UserModel extends Model{
     }
 
     public function getUser($userId){
-        $sql = 'SELECT id, pseudo, email, password, date_creation, role_id FROM user WHERE id = ?';
+        $sql = 'SELECT id, pseudo, email, date_creation, role_id FROM user WHERE id = ?';
         $result = $this->createQuery($sql, [$userId]);
         $user = $result->fetch();
         $result->closeCursor();

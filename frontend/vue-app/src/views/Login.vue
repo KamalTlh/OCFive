@@ -21,13 +21,15 @@
                                             <input v-model="pseudo" type="text" class="form-control form-control-user"
                                                 id="exampleInputEmail" aria-describedby="emailHelp"
                                                 placeholder="Entrez votre pseudo...">
-                                            <small class="return-error" v-if="this.errorPseudo === true"><i class="fas fa-exclamation-circle"></i> Cette valeur ne doit pas être vide.</small>
+                                            <small class="return-error" v-if="this.errorPseudo === true"><i class="fas fa-exclamation-circle"></i> 
+                                                Cette valeur ne doit pas être vide.</small>
                                         </div>
                                         <div class="form-group">
                                             <input v-model="password" type="password"
                                                 class="form-control form-control-user" id="exampleInputPassword"
                                                 placeholder="Password">
-                                            <small class="return-error" v-if="this.errorPassword === true"> <i class="fas fa-exclamation-circle"></i> Cette valeur ne doit pas être vide.</small>
+                                            <small class="return-error" v-if="this.errorPassword === true"> <i class="fas fa-exclamation-circle"></i> 
+                                                Cette valeur ne doit pas être vide.</small>
                                         </div>
                                         <input type="submit" name="submit" class="btn btn-primary btn-user btn-block"
                                             value="Se connecter"> 
@@ -62,20 +64,7 @@ export default {
 		};
 	},
 	methods: {
-		hideModal(){
-			this.$refs['my-modal'].hide();
-			this.pseudo = null;
-			this.password = null;
-			this.errorPseudo = null;
-			this.errorPassword = null;
-			this.error= false;
-			this.errorData = false;
-		},
-		registrationRouting(){
-			this.$router.push({ path: '/Register' });
-			this.$refs['my-modal'].hide();
-		},
-
+        /*-- Vérification que les champs du formulaire ne sont pas vides --*/
 		checkForm() {
 			if (this.pseudo){
 			this.errorPseudo=false;
@@ -95,11 +84,12 @@ export default {
 				}
 				return false;
 			}
-		},
+        },
+        /*-- Connection au site --*/
 		connection(){
 			if (this.checkForm()){
 				Axios
-                    .post("https://apiannuaire.jean-forteroche-dwj.fr/index.php", {
+                    .post(process.env.VUE_APP_API_URL, {
                         route: 'login',
                         pseudo: this.pseudo,
                         password: this.password

@@ -95,12 +95,13 @@ export default {
         ...mapGetters({myUserLogged: "getCurrentUser"})
     },
     methods:{
+        /*-- Modifier mot de passe --*/
         updatePassword(){
             if ( this.newPasswordTwo != this.newPasswordOne){
                 this.notMatch = true;
             } else {
                 Axios
-                .post("https://apiannuaire.jean-forteroche-dwj.fr/index.php", {
+                .post(process.env.VUE_APP_API_URL, {
                     route: "updatePassword",
                     userId: this.myUserLogged.id,
                     password: this.currentPassword,
@@ -130,7 +131,7 @@ export default {
                 })
             }
         },
-        
+        /*-- Redirection vers la page de profil si annulation --*/
         cancelUpdate(){
             this.$router.push({ path: '/userprofile' });
         }

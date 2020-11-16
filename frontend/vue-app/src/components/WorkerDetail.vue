@@ -129,6 +129,7 @@
                                     </tbody>
                                 </table>
                             </div>
+                            <!-- Affichage des boutons favoris/note/commentaire selon si on est connecté ou non -->
                             <div v-if="token != null" class="button-interactions">
                                 <div v-if="ifRated == 0" class="type-1">
                                     <button id="rate-btn" type="button" class="btn btn-1" data-toggle="modal" data-target="#form-rate">
@@ -161,11 +162,14 @@
                                     <span class="txt">Ajouter un commentaire <i class="far fa-comments"></i></span>
                                     <span class="round"><i class="fa fa-chevron-right"></i></span>
                                     </button>
+                                    <!-- Fenetre modale pour rajouter un commentaire -->
                                     <AddComment @data-commentSent="addComment"/>
                                 </div>
                             </div>
+                            <!-- Fin boutons interactions -->
                             <hr>
                             <!-- end table -->
+                            <!-- Affichage des commentaires -->
                             <div v-for="commentWorker in commentsOfWorker" :key="commentWorker.id" class="comments-worker">
                                 <h5>Commentaires</h5>
                                 <div class="media mb-4">
@@ -176,6 +180,7 @@
                                     </div>
                                     <p class="date_comment"> {{ new Date(commentWorker.date_creation).toLocaleDateString("fr-FR", options) }} </p>
                                 </div>
+                                <!-- Signaler un commentaire si connecté -->
                                 <div v-if="token">
                                     <div v-if="commentWorker.flag != 1" class="flag">
                                         <a @click="flagComment(commentWorker.id)" class="nav-link">
@@ -227,9 +232,10 @@ export default {
         }
     },
     methods:{
+        /*-- Récupérer les informations du professionnel --*/
         getHealthWorker(){
             Axios
-            .get("https://apiannuaire.jean-forteroche-dwj.fr/index.php", { params: {
+            .get(process.env.VUE_APP_API_URL, { params: {
                 route: 'healthworkerById',
                 id: localStorage.getItem('healthWorkerId')
                 }}
@@ -243,9 +249,42 @@ export default {
             })
             .finally(() => this.loading = false );
         },
+        /*-- Récupérer les commentaires liés au professionnel --*/
+        getCommentsOfWorker(){
+            Axios
+            .get(process.env.VUE_APP_API_URL, { params: {
+                route: 'workerComments',
+                workerId: localStorage.getItem('healthWorkerId')
+                }}
+            )
+            .then( response => {
+                this.commentsOfWorker = response.data.commentsOfWorker;
+            })
+            .catch(error => {
+                console.log(error)
+                this.errored = true
+            })
+        },
+        /*-- Ajouter en favoris de l'utilisateur --*/
+        addFavorite(healthworkerId){
+            Axios
+            .post(process.env.VUE_APP_API_URL, {
+                route: "addFavorite",
+                userId: this.$store.state.userLogged.id,
+                workerId: healthworkerId
+            })
+            .then( response => {
+                this.favoriteAdded = response.data.FavoriteAddeed;
+            })  
+            .catch(error => {
+                console.log(error)
+                this.errored = true
+            })
+        },
+        /*-- Supprimer des favoris de l'utilisateur --*/
         deleteFromFavorites(healthworkerId){
             Axios
-            .post("https://apiannuaire.jean-forteroche-dwj.fr/index.php", {
+            .post(process.env.VUE_APP_API_URL, {
                 route: "deleteFavorite",
                 userId: this.$store.state.userLogged.id,
                 workerId: healthworkerId
@@ -261,44 +300,10 @@ export default {
                 this.errored = true
             })
         },
-        getCommentsOfWorker(){
-            Axios
-            .get("https://apiannuaire.jean-forteroche-dwj.fr/index.php", { params: {
-                route: 'workerComments',
-                workerId: localStorage.getItem('healthWorkerId')
-                }}
-            )
-            .then( response => {
-                this.commentsOfWorker = response.data.commentsOfWorker;
-            })
-            .catch(error => {
-                console.log(error)
-                this.errored = true
-            })
-        },
-        addFavorite(healthworkerId){
-            Axios
-            .post("https://apiannuaire.jean-forteroche-dwj.fr/index.php", {
-                route: "addFavorite",
-                userId: this.$store.state.userLogged.id,
-                workerId: healthworkerId
-            })
-            .then( response => {
-                if(response.status == 200){
-                    this.favoriteAdded = response.data.FavoriteAddeed;
-                }
-                else {
-                    this.$router.push({ path: '/error500'});
-                }
-            })  
-            .catch(error => {
-                console.log(error)
-                this.errored = true
-            })
-        },
+        /*-- Ajouter un commentaire --*/
         addComment(payload){
             Axios
-            .post("https://apiannuaire.jean-forteroche-dwj.fr/index.php", {
+            .post(process.env.VUE_APP_API_URL, {
                 route: "addComment",
                 userId: this.$store.state.userLogged.id,
                 workerId: this.$store.state.healthworkerId,
@@ -306,43 +311,36 @@ export default {
                 rate: payload.rating
             })
             .then( response => {
-                if(response.status == 200){
-                    this.addedComment = response.data.commentAdded;
-                    this.commentsOfWorker.push(this.addedComment);
-                }
-                else {
-                    this.$router.push({ path: '/error500'});
-                }
+                this.addedComment = response.data.commentAdded;
+                this.commentsOfWorker.push(this.addedComment);
             })  
             .catch(error => {
                 console.log(error)
                 this.errored = true
             })
         },
+        /*-- Ajouter une note au professionnel --*/
         addRate(){
             Axios
-            .post("https://apiannuaire.jean-forteroche-dwj.fr/index.php", {
+            .post(process.env.VUE_APP_API_URL, {
                 route: "addRate",
                 userId: this.$store.state.userLogged.id,
                 workerId: this.$store.state.healthworkerId,
                 rate: this.rating
             })
             .then( response => {
-                if(response.status == 200){
-                    this.rateAdded = response.data.rateAdded;
-                }
-                else {
-                    this.$router.push({ path: '/error500'});
-                }
+                this.rateAdded = response.data.rateAdded;
             })  
             .catch(error => {
                 console.log(error)
                 this.errored = true
             })
         },
+        /*-- Récupérer les préférences d'un utilisateur (note/favoris) pour un professionnel,
+            pour ne pas permettre de mettre des notes ou favoris à l'infini.. --*/
         checkUserPreferences(){
             Axios
-            .get("https://apiannuaire.jean-forteroche-dwj.fr/index.php", { params: {
+            .get(process.env.VUE_APP_API_URL, { params: {
                 route: 'userPreferences',
                 userId: this.$store.state.userLogged.id,
                 workerId: localStorage.getItem('healthWorkerId')
@@ -357,9 +355,10 @@ export default {
                 this.errored = true
             })
         },
+        /*-- Signaler un commentaire --*/
         flagComment(commentId){
             Axios
-            .post("https://apiannuaire.jean-forteroche-dwj.fr/index.php", {
+            .post(process.env.VUE_APP_API_URL, {
                 route: "flagComment",
                 commentId: commentId
             })

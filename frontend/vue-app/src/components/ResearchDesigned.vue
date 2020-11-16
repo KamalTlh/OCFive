@@ -1,5 +1,6 @@
 <template>
   <section class="researchdesign">
+
     <div class="container">
       <div class="row">
         <div class="col">
@@ -7,6 +8,8 @@
         </div>
       </div>
     </div>
+
+    <!-- Separateur -->
     <div class="liquid-container">
       <div class="breadcrumbs">
         <a class="breadcrumb-item breadcrumb-item-first" to="/">
@@ -16,6 +19,9 @@
         <span class="breadcrumb-item breadcrumb-item-last">Annuaire</span>
       </div>
     </div>
+    <!-- Fin separateur -->
+
+    <!-- Début formulaire de recherche -->
     <div class="container">
       <div class="search-med-advanced-form">
         <h3>Qualifications</h3>
@@ -214,12 +220,15 @@
               @click="sendDataResearch" /> </div>
         </div>
       </div>
+      <!-- Fenêtre modale retournée si aucun champs n'est renseigner -->
       <b-modal id="modalErrorData" ref="errorData" hide-footer title="Erreur Recherche" center>
         <div>
           Veuillez renseignez au moins un élément de recherche.
         </div>
       </b-modal>
+      <!-- Fin modal -->
     </div>
+    <!-- Fin formulaire de recherche -->
   </section>
 </template>
 
@@ -229,18 +238,16 @@ import Axios from 'axios';
     name: "ResearchDesigned",
     data() {
       return {
-
-            nom_professionnel: '',
-            prenom_professionnel: '',
-            selected_profession: '',
-            selected_civilite: '',
-            selected_groupement: '',
-            selected_mode_exercice: '',
-            selected_status: '',
-            selected_region: '',
-            selected_departement: '',
-            commune: '',
-  
+        nom_professionnel: '',
+        prenom_professionnel: '',
+        selected_profession: '',
+        selected_civilite: '',
+        selected_groupement: '',
+        selected_mode_exercice: '',
+        selected_status: '',
+        selected_region: '',
+        selected_departement: '',
+        commune: '',
         options_professions: [],
         options_groupementActs: [],
         options_mode_exercice: [],
@@ -254,7 +261,7 @@ import Axios from 'axios';
       /*-- Récupération données de l'API pour afficher des éléments de recherche --*/
       getProfessions(){
           Axios
-          .get("https://apiannuaire.jean-forteroche-dwj.fr/index.php", { params: {
+          .get(process.env.VUE_APP_API_URL, { params: {
               route: 'professions',
               }}
           )
@@ -272,7 +279,7 @@ import Axios from 'axios';
       },
       getGroupementsActs(){
           Axios
-          .get("https://apiannuaire.jean-forteroche-dwj.fr/index.php", { params: {
+          .get(process.env.VUE_APP_API_URL, { params: {
               route: 'groupementsActs',
               }}
           )
@@ -290,7 +297,7 @@ import Axios from 'axios';
       },
       getModeExercices(){
           Axios
-          .get("https://apiannuaire.jean-forteroche-dwj.fr/index.php", { params: {
+          .get(process.env.VUE_APP_API_URL, { params: {
               route: 'modes_exercice',
               }}
           )
@@ -308,7 +315,7 @@ import Axios from 'axios';
       },
       getRegions(){
           Axios
-          .get("https://apiannuaire.jean-forteroche-dwj.fr/index.php", { params: {
+          .get(process.env.VUE_APP_API_URL, { params: {
               route: 'regions',
               }}
           )
@@ -326,7 +333,7 @@ import Axios from 'axios';
       },
       getCities(){
           Axios
-          .get("https://apiannuaire.jean-forteroche-dwj.fr/index.php", { params: {
+          .get(process.env.VUE_APP_API_URL, { params: {
               route: 'cities',
               }}
           )
@@ -342,7 +349,9 @@ import Axios from 'axios';
               this.errored = true
           })
       },
-      /*---*/
+      /*-- Fin récupération des données API --*/
+
+      /*-- Fonction pour vérifier que tout les champs de recherche ne sont pas vide --*/
       checkFieldsData(){
         if(this.nom_professionnel == '' && this.selected_profession == '' && this.selected_civilite== '' && this.selected_groupement == '' && this.selected_mode_exercice == ''
           && this.selected_status == '' && this.selected_region == '' && this.selected_departement == '' && this.commune == '') {
@@ -351,6 +360,8 @@ import Axios from 'axios';
           return false;
         }
       },
+
+      /*-- Envoi des données des champs entrer par l'utilisateur au composant parent --*/
       sendDataResearch() {
         if(this.checkFieldsData()){
           this.emptyDataResearch = true;
@@ -364,6 +375,8 @@ import Axios from 'axios';
         }
       }, 
     },
+
+    /*-- Récupération des données API avant que le page ne soit monté pour initialiser les champs de recherche --*/
     beforeMount(){
       this.getProfessions();
       this.getModeExercices();

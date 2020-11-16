@@ -1,22 +1,21 @@
 <template>
-      <!-- account connexion -->
-            <div class="btn-group dropdown">
-              <button type="button" id="dropdownMenuButton" class="btn account right tooltipped dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Mon compte <i class="fas fa-user-circle user-pic"></i>
-              </button>
-              <div class="dropdown-menu dropdown-menu-right">
-                  <router-link to="/userprofile" class="btn account right tooltipped dropdown-item" @click="display">
-                    Profil<i class="fas fa-user user-pic"></i>
-                  </router-link>
-                  <router-link to="/adminview" class="btn account right tooltipped dropdown-item" v-if="checkSession === true && checkRole == 1 " >
-                    Administration<i class="fas fa-user-lock user-pic"></i>
-                  </router-link>
-                  <button type="button" class="btn account right tooltipped dropdown-item" @click="logout">
-                    Déconnection <i class="fas fa-sign-out-alt user-pic"></i>
-                  </button>
-              </div>
-            </div>
-
+  <!-- account connexion -->
+  <div class="btn-group dropdown">
+    <button type="button" id="dropdownMenuButton" class="btn account right tooltipped dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Mon compte <i class="fas fa-user-circle user-pic"></i>
+    </button>
+    <div class="dropdown-menu dropdown-menu-right">
+        <router-link to="/userprofile" class="btn account right tooltipped dropdown-item" @click="display">
+          Profil<i class="fas fa-user user-pic"></i>
+        </router-link>
+        <router-link to="/adminview" class="btn account right tooltipped dropdown-item" v-if="checkSession === true && checkRole == 1 " >
+          Administration<i class="fas fa-user-lock user-pic"></i>
+        </router-link>
+        <button type="button" class="btn account right tooltipped dropdown-item" @click="logout">
+          Déconnection <i class="fas fa-sign-out-alt user-pic"></i>
+        </button>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -38,9 +37,10 @@ import Axios from 'axios';
       }
     },
     methods: {
+      /*-- Déconnection du site web --*/
       logout(){
         Axios
-          .post("https://apiannuaire.jean-forteroche-dwj.fr/index.php", {
+          .post(process.env.VUE_APP_API_URL, {
             route: 'logout'
           })
           .then( response => {
@@ -51,6 +51,7 @@ import Axios from 'axios';
             localStorage.removeItem('token');
             localStorage.removeItem('user');
             localStorage.removeItem('expiration');
+            localStorage.removeItem('healthWorkerId');
             if ( this.$router.currentRoute.name != 'Home'){
               this.$router.push({ path: '/'});
             }
@@ -60,6 +61,7 @@ import Axios from 'axios';
               this.errored = true
           })
       },
+      /*-- Récupération des données de l'utilisateur connecté pour afficher son profil --*/
       display(){
         this.$store.commit("changeUser", this.$store.state.userLogged);
       }	

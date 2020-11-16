@@ -38,16 +38,18 @@ abstract class Model {
         return $result;
     }
 
+    /*-- Retourne les éléments de pagination --*/
     protected function dataPagination($results){
         $totalResult = Count($results);
         $limite = intval(20);
         $data['success'] = true;
-        $data ['totalPages'] = ceil($totalResult/$limite);
-        $data['totalResults'] = count($results);
-        $data['PerPage'] = $limite;
+        $data ['totalPages'] = ceil($totalResult/$limite); // retourne le nombre total de pages
+        $data['totalResults'] = count($results); // retourne le nombre total de résultats
+        $data['PerPage'] = $limite; // 20 résultats par page
         return $data;
     }
 
+    /*-- Récupère la page à afficher --*/
     protected function getPagePagination(){
         $pagination = [];
         if ( isset($_GET['page']) AND !empty($_GET['page']) ){
@@ -57,7 +59,7 @@ abstract class Model {
             $pagination['currentPage'] = 1;
         }
         $pagination['limite'] = intval(20);
-        $pagination['debut'] = ($pagination['currentPage']- 1) * $pagination['limite'];
+        $pagination['debut'] = ($pagination['currentPage']- 1) * $pagination['limite']; // retourne la page de résultats à afficher
         return $pagination;
     }
 }

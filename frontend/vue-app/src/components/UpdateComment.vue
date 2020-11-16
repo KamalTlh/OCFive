@@ -31,9 +31,10 @@ export default {
       }
     },
     methods: {
+        /*-- Modifier un commentaire --*/
         updateComment(){
             Axios
-                .post("https://apiannuaire.jean-forteroche-dwj.fr/index.php", { 
+                .post(process.env.VUE_APP_API_URL, { 
                     route: 'updateComment',
                     id: this.commentId,
                     content: this.commentContent

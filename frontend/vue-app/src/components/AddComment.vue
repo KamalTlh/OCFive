@@ -7,6 +7,7 @@
                     <div class="card-body text-center"> <img src=" https://i.imgur.com/d2dKtI7.png" height="100" width="100">
                         <div class="comment-box text-center">
                             <div class="comment-area">
+                                <!-- TinyMCE editeur -->
                                 <Editor
                                     v-model="textComment"
                                     api-key="dmq04iw9gib4uqvaf08o82m2cvfkr1uau93te34rqcwauf9j"
@@ -25,8 +26,8 @@
                                         valid_elements : '*[*]'
                                     }"
                                 />
+                                <!-- Fin TinyMce -->
                             </div>
-                            <!-- <textarea class="form-control" placeholder="what is your view?" rows="4"></textarea>  -->
                             <div class="text-center mt-4"> <button class="send px-5" data-toggle="modal" data-target="#form" type="submit" @click="sendComment">Envoyer commentaire <i class="fas fa-long-arrow-alt-right ml-1"></i></button> </div>
                         </div>
                     </div>
@@ -51,6 +52,7 @@ import Editor from '@tinymce/tinymce-vue'
         Editor
     },
     methods:{
+        /*-- Envoi du commentaire au composant parent --*/
         sendComment(){
             this.$emit('data-commentSent', { 'textComment': this.textComment });
         }

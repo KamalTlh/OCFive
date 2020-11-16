@@ -31,13 +31,14 @@ export default{
         this.initMap(); 
     },
     methods: {
+        /*-- Initialisation de la Map --*/
         initMap() { 
-            // INIT MAP
             this.map= L.map('map').setView([48.8534, 2.3488], 5);
             this.tileLayer =  L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png');  
             this.tileLayer.addTo(this.map); 
         },
 
+        /*-- Initialisation des marqueurs de chaque recherche effectuée --*/
         initMarkers() {
             let latMarker, longMarker;
             let layers = [];
@@ -58,20 +59,21 @@ export default{
             this.lat = latMarker;
             this.long = longMarker;
         },
+        /*-- Suppression des marqueurs --*/
         clearLayersOfResearch(){
             if(this.map.hasLayer(this.layerGroup)){
                 this.layerGroup.clearLayers();
-            }
-            else {
-                console.log('No Layers on Map!');
             }
         }, 
    },
 
    watch: {
+       /*-- A chaque modification des marqueurs enregistré dans le store (après une nouvelle recherche),
+            on réinitialise les marqueurs sur la Map --*/
         workerMarkers: function(){
             this.initMarkers();
         },
+        /*-- Récupération de la latitude du dernier marqueur retourné par initMarkers pour centrer la carte dessus --*/
         lat: function(){
             this.map.setView([this.lat, this.long], 10);
         }

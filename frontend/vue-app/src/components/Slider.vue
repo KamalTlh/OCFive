@@ -49,8 +49,6 @@
         slide: 0,
         sliding: null
       }
-    },
-    methods: {
     }
   }
 </script>

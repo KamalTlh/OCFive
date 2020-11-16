@@ -68,13 +68,11 @@ class UserController extends Controller{
         }
     }
     
-    public function readUser($userId){
+    public function getUser($userId){
         $check = $this->checkAuth();
         if ($check['access'] === true){
             $user = $this->userModel->getUser($userId);
-            return $this->view->render('profile', [
-                'user'=> $user
-            ]);
+            return $user;
         }
     }
 
@@ -89,17 +87,20 @@ class UserController extends Controller{
                 if($this->userModel->isEmailUnique($post, $post['id'])){
                     $data['errors']['email'] = $this->userModel->isEmailUnique($post, $post['id']);
                 }
-                if( !empty($data['errors'])){
+                if(!empty($data['errors'])){
                     return $this->view->render('JsonResponse',[
                         'data'=> $data
                     ]);
                 }
-                elseif($this->checkAuthAdmin()){
-                    $data = $this->userModel->updateUserByAdmin($post);
-                    $data['sessionUpdatedByAdmin'] = 'Les informations de l\'utilisateur ont été mis à jour.';
-                    return $this->view->render('JsonResponse',[
-                        'data'=> $data
-                    ]);
+                elseif($post['userLoggedPseudo'] == 'Admin'){
+                    $checkAdmin = $this->checkAuthAdmin();
+                    if($checkAdmin['access'] === true){
+                        $data = $this->userModel->updateUserByAdmin($post);
+                        $data['sessionUpdatedByAdmin'] = 'Les informations de l\'utilisateur ont été mis à jour.';
+                        return $this->view->render('JsonResponse',[
+                            'data'=> $data
+                        ]);
+                    }
                 }
                 else{
                     $data = $this->userModel->updateUser($post);

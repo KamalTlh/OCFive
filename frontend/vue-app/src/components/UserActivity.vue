@@ -1,8 +1,8 @@
 <template>
-    <!-- begin #profile-activity tab -->
     <div class="tab-pane" id="profile-activity">
         <div  class="col-md-12">
             <div class="row gutters-sm">
+                <!-- Début bloc liste de professionnels ajouter en favoris -->
                 <div class="col-sm-6 mb-3">
                     <div class="card h-100">
                         <div class="card-body">
@@ -15,6 +15,8 @@
                         </div>
                     </div>
                 </div>
+                <!-- Fin bloc favoris -->
+                <!-- Début bloc liste de commentaires postés -->
                 <div class="col-sm-6 mb-3">
                     <div class="card h-100">
                         <div class="card-body">
@@ -28,6 +30,7 @@
                         </div>
                     </div>
                 </div>
+                <!-- Fin bloc commentaires postés -->
             </div>
         </div>
     </div>
@@ -51,9 +54,10 @@ export default {
         }
     },
     methods:{
+        /*-- Récupération des professionnels ajouter en favoris par l'utilisateur --*/
         getFavoritesOfUser(){
             Axios
-            .get("https://apiannuaire.jean-forteroche-dwj.fr/index.php", { params: {
+            .get(process.env.VUE_APP_API_URL, { params: {
                 route: 'userFavorites',        
                 userId: this.$store.state.user.id
                 }}
@@ -71,9 +75,10 @@ export default {
                 this.errored = true
             })
         },
+        /*-- Récupération des commentaires postés par l'utilisateur --*/
         getCommentsOfUser(){
             Axios
-            .get("https://apiannuaire.jean-forteroche-dwj.fr/index.php", { params: {
+            .get(process.env.VUE_APP_API_URL, { params: {
                 route: 'userComments',        
                 userId: this.$store.state.user.id
                 }}
@@ -86,6 +91,7 @@ export default {
                 this.errored = true
             })
         },
+        /*-- Afficher page de profil du professionnel --*/
         viewWorkerDetail(workerId){
             localStorage.setItem('healthWorkerId', workerId);
             this.$store.commit("changeWorker", workerId);

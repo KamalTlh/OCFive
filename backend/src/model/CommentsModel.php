@@ -4,6 +4,7 @@ use PDO;
 
 class CommentsModel extends Model{
 
+    /*-- Récupérer le nombre total de commentaires pour la pagination --*/
     public function getCountListComments(){
         $query = 'SELECT id FROM comment';
         $result = $this->createQuery($query);

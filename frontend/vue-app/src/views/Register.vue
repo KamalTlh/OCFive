@@ -95,6 +95,7 @@ export default {
         }
     },
     methods: {
+        /*-- Vérification que les champs du formulaire ne sont pas vides --*/
         checkForm() {
 			if ( !this.pseudo || this.pseudo == '' ) {
                 this.errorsForm.pseudo = 'Le champ saisi est vide';
@@ -119,12 +120,13 @@ export default {
             } else {
                 return false;
             }
-		},
+        },
+        /*-- Création d'un compte utilisateur --*/
         signIn(){
             if (this.checkForm()){
                 if ( this.password == this.passwordConfirmation ) {
                     Axios
-                    .post("https://apiannuaire.jean-forteroche-dwj.fr/index.php", {
+                    .post(process.env.VUE_APP_API_URL, {
                         route: 'signIn',
                         pseudo: this.pseudo,
                         email: this.email,

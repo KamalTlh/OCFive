@@ -125,16 +125,15 @@ export default {
         }
     },
     methods:{
+        /*-- Mettre les informations du profil --*/
         updateUser(){
-            if(this.myUserLogged.role_id == 1){
-                this.password = this.myUserLogged.password
-            }
-            if (!this.myUserToUpdate.pseudo){
+            /*-- Vérification en frontEnd que les champs renseignés ne sont pas vides --*/
+            if (!this.myUserToUpdate.pseudo || !this.myUserToUpdate.email){
                 alert('Renseignez les champs');
             }
             else {
                 Axios
-                .post("https://apiannuaire.jean-forteroche-dwj.fr/index.php", {
+                .post(process.env.VUE_APP_API_URL, {
                     route: 'updateUser',
                     userLoggedPseudo: this.myUserLogged.pseudo,
                     id: this.myUserToUpdate.id,
@@ -147,10 +146,12 @@ export default {
                         this.errorEmail = response.data.errors.email;
                     }
                     else {
+                        /*-- Si le profil est mis à jour par l'administrateur --*/
                         if(this.myUserLogged.role_id == 1){
                             this.$session.set('userUpdatedByAdmin', 'L\'utilisateur a été mis à jour');
                             this.$router.push({ path: '/AdminView' });
                         }
+                        /*-- Si le profil est mis à jour par l'utilisateur --*/
                         else {
                             this.$session.set('userUpdate', 'Vos informations ont été mises à jour.');
                             this.$router.push({ path: '/userprofile' });
@@ -163,7 +164,7 @@ export default {
                 })
             }
         },
-        
+        /*-- Annuler la modificiation et revenir à la page de profil ou d'administration --*/
         cancelUpdate(){
             if (VueCookies.get("previousUrl") == '/adminview'){
                 this.$router.push({ path: '/adminview' });

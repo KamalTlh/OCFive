@@ -41,28 +41,10 @@ import AccountLoggedMenu from '@/components/AccountLoggedMenu';
     components: {
       AccountLoggedMenu
     },
-    data(){
-      return {
-        userConnect: localStorage.getItem('token')
-      };
-    },
     computed:{
+      /*-- Récupération de la variable sessionConnected pour afficher les menus en fonction l'état connecté ou déconnecté du site --*/
       checkSession(){
         return this.$store.state.sessionConnected;
-      },
-      checkRole(){
-        return this.$store.state.userLogged.role_id;
-      }
-    },
-    methods: {
-      display(){
-        this.$store.commit("changeUser", this.$store.state.userLogged);
-      }
-    },
-    watch: {
-      userConnect: function(){
-        console.log('we check');
-        return this.checkSession();
       }
     }
   }

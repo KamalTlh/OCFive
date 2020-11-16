@@ -19,11 +19,7 @@ export default {
     name: 'ReadComment',
     props: {
         commentContent: String
-    },
-    data() {
-      return {
-      }
-    },
+    }
 }
 </script>
 

@@ -14,20 +14,23 @@ class Authentification{
         $this->jwt = null;
     }
 
+    /*-- Récupération du JWT Token --*/
     public function getToken(){
         $headers = apache_request_headers();
         foreach ($headers as $header => $value) {
-            if($header == 'Authorization'){
+            if($header == 'Token'){
                 $token = $value;
             }
         }
         return $token;
     }
 
+    /*-- Récupération de la clé secrète pour decrypter le token --*/
     public function getSecretKey(){
         return $this->secret_key;
     }
 
+    /*-- Création d'un JWT Token --*/
     public function createTokenAuthentification($user){
          $tokenKey = $this->getSecretKey();
          $tokenId = base64_encode(random_bytes(32));
@@ -58,13 +61,14 @@ class Authentification{
          return $data;
     }
 
+    /*-- Vérification de la validité du JWT Token --*/
     public function checkAuthentification(){
         $this->authHeader = $this->getToken();
         if($this->authHeader){
             $arr = explode(" ", $this->authHeader);
             $arr2 = str_replace("\"","", $arr[1]);
             $this->jwt = $arr2;
-
+            
             if($this->jwt){
                 try {
                     $decoded = JWT::decode($this->jwt, $this->secret_key, ['HS256']);
@@ -84,6 +88,7 @@ class Authentification{
         }
     }
 
+    /*-- Vérification de l'accès administrateur dans le JWT Token --*/
     public function checkAuthAdmin(){
         $this->authHeader = $this->getToken();
         if($this->authHeader){
