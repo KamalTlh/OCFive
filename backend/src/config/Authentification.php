@@ -1,6 +1,6 @@
 <?php
 namespace MyApp\config;
-require "../configkey.php";
+require "configkey.php";
 use \Firebase\JWT\JWT;
 use Exception;
 

@@ -84,11 +84,11 @@ class CommentModel extends Model{
     public function addComment($comment, $userId, $workerId){
         $firstQuery = 'INSERT INTO comment (content, date_creation, flag, userId, workerId) VALUES (?, NOW(), ?, ?, ?)';
         $this->createQuery($firstQuery, [$comment, 0, $userId, $workerId]);
-        $secondQuery = 'SELECT nb_comments FROM annuaire WHERE id = ?';
+        $secondQuery = 'SELECT nb_comments FROM prossante WHERE id = ?';
         $result = $this->createQuery($secondQuery, [$workerId]);
         $nb_comments = $result->fetch(PDO::FETCH_ASSOC);
         $new_NbComments = intval($nb_comments['nb_comments']) + 1;
-        $thirdQuery = 'UPDATE annuaire SET nb_comments = ? WHERE id = ?';
+        $thirdQuery = 'UPDATE prossante SET nb_comments = ? WHERE id = ?';
         $this->createQuery($thirdQuery, [ $new_NbComments, $workerId]);
         $lastQuery = 'SELECT comment.id, comment.content, comment.date_creation, comment.flag, user.pseudo FROM comment INNER JOIN user ON user.id = comment.userId WHERE content = ? AND userId = ? AND workerID = ?';
         $lastResult = $this->createQuery($lastQuery, [$comment, $userId, $workerId]);

@@ -59,7 +59,7 @@ class FavoritesModel extends Model{
     }
 
     public function getFavoritesOfUser($userId){
-        $sql = 'SELECT * FROM annuaire INNER JOIN favoris on favoris.workerId = annuaire.id AND favoris.userId = ? ';
+        $sql = 'SELECT * FROM prossante INNER JOIN favoris on favoris.workerId = prossante.id AND favoris.userId = ? ';
         $result = $this->createQuery($sql, [$userId]);
         $favoritesOfUser = $result->fetchAll(PDO::FETCH_ASSOC);
         $data['success'] = true;

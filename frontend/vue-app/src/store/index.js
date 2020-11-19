@@ -36,10 +36,6 @@ export default new Vuex.Store({
       state.needRefresh = payload
     }
   },
-  actions: {
-  },
-  modules: {
-  },
   getters: {
     getCurrentUser(state){
       return state.userLogged

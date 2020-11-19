@@ -17,5 +17,8 @@ export default {
 <style scoped>
 #updatepasswordview{
     min-height: 77vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 </style>
