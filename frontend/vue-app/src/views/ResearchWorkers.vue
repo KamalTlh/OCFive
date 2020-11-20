@@ -145,13 +145,9 @@ export default {
 		}
     },
     methods : {
-        /*-- Supprimer les résultats afficher sur la page et la carte --*/
+        /*-- Supprimer les résultats afficher sur la page et la carte et relancer une nouvelle recherche --*/
         resetResearch(){
-            this.healthWorkers = [];
-            this.totalPages = 0;
-            this.totalResults = 0;
-            this.$refs.map.clearLayersOfResearch();
-            this.showContent = false;            
+            window.location.reload();      
         },
         /*-- Récupérer les résultats de la recherche avec les éléments renseignés --*/
         fetchData(payload){
@@ -210,7 +206,11 @@ export default {
                         this.totalResults = response.data.page.totalResults;
                         this.totalPages = response.data.page.totalPages;
                     }
-                    this.$refs.researchResults.scrollIntoView();
+                    this.$refs.researchResults.scrollIntoView({
+                        block: 'start',
+                        behavior: 'smooth',
+                        inline: 'nearest'
+                    });
                 }
             })
             .catch(error => {

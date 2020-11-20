@@ -23,7 +23,8 @@ class Router{
 
     public function run(){
         try{
-            $data = json_decode(file_get_contents("php://input"), true);
+            $data = json_decode(file_get_contents("php://input"), true); // fonction pour récupérer les données envoyés avec les requêtes POST
+            /*-- requetes POST --*/
             if(isset($data) && !empty($data)){
                 if( $data['route'] === 'login' ){
                     $this->userController->login($data);
@@ -68,6 +69,7 @@ class Router{
                     $this->proSanteController->addRate($data);
                 }
             }
+            /*-- requetes GET --*/
             elseif(isset($_GET) && !empty($_GET)){
                 if($_GET['route'] === 'filters'){
                     /* Vérification que les champs de recherche envoyé coté FrontEnd ne soient pas null */

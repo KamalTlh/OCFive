@@ -18,6 +18,16 @@ class ProSanteController extends Controller{
         }
     }
 
+    public function workersByFilters($get){
+        if($_GET['totalPages'] == 0){
+            $data['page'] = $this->prosSanteModel->getCountWorkersByFilters($get);
+        }
+        $data['datas'] = $this->prosSanteModel->gethealthWorkersByFilters($get);
+        return $this->view->render('JsonResponse',[
+            'data'=> $data
+        ]);
+    }
+    
     public function getHealthWorkerById($get){
         $data = $this->proSanteModel->getHealthWorkerById($get['id']);
         return $this->view->render('JsonResponse',[
@@ -55,16 +65,6 @@ class ProSanteController extends Controller{
 
     public function getCities(){
         $data = $this->prosSanteModel->getCities();
-        return $this->view->render('JsonResponse',[
-            'data'=> $data
-        ]);
-    }
-
-    public function workersByFilters($get){
-        if($_GET['totalPages'] == 0){
-            $data['page'] = $this->prosSanteModel->getCountWorkersByFilters($get);
-        }
-        $data['datas'] = $this->prosSanteModel->gethealthWorkersByFilters($get);
         return $this->view->render('JsonResponse',[
             'data'=> $data
         ]);
