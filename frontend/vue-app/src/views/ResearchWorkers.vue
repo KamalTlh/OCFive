@@ -147,7 +147,8 @@ export default {
     methods : {
         /*-- Supprimer les résultats afficher sur la page et la carte et relancer une nouvelle recherche --*/
         resetResearch(){
-            window.location.reload();      
+            window.location.reload();
+            window.scroll(0,0);    
         },
         /*-- Récupérer les résultats de la recherche avec les éléments renseignés --*/
         fetchData(payload){
