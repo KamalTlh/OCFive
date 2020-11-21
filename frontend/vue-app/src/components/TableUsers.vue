@@ -48,7 +48,7 @@
                 <!-- Boutons administration -->
                 <td class="actions">
                   <a class="btn btn-primary" @click="checkUser(user)"><i class="fas fa-eye"></i></a>
-                  <a class="btn btn-success" @click="updateUser(user)"><i class="fas fa-edit"></i></a>
+                  <!-- <a class="btn btn-success" @click="updateUser(user)"><i class="fas fa-edit"></i></a> -->
                   <a class="btn btn-danger" @click="deleteUser(user.id)"><i class="fas fa-trash-alt"></i></a>
                 </td>
                 <!-- Fin boutons administration -->

@@ -145,7 +145,7 @@
                                                 <div class="comment-box text-center">
                                                     <!-- <h4>Add a rate</h4> -->
                                                     <div class="rating"> <input v-model="rating" type="radio" name="rating" value="5" id="5"><label for="5">☆</label> <input v-model="rating" type="radio" name="rating" value="4" id="4"><label for="4">☆</label> <input v-model="rating" type="radio" name="rating" value="3" id="3"><label for="3">☆</label> <input v-model="rating" type="radio" name="rating" value="2" id="2"><label for="2">☆</label> <input v-model="rating" type="radio" name="rating" value="1" id="1"><label for="1">☆</label> </div> 
-                                                    <div class="text-center mt-4"> <button class="send px-5" data-toggle="modal" data-target="#form-rate" type="submit" @click="addRate(healthworker.id)" >Valider note<i class="fas fa-long-arrow-alt-right ml-1"></i></button> </div>
+                                                    <div class="text-center mt-4"> <button class="sendrate px-5" data-toggle="modal" data-target="#form-rate" type="submit" @click="addRate(healthworker.id)" >Valider note<i class="fas fa-long-arrow-alt-right ml-1"></i></button> </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -415,5 +415,71 @@ export default {
 .flag{
     display: flex;
     justify-content: flex-end;
-}                               
+}
+.sendrate {
+    color: #fff;
+    background-color: #ff0000;
+    border-color: #ff0000;
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid transparent;
+        border-top-color: transparent;
+        border-right-color: transparent;
+        border-bottom-color: transparent;
+        border-left-color: transparent;
+    padding: .375rem .75rem;
+        padding-right: 0.75rem;
+        padding-left: 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+.sendrate:hover {
+    color: #fff;
+    background-color: #f50202;
+    border-color: #f50202;
+} 
+.rating {
+    display: inline-flex;
+    margin-top: -10px;
+    flex-direction: row-reverse
+}
+
+.rating>input {
+    display: none
+}
+
+.rating>label {
+    position: relative;
+    width: 28px;
+    font-size: 35px;
+    color: #ff0000;
+    cursor: pointer
+}
+
+.rating>label::before {
+    content: "\2605";
+    position: absolute;
+    opacity: 0
+}
+
+.rating>label:hover:before,
+.rating>label:hover~label:before {
+    opacity: 1 !important
+}
+
+.rating>input:checked~label:before {
+    opacity: 1
+}
+
+.rating:hover>input:checked~label:before {
+    opacity: 0.4
+}                            
 </style>

@@ -111,48 +111,12 @@ body {
     line-height: 1.5;
     border-radius: .25rem;
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    text-transform: inherit;
 }
 
 .send:hover {
     color: #fff;
     background-color: #f50202;
     border-color: #f50202;
-}
-
-.rating {
-    display: inline-flex;
-    margin-top: -10px;
-    flex-direction: row-reverse
-}
-
-.rating>input {
-    display: none
-}
-
-.rating>label {
-    position: relative;
-    width: 28px;
-    font-size: 35px;
-    color: #ff0000;
-    cursor: pointer
-}
-
-.rating>label::before {
-    content: "\2605";
-    position: absolute;
-    opacity: 0
-}
-
-.rating>label:hover:before,
-.rating>label:hover~label:before {
-    opacity: 1 !important
-}
-
-.rating>input:checked~label:before {
-    opacity: 1
-}
-
-.rating:hover>input:checked~label:before {
-    opacity: 0.4
 }
 </style>
