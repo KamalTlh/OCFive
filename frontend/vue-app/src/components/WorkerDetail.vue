@@ -223,7 +223,8 @@ export default {
             favoriteAdded: null,
             rateAdded: null,
             token: localStorage.getItem('token'),
-            options : { year: "numeric", month: "long", day: "numeric", hour: "numeric", minute: "numeric" }
+            options : { year: "numeric", month: "long", day: "numeric", hour: "numeric", minute: "numeric" },
+            commentFlagged: null
         }
     },
     computed: {
@@ -363,7 +364,7 @@ export default {
                 commentId: commentId
             })
             .then( response => {
-                this.commentFlagged = response.data.commentFlagged;
+                this.commentFlagged = response.data.commentFlag;
             })  
             .catch(error => {
                 console.log(error)
@@ -385,6 +386,9 @@ export default {
         },
         favoriteAdded: function(){
             this.checkUserPreferences();
+        },
+        commentFlagged: function(){
+            this.getCommentsOfWorker();
         }
     }
 }
@@ -415,6 +419,7 @@ export default {
 .flag{
     display: flex;
     justify-content: flex-end;
+    cursor: pointer;
 }
 .sendrate {
     color: #fff;

@@ -14,7 +14,7 @@ class CommentsModel extends Model{
     }
 
     public function getCommentsOfUser($userId){
-        $sql= 'SELECT * FROM comment WHERE userId = ?';
+        $sql= 'SELECT * FROM comment WHERE userId = ? ORDER BY date_creation DESC';
         $result = $this->createQuery($sql, [$userId]);
         $commentsOfUser = $result->fetchAll(PDO::FETCH_ASSOC);
         $data['success'] = true;
@@ -31,7 +31,7 @@ class CommentsModel extends Model{
     }
     
     public function getCommentsOfWorker($workerId){
-        $sql= 'SELECT comment.id, comment.content, comment.date_creation, comment.flag, user.pseudo FROM comment INNER JOIN user ON user.id = comment.userId WHERE workerId = ?';
+        $sql= 'SELECT comment.id, comment.content, comment.date_creation, comment.flag, user.pseudo FROM comment INNER JOIN user ON user.id = comment.userId WHERE workerId = ?  ORDER BY date_creation DESC';
         $result = $this->createQuery($sql, [$workerId]);
         $commentsOfWorker = $result->fetchAll(PDO::FETCH_ASSOC);
         $data['success'] = true;
